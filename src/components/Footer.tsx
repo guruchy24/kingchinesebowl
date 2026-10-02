@@ -19,13 +19,13 @@ export default function Footer() {
     <footer className="bg-[#0A0A0A] w-full pt-16 pb-8 px-[5vw] lg:px-[8vw] border-t border-[#2A2520] relative overflow-hidden flex flex-col justify-end">
       
       {/* ── MASSIVE FADED BACKGROUND WATERMARK ── */}
-      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none overflow-hidden">
-        <h1 className="text-[9.5vw] font-serif text-[#F5F0EB] opacity-[0.03] tracking-[0.15em] whitespace-nowrap leading-none w-full text-center">
+      <div className="absolute bottom-[-2%] md:bottom-[-2%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none overflow-hidden flex justify-center">
+        <h1 className="text-[12vw] md:text-[9.5vw] font-serif text-[#F5F0EB] opacity-[0.03] tracking-[0.15em] whitespace-nowrap leading-none w-full text-center">
           KING CHINESE BOWL
         </h1>
       </div>
 
-      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between gap-16 mt-[15vh] mb-12">
+      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between gap-12 md:gap-16 mt-10 md:mt-[15vh] mb-12">
         
         {/* BRAND & STORY */}
         <div className="flex flex-col w-full md:w-1/3">

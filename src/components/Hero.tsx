@@ -109,17 +109,17 @@ export default function Hero() {
       {/* Main Content */}
       <div className="relative z-20 text-center flex flex-col items-center justify-center w-full max-w-[95vw] md:max-w-[85vw] px-4 mt-24">
         
-        <div className="mb-14 md:mb-[5.5rem]">
-          <h1 className="hero-title font-serif text-[11vw] md:text-[6vw] leading-normal text-kcb-gold whitespace-nowrap drop-shadow-lg pb-2">
+        <div className="mb-10 md:mb-[5.5rem] px-4 md:px-0 text-center">
+          <h1 className="hero-title font-serif text-[16vw] sm:text-[14vw] md:text-[6vw] leading-none md:leading-normal text-kcb-gold whitespace-normal md:whitespace-nowrap drop-shadow-lg pb-2">
             King Chinese Bowl
           </h1>
         </div>
 
         {/* Buttons Row - Premium thick strokes, larger substantial pills, Montserrat font */}
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-5 lg:gap-6 mb-12 w-full max-w-[1200px] px-4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 md:gap-5 lg:gap-6 mb-12 w-full max-w-[1200px] px-6 md:px-4">
           
           {/* CALL */}
-          <a href="tel:+917508450221" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="tel:+917508450221" className="hero-fade group flex w-full sm:w-auto items-center justify-center gap-2.5 md:gap-3 px-8 md:px-[3.25rem] py-4 md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
@@ -129,7 +129,7 @@ export default function Hero() {
           </a>
 
           {/* RESERVATION */}
-          <a href="#reservation" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#reservation" className="hero-fade group flex w-full sm:w-auto items-center justify-center gap-2.5 md:gap-3 px-8 md:px-[3.25rem] py-4 md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <line x1="4" y1="7" x2="20" y2="7" />
               <line x1="7" y1="11" x2="17" y2="11" />
@@ -142,7 +142,7 @@ export default function Hero() {
           </a>
 
           {/* MENU */}
-          <a href="#menu" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#menu" className="hero-fade group flex w-full sm:w-auto items-center justify-center gap-2.5 md:gap-3 px-8 md:px-[3.25rem] py-4 md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <polygon points="12 20 4 10 7 4 12 9 17 4 20 10 12 20" />
             </svg>
@@ -152,7 +152,7 @@ export default function Hero() {
           </a>
 
           {/* VIEW ON MAPS */}
-          <a href="#locations" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#locations" className="hero-fade group flex w-full sm:w-auto items-center justify-center gap-2.5 md:gap-3 px-8 md:px-[3.25rem] py-4 md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <line x1="6" y1="5" x2="18" y2="5" />
               <circle cx="12" cy="14" r="6" />

@@ -109,34 +109,36 @@ export default function Section03() {
 
       {/* ── SCENE 1 & 2: TEXT OVERLAY ── */}
       <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ zIndex: 20 }}>
-        <div ref={glowRef} className="absolute w-[60vw] h-[60vw] rounded-full opacity-0" style={{ background: "radial-gradient(circle, rgba(196,30,42,0.06) 0%, transparent 70%)" }} />
-        <div ref={charRef} className="text-[12vw] md:text-[9vw] font-serif leading-none text-[#F5F0EB] drop-shadow-[0_0_60px_rgba(196,30,42,0.15)]">从火开始</div>
-        <div ref={lineRef} className="w-[8vw] h-[2px] bg-[#C41E2A] my-[3vh] origin-center" />
-        <div ref={engRef} className="text-[3vw] md:text-[2vw] font-light text-[#C4A882] uppercase">It Begins With Fire</div>
-        <div ref={subRef} className="text-[1vw] tracking-[1em] font-light text-[#F5F0EB]/0 mt-[2.5vh] uppercase">Enter The Kitchen</div>
+        <div ref={glowRef} className="absolute w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] rounded-full opacity-0" style={{ background: "radial-gradient(circle, rgba(196,30,42,0.06) 0%, transparent 70%)" }} />
+        <div ref={charRef} className="text-[20vw] md:text-[9vw] font-serif leading-none text-[#F5F0EB] drop-shadow-[0_0_60px_rgba(196,30,42,0.15)]">从火开始</div>
+        <div ref={lineRef} className="w-[16vw] md:w-[8vw] h-[2px] bg-[#C41E2A] my-[3vh] origin-center" />
+        <div ref={engRef} className="text-[5vw] md:text-[2vw] font-light text-[#C4A882] uppercase">It Begins With Fire</div>
+        <div ref={subRef} className="text-[10px] md:text-[1vw] tracking-[0.5em] md:tracking-[1em] font-light text-[#F5F0EB]/0 mt-[2.5vh] uppercase text-center">Enter The Kitchen</div>
       </div>
 
       {/* ── SCENE 3: EDITORIAL OVERLAP HANDOFF ── */}
-      <div ref={handoffSceneRef} className="absolute inset-0 flex flex-row items-center justify-end px-[8vw] opacity-0 bg-[#0A0A0A]" style={{ zIndex: 30 }}>
-        <div className="absolute left-[-15vw] top-1/2 -translate-y-1/2 w-[70vw] h-[70vw] rounded-full overflow-hidden shadow-[0_0_150px_rgba(196,30,42,0.15)] pointer-events-none">
+      <div ref={handoffSceneRef} className="absolute inset-0 flex flex-col md:flex-row items-center justify-center md:justify-end px-[5vw] md:px-[8vw] opacity-0 bg-[#0A0A0A]" style={{ zIndex: 30 }}>
+        {/* Plate Image */}
+        <div className="absolute left-[-50vw] md:left-[-15vw] top-1/4 md:top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[70vw] md:h-[70vw] rounded-full overflow-hidden shadow-[0_0_150px_rgba(196,30,42,0.15)] pointer-events-none">
           <div ref={plateRef} className="w-full h-full relative">
             <Image src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2000&auto=format&fit=crop" alt="Premium plated dish" fill className="object-cover" />
             <div className="absolute inset-0 rounded-full shadow-[inset_0_0_120px_rgba(10,10,10,1)] pointer-events-none" />
           </div>
         </div>
-        <div ref={rightTextRef} className="flex flex-col items-start w-[45vw] z-40 pointer-events-auto">
-          <div className="flex items-center gap-6 mb-[4vh]">
-            <div className="w-[4vw] h-[1px] bg-[#C41E2A]" />
-            <div className="text-[0.85vw] tracking-[0.8em] text-[#C41E2A] uppercase font-light whitespace-nowrap">Chapter III</div>
+        {/* Text Details */}
+        <div ref={rightTextRef} className="flex flex-col items-start w-full md:w-[45vw] z-40 pointer-events-auto mt-[40vh] md:mt-0 px-[5vw] md:px-0">
+          <div className="flex items-center gap-4 md:gap-6 mb-[3vh] md:mb-[4vh]">
+            <div className="w-[8vw] md:w-[4vw] h-[1px] bg-[#C41E2A]" />
+            <div className="text-[10px] md:text-[0.85vw] tracking-[0.5em] md:tracking-[0.8em] text-[#C41E2A] uppercase font-light whitespace-nowrap">Chapter III</div>
           </div>
-          <h2 className="text-[8.5vw] font-serif tracking-tighter text-[#F5F0EB] leading-[0.9] drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]">
-            The <span className="italic text-[#D4A853] pr-4">King's</span><br />Table
+          <h2 className="text-[18vw] md:text-[8.5vw] font-serif tracking-tighter text-[#F5F0EB] leading-[0.9] drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]">
+            The <span className="italic text-[#D4A853] pr-2 md:pr-4">King's</span><br />Table
           </h2>
-          <div className="mt-[5vh] flex items-center gap-6 group cursor-pointer">
-            <p className="text-[1vw] text-[#C4A882] font-light tracking-[0.4em] uppercase group-hover:text-[#F5F0EB] transition-colors duration-500">Explore the Menu</p>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-[1px] bg-[#D4A853]/50 transition-all duration-700 ease-out group-hover:w-24 group-hover:bg-[#D4A853]" />
-              <div className="text-[#D4A853] transition-transform duration-500 ease-out group-hover:translate-x-3 font-light text-xl">→</div>
+          <div className="mt-[4vh] md:mt-[5vh] flex items-center gap-4 md:gap-6 group cursor-pointer">
+            <p className="text-[10px] md:text-[1vw] text-[#C4A882] font-light tracking-[0.3em] md:tracking-[0.4em] uppercase group-hover:text-[#F5F0EB] transition-colors duration-500">Explore the Menu</p>
+            <div className="flex items-center gap-2 md:gap-4">
+              <div className="w-8 md:w-12 h-[1px] bg-[#D4A853]/50 transition-all duration-700 ease-out group-hover:w-16 md:group-hover:w-24 group-hover:bg-[#D4A853]" />
+              <div className="text-[#D4A853] transition-transform duration-500 ease-out group-hover:translate-x-3 font-light text-lg md:text-xl">→</div>
             </div>
           </div>
         </div>
@@ -153,14 +155,14 @@ export default function Section03() {
             <Image src={cat.image} alt={cat.name} fill className="object-cover opacity-50" sizes="100vw" quality={90} priority={idx === 0} />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/80 via-transparent to-[#0A0A0A]/80" />
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[1px] bg-[#D4A853]" />
-                <span className="text-[#D4A853] tracking-[0.4em] text-sm uppercase">Chapter IV</span>
-                <div className="w-12 h-[1px] bg-[#D4A853]" />
+            <div className="relative z-10 flex flex-col items-center text-center px-4">
+              <div className="flex items-center gap-4 mb-4 md:mb-6">
+                <div className="w-8 md:w-12 h-[1px] bg-[#D4A853]" />
+                <span className="text-[#D4A853] tracking-[0.4em] text-xs md:text-sm uppercase">Chapter IV</span>
+                <div className="w-8 md:w-12 h-[1px] bg-[#D4A853]" />
               </div>
-              <h2 className="font-serif text-[12vw] tracking-tighter text-[#F5F0EB] leading-none drop-shadow-2xl uppercase">{cat.name}</h2>
-              <p className="text-[1.5vw] tracking-[0.6em] text-[#C4A882] font-light uppercase mt-6">{cat.subtitle}</p>
+              <h2 className="font-serif text-[18vw] md:text-[12vw] tracking-tighter text-[#F5F0EB] leading-none drop-shadow-2xl uppercase">{cat.name}</h2>
+              <p className="text-[3vw] md:text-[1.5vw] tracking-[0.4em] md:tracking-[0.6em] text-[#C4A882] font-light uppercase mt-4 md:mt-6 text-center max-w-[80vw]">{cat.subtitle}</p>
             </div>
           </div>
         ))}
