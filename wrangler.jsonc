@@ -19,7 +19,7 @@
 			"service": "kingchinesebowl"
 		}
 	],
-	"images": {
+	"hyperdrive": [ { "binding": "DB", "id": "96fa71f375ca4415b3ba77bb73c0d0e3" } ], "images": {
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
