@@ -19,8 +19,8 @@ export default function Footer() {
     <footer className="bg-[#0A0A0A] w-full pt-16 pb-8 px-[5vw] lg:px-[8vw] border-t border-[#2A2520] relative overflow-hidden flex flex-col justify-end">
       
       {/* ── MASSIVE FADED BACKGROUND WATERMARK ── */}
-      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none">
-        <h1 className="text-[12vw] font-serif text-[#F5F0EB] opacity-[0.03] tracking-widest whitespace-nowrap leading-none">
+      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none overflow-hidden">
+        <h1 className="text-[9.5vw] font-serif text-[#F5F0EB] opacity-[0.03] tracking-[0.15em] whitespace-nowrap leading-none w-full text-center">
           KING CHINESE BOWL
         </h1>
       </div>
