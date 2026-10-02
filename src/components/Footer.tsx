@@ -16,16 +16,16 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] w-full pt-24 pb-8 px-[5vw] lg:px-[8vw] border-t border-[#2A2520] relative overflow-hidden flex flex-col justify-between min-h-[60vh]">
+    <footer className="bg-[#0A0A0A] w-full pt-16 pb-8 px-[5vw] lg:px-[8vw] border-t border-[#2A2520] relative overflow-hidden flex flex-col justify-end">
       
       {/* ── MASSIVE FADED BACKGROUND WATERMARK ── */}
-      <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none">
+      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 w-full text-center z-0 pointer-events-none select-none">
         <h1 className="text-[12vw] font-serif text-[#F5F0EB] opacity-[0.03] tracking-widest whitespace-nowrap leading-none">
           KING CHINESE BOWL
         </h1>
       </div>
 
-      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between gap-16 mb-24">
+      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between gap-16 mt-[15vh] mb-12">
         
         {/* BRAND & STORY */}
         <div className="flex flex-col w-full md:w-1/3">
