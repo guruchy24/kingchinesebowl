@@ -24,7 +24,7 @@ async function seed() {
       description: 'Pan-seared dumplings bathed in a luxurious, smoky cream sauce infused with cardamom and crushed black pepper.',
       price: 35000,
       category: 'Dim Sum',
-      image_url: 'https://images.unsplash.com/photo-1626804475297-41609ea004eb?q=80&w=1600&auto=format&fit=crop',
+      image_url: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1600&auto=format&fit=crop',
     },
     {
       name: 'Sichuan Mapo Tofu',

@@ -29,7 +29,7 @@ body {
   color: var(--color-kcb-gold);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  width: 100vw;
+  width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -52,18 +52,16 @@ h1, h2, h3, h4, h5, h6, .font-serif {
   opacity: 0;
 }
 
-/* Scrollbar */
+/* Scrollbar — hidden for a clean premium feel */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0px;
+  display: none;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-kcb-base);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-kcb-border);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-kcb-gold);
+  background: transparent;
 }
 
 /* Custom Grid lines for background (like Screenshot 3) */

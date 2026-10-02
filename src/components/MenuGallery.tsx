@@ -1,113 +1,67 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
-
 type MenuItem = {
   id: number;
   name: string;
   description: string | null;
   price: number;
   image_url: string | null;
+  category?: string;
 };
 
 export default function MenuGallery({ items }: { items: MenuItem[] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const container = containerRef.current!;
-
-      gsap.to(container, {
-        x: () => -(container.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          end: () => "+=" + (container.scrollWidth - window.innerWidth),
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  // First slide is text, plus one slide for each item
-  const totalSlides = 1 + items.length;
-  const containerWidth = `${totalSlides * 85}vw`;
-
   return (
-    <section
-      id="menu"
-      ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-[#0A0A0A]"
-    >
-      <div
-        ref={containerRef}
-        className="flex h-full"
-        style={{ width: containerWidth }}
-      >
-        {/* Intro Slide */}
-        <div
-          className="flex h-screen items-center justify-center shrink-0"
-          style={{ width: "85vw" }}
-        >
-          <div className="flex flex-col items-start gap-6 px-[10vw]">
-            <h2 className="font-serif text-[6vw] tracking-[0.2em] text-[#F5F0EB]">
-              PAN-ASIAN <br /> <span className="text-[#C41E2A]">CRAFT</span>
-            </h2>
-            <p className="text-base tracking-[0.2em] text-[#C4A882] font-light max-w-md uppercase">
-              Authentic flavors. Generous portions. Affordable luxury.
-            </p>
+    <>
+      {/* ── PART 2: VERTICAL 2-COLUMN MENU GRID ── */}
+      <section id="menu-grid" className="w-full bg-[#0A0A0A] py-[15vh] px-[8vw] relative z-20 border-t border-[#2A2520]">
+        
+        {/* Subtle background glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-[#C41E2A]/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-[80vw] mx-auto relative z-10">
+          <div className="text-center mb-[10vh]">
+            <h3 className="text-[#C41E2A] tracking-[0.5em] text-sm uppercase mb-4">A La Carte</h3>
+            <h2 className="text-[4vw] font-serif text-[#F5F0EB] tracking-tight">The Royal Selection</h2>
+          </div>
+
+          {/* 2-Column Grid Setup */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-24 gap-y-16">
+            
+            {items.length > 0 ? (
+              items.map((item) => (
+                <div key={item.id} className="flex flex-col border-b border-[#2A2520]/50 pb-6 group hover:border-[#D4A853]/50 transition-colors duration-500 cursor-default">
+                  
+                  <div className="flex justify-between items-end mb-3">
+                    <h4 className="text-[1.5vw] font-serif text-[#F5F0EB] tracking-wide group-hover:text-[#D4A853] transition-colors duration-500">
+                      {item.name}
+                    </h4>
+                    
+                    {/* Elegant dotted leader line */}
+                    <div className="flex-grow border-b-2 border-dotted border-[#2A2520] mx-4 mb-2 opacity-30" />
+                    
+                    <span className="text-[1.2vw] text-[#C4A882] tracking-widest font-light">
+                      ₹{(item.price / 100).toFixed(0)}
+                    </span>
+                  </div>
+                  
+                  {item.description && (
+                    <p className="text-[0.95vw] text-[#F5F0EB]/50 font-light max-w-[85%] leading-relaxed">
+                      {item.description}
+                    </p>
+                  )}
+                  
+                </div>
+              ))
+            ) : (
+              // Empty State (if DB is empty during dev)
+              <div className="col-span-1 lg:col-span-2 text-center py-20 text-[#C4A882]/50 font-light tracking-widest">
+                Curating the perfect menu...
+              </div>
+            )}
+            
           </div>
         </div>
-
-        {/* Dynamic DB Items */}
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex h-screen items-center justify-center shrink-0 px-[4vw]"
-            style={{ width: "85vw" }}
-          >
-            <div className="relative h-[70vh] w-full rounded-sm overflow-hidden group">
-              {item.image_url && (
-                <Image
-                  src={item.image_url}
-                  alt={item.name}
-                  fill
-                  className="object-cover transition-transform duration-[2s] ease-out group-hover:scale-105"
-                  sizes="80vw"
-                  quality={90}
-                />
-              )}
-              {/* Gradient Overlay for Text Readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/90 via-[#0A0A0A]/30 to-transparent"></div>
-              
-              {/* Text Info */}
-              <div className="absolute bottom-0 left-0 p-[4vw] flex flex-col gap-4">
-                <div className="flex items-center gap-6">
-                  <h3 className="font-serif text-[3vw] text-[#F5F0EB] tracking-wider leading-none">
-                    {item.name}
-                  </h3>
-                  <span className="text-[1.5vw] text-[#D4A853] font-light tracking-widest border border-[#D4A853]/30 px-6 py-2 rounded-full backdrop-blur-sm">
-                    ₹{(item.price / 100).toFixed(0)}
-                  </span>
-                </div>
-                <p className="text-[#F5F0EB]/70 text-lg font-light tracking-wide max-w-xl">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

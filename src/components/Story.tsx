@@ -1,102 +1,220 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const floatingImages = [
+const storyData = [
   {
-    src: "https://images.unsplash.com/photo-1626804475297-41609ea004eb?q=80&w=600&auto=format&fit=crop",
-    alt: "Asian cuisine detail 1",
-    className: "top-[15%] left-[8%] w-[18vw] h-[25vw]",
-    y: -300,
-    scale: 1,
+    chapter: "01",
+    title: "THE ORIGIN",
+    text: "What started as a singular vision in the Tricity area quickly evolved into a culinary landmark. We united the rich traditions of Chinese, Tibetan, and Japanese street food under one roof, driven by a simple belief: Pan-Asian cuisine deserves to be experienced in its most authentic, fiery, and uncompromised form.",
   },
   {
-    src: "https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?q=80&w=600&auto=format&fit=crop",
-    alt: "Asian cuisine detail 2",
-    className: "top-[45%] right-[10%] w-[12vw] h-[18vw]",
-    y: -500,
-    scale: 1.2,
+    chapter: "02",
+    title: "THE CRAFT",
+    text: "Our journey is defined by the relentless pursuit of perfection. From the explosive heat of our woks to the delicate folds of our handcrafted dim sum, every element is meticulously curated. We honor age-old techniques passed down through generations of master chefs.",
   },
   {
-    src: "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=600&auto=format&fit=crop",
-    alt: "Asian cuisine detail 3",
-    className: "bottom-[15%] left-[15%] w-[22vw] h-[14vw]",
-    y: -200,
-    scale: 1,
+    chapter: "03",
+    title: "THE ALCHEMY",
+    text: "We source only the finest regional spices, meats, and produce. By infusing modern gastronomy with traditional recipes, we elevate street food into an unforgettable dining experience, perfectly balancing sweet, sour, salty, and umami in every single bowl.",
+  },
+  {
+    chapter: "04",
+    title: "THE LEGACY",
+    text: "Today, across Chandigarh, Mohali, and Zirakpur, King Chinese Bowl stands as a celebration of Asian culinary heritage. We believe that food is not merely sustenance, but a powerful medium of culture, connection, and craft.",
   },
 ];
 
+const storyImages = [
+  "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=1600&auto=format&fit=crop", // Noodles
+  "https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?q=80&w=1600&auto=format&fit=crop", // Dumplings
+  "https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?q=80&w=1600&auto=format&fit=crop", // Ingredients
+  "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=1600&auto=format&fit=crop", // Fire
+  "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1600&auto=format&fit=crop", // Dark plating
+  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600&auto=format&fit=crop", // Cinematic food
+];
+
+const IMAGE_DURATION = 6; // Image changes every 6 seconds
+
 export default function Story() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [tick, setTick] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  
+  const progressRef = useRef<HTMLDivElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      floatingImages.forEach((img, i) => {
-        const el = imageRefs.current[i];
-        if (!el) return;
+  // Derive indices from the master tick to guarantee perfect sync
+  const currentImgIdx = tick % storyImages.length;
+  const currentTextIdx = Math.floor(tick / 2) % storyData.length;
 
-        const tweenVars: gsap.TweenVars = {
-          y: img.y,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            scrub: true,
-            start: "top bottom",
-            end: "bottom top",
-          },
-        };
+  // Master Clock
+  useEffect(() => {
+    if (isPaused) {
+      tweenRef.current?.pause();
+      return;
+    }
+    
+    tweenRef.current?.play();
 
-        if (img.scale !== 1) {
-          tweenVars.scale = img.scale;
-        }
+    const interval = setInterval(() => {
+      setTick((prev) => prev + 1);
+    }, IMAGE_DURATION * 1000);
+    
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
-        gsap.to(el, tweenVars);
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  // Image Progress Bar animation
+  useEffect(() => {
+    if (progressRef.current) {
+      tweenRef.current = gsap.fromTo(
+        progressRef.current,
+        { scaleX: 0 },
+        { scaleX: 1, duration: IMAGE_DURATION, ease: "none" }
+      );
+      
+      if (isPaused) tweenRef.current.pause();
+    }
+    return () => {
+      tweenRef.current?.kill();
+    };
+  }, [currentImgIdx, isPaused]);
 
   return (
     <section
       id="story"
-      ref={sectionRef}
-      className="relative min-h-[200vh] w-full overflow-hidden bg-[#0A0A0A]"
+      className="relative flex h-screen w-full bg-[#050403] overflow-hidden"
     >
-      {/* Sticky centered text */}
-      <div className="sticky top-1/2 z-10 mx-auto -translate-y-1/2 text-center">
-        <h2 className="text-[3vw] font-light tracking-[8px] text-[#D4A853]">
-          OUR STORY
-        </h2>
-        <p className="mx-auto mt-8 max-w-[50vw] text-[1.2vw] leading-relaxed text-[#C4A882]">
-          Born from a passion for authentic Asian street food, King Chinese Bowl
-          brings the heat, the flavor, and the soul of Pan-Asian cuisine to the
-          heart of Tricity. From steaming bowls of Thukpa to crispy Afghani
-          Momos — every dish is a journey.
-        </p>
+      {/* ── LEFT COLUMN: STATIC HEADING + DYNAMIC CHAPTERS ── */}
+      <div 
+        className="w-full md:w-[48%] h-full flex flex-col justify-center pl-[8vw] pr-[4vw] z-10 relative"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        
+        {/* ── STATIC HEADING: OUR STORY ── */}
+        {/* Sits beautifully at the top left, never moves */}
+        <div className="mb-[6vh] z-20">
+          <div className="flex items-center gap-5 mb-5">
+            <div className="w-[4vw] h-[1px] bg-[#C41E2A]" />
+            <span className="text-[1vw] tracking-[0.6em] text-[#C41E2A] uppercase font-light">The Heritage</span>
+          </div>
+          <h2 className="text-[10vw] md:text-[6.5vw] font-serif text-[#F5F0EB] leading-[0.9] tracking-tight drop-shadow-2xl">
+            Our Story
+          </h2>
+        </div>
+
+        {/* ── MASSIVE ANIMATED BACKGROUND CHAPTER NUMBER ── */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0">
+          {storyData.map((data, i) => (
+            <div
+              key={`bg-${data.chapter}`}
+              className={`absolute font-serif text-[40vw] leading-none select-none transition-all duration-[2000ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                i === currentTextIdx 
+                  ? "opacity-[0.05] translate-y-0 scale-100" 
+                  : i < currentTextIdx 
+                    ? "opacity-0 -translate-y-20 scale-95" 
+                    : "opacity-0 translate-y-20 scale-105"
+              }`}
+              style={{ color: "#E5E0D8", left: "-2vw", top: "30vh" }}
+            >
+              {data.chapter}
+            </div>
+          ))}
+        </div>
+
+        {/* ── FOREGROUND TEXT CONTAINER (Changes every 12s) ── */}
+        <div className="relative z-10 min-h-[30vh]">
+          {storyData.map((data, i) => (
+            <div
+              key={`text-${data.chapter}`}
+              className={`absolute inset-x-0 top-0 transition-all duration-[1500ms] ease-in-out ${
+                i === currentTextIdx ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"
+              }`}
+            >
+              <div className="flex items-center gap-6 mb-[4vh]">
+                <div className="text-[1.2vw] font-serif text-[#C41E2A] italic">
+                  Chapter {data.chapter}
+                </div>
+                <div className="w-[3vw] h-[1px] bg-[#C41E2A]/50" />
+                <h3 className="text-[1.2vw] tracking-[0.4em] text-[#C4A882] uppercase font-light">
+                  {data.title}
+                </h3>
+              </div>
+              
+              <p className="text-[4vw] md:text-[1.5vw] leading-[2] text-[#E5E0D8] font-light text-justify drop-shadow-2xl pr-[2vw]">
+                {data.text}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* ── CHAPTER DOTS (Clickable) ── */}
+        <div className="absolute bottom-[8vh] left-[8vw] flex items-center gap-5 z-20">
+          {storyData.map((_, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                setTick(i * 2);
+                setIsPaused(false);
+              }}
+              className="py-4 cursor-pointer group flex items-center"
+            >
+              <div
+                className={`h-[1.5px] transition-all duration-700 ${
+                  i === currentTextIdx 
+                    ? "w-[4vw] bg-[#C41E2A]" 
+                    : "w-[1.5vw] bg-white/20 group-hover:bg-white/50"
+                }`}
+              />
+            </div>
+          ))}
+          
+          <div className={`ml-4 text-[0.75vw] tracking-widest uppercase transition-opacity duration-500 ${isPaused ? "opacity-40 text-[#C4A882]" : "opacity-0"}`}>
+            Paused to read
+          </div>
+        </div>
       </div>
 
-      {/* Floating parallax images */}
-      {floatingImages.map((img, i) => (
-        <div
-          key={i}
-          ref={(el) => {
-            imageRefs.current[i] = el;
-          }}
-          className={`absolute overflow-hidden rounded-sm opacity-80 ${img.className}`}
-        >
-          <img
-            src={img.src}
-            alt={img.alt}
-            className="h-full w-full object-cover"
-          />
+      {/* ── RIGHT COLUMN: FULL-BLEED GALLERY ── */}
+      <div className="absolute right-0 top-0 h-full w-[52%] z-0 overflow-hidden">
+        
+        {/* Soft elegant blend into the left side */}
+        <div className="absolute inset-y-0 left-0 w-[20vw] z-30 bg-gradient-to-r from-[#050403] via-[#050403]/90 to-transparent pointer-events-none" />
+
+        <div className="w-full h-full relative">
+          {storyImages.map((src, i) => (
+            <div
+              key={src}
+              className={`absolute inset-0 transition-all duration-[4000ms] ease-in-out ${
+                i === currentImgIdx ? "opacity-100 scale-100 z-10" : "opacity-0 scale-105 z-0"
+              }`}
+            >
+              <Image
+                src={src}
+                alt={`Story visual ${i + 1}`}
+                fill
+                className="object-cover"
+                priority={i === 0}
+              />
+              <div className="absolute inset-0 bg-[#050403]/30 mix-blend-multiply pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 pointer-events-none" />
+            </div>
+          ))}
         </div>
-      ))}
+
+        {/* ── ART GALLERY PROGRESS BAR ── */}
+        <div className="absolute bottom-[8vh] right-[5vw] z-40 flex items-center gap-6">
+          <div className="w-[12vw] h-[1px] bg-white/10 relative overflow-hidden">
+            <div ref={progressRef} className="absolute inset-y-0 left-0 bg-[#D4A853] origin-left" />
+          </div>
+          <div className="text-[#C4A882] font-serif text-[1vw] tracking-widest">
+            0{currentImgIdx + 1} <span className="opacity-30">/ 0{storyImages.length}</span>
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 }
