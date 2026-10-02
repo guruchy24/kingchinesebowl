@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Premium Inari-inspired KCB Palette */
+  --color-kcb-base: #110F0D; /* Very dark warm black/beige */
+  --color-kcb-panel: #1A1714; /* Slightly lighter for overlapping panels */
+  --color-kcb-gold: #D9C49E; /* Inari's exact beige/gold text color */
+  --color-kcb-muted: #9E9589; /* Muted text */
+  --color-kcb-red: #8B1A1A; /* Deep premium Chinese red */
+  --color-kcb-border: #332D27; /* Subtle borders */
+
+  --font-serif: var(--font-playfair), serif;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-kcb-base);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-kcb-base);
+  color: var(--color-kcb-gold);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+/* GSAP Animated Text Utility */
+.word-line {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.word-inner {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-kcb-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-kcb-border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-kcb-gold);
+}
+
+/* Custom Grid lines for background (like Screenshot 3) */
+.grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(217, 196, 158, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 196, 158, 0.05) 1px, transparent 1px);
+  background-size: 25vw 25vw;
 }
