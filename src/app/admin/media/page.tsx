@@ -399,34 +399,54 @@ function MediaManagerInner() {
                     </button>
                   </div>
                   <div className="p-4 flex-1 flex flex-col gap-4 bg-gray-50/50">
-                    {items.length === 0 ? (
-                      <div className="text-center py-12 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                        No images for {cuisine.name} yet.
-                      </div>
-                    ) : (
-                      items.map(item => (
-                        <div key={item.id} className="relative bg-white border border-gray-200 rounded-lg overflow-hidden group hover:border-[#DF3B4D] transition-colors">
-                          <div className="relative aspect-[4/3] bg-white">
-                            <img src={item.url} alt={item.alt_text || 'Media item'} className={`w-full h-full object-cover ${!item.is_active ? 'opacity-50 grayscale' : ''}`} />
-                            <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button onClick={() => openEditModal(item)} className="p-2 bg-black/60 hover:bg-[#DF3B4D] text-white rounded-lg backdrop-blur-sm transition-colors">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                              </button>
-                              <button onClick={() => handleDeleteClick(item.id)} className="p-2 bg-black/60 hover:bg-[#C41E2A] text-white rounded-lg backdrop-blur-sm transition-colors">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                              </button>
+                    {[
+                      { suffix: '_main', label: 'Main Collage' },
+                      { suffix: '_1', label: 'Detail 1 (Bottom Left)' },
+                      { suffix: '_2', label: 'Detail 2 (Top Left)' },
+                      { suffix: '_3', label: 'Detail 3 (Floating Right)' }
+                    ].map(slotConfig => {
+                      const expectedSlot = `${cuisine.id}${slotConfig.suffix}`;
+                      const uploadedItem = items.find(m => m.slot === expectedSlot);
+
+                      if (uploadedItem) {
+                        return (
+                          <div key={expectedSlot} className="relative bg-white border border-gray-200 rounded-lg overflow-hidden group hover:border-[#DF3B4D] transition-colors">
+                            <div className="relative aspect-[4/3] bg-white">
+                              <img src={uploadedItem.url} alt={uploadedItem.alt_text || 'Media item'} className={`w-full h-full object-cover ${!uploadedItem.is_active ? 'opacity-50 grayscale' : ''}`} />
+                              <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onClick={() => openEditModal(uploadedItem)} className="p-2 bg-black/60 hover:bg-[#DF3B4D] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </button>
+                                <button onClick={() => handleDeleteClick(uploadedItem.id)} className="p-2 bg-black/60 hover:bg-[#C41E2A] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                </button>
+                              </div>
+                            </div>
+                            <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
+                              <span className="text-[11px] font-mono text-[#C41E2A] font-bold tracking-tight">{slotConfig.label}</span>
+                              <div className="flex justify-between items-center mt-1">
+                                <span className="text-xs text-gray-500 capitalize">{uploadedItem.device}</span>
+                                {!uploadedItem.is_active && <span className="text-[#C41E2A] text-xs font-medium">Inactive</span>}
+                              </div>
                             </div>
                           </div>
-                          <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
-                            <span className="text-[11px] font-mono text-gray-800 bg-gray-100 px-2 py-0.5 rounded w-fit">{item.slot}</span>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-gray-500 capitalize">{item.device}</span>
-                              {!item.is_active && <span className="text-[#C41E2A] text-xs font-medium">Inactive</span>}
-                            </div>
+                        );
+                      } else {
+                        return (
+                          <div key={expectedSlot} className="relative bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg aspect-[4/3] flex flex-col items-center justify-center p-4 hover:border-[#DF3B4D] hover:bg-white transition-colors cursor-pointer"
+                            onClick={() => {
+                              setUploadSection('kitchen');
+                              setUploadSlot(expectedSlot);
+                              setIsUploadModalOpen(true);
+                            }}
+                          >
+                            <span className="text-xs font-mono text-gray-400 mb-2 block">{expectedSlot}</span>
+                            <span className="text-[#C41E2A] font-medium text-sm text-center">{slotConfig.label}</span>
+                            <div className="mt-3 px-3 py-1 text-xs bg-gray-200 text-gray-600 rounded">Click to Add</div>
                           </div>
-                        </div>
-                      ))
-                    )}
+                        );
+                      }
+                    })}
                   </div>
                 </div>
               );
