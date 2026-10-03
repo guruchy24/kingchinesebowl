@@ -103,7 +103,10 @@ function MediaManagerInner() {
         body: formData
       });
 
-      if (!uploadRes.ok) throw new Error('Upload failed');
+      if (!uploadRes.ok) {
+        const errData = await uploadRes.json().catch(() => ({}));
+        throw new Error(`Upload failed (${uploadRes.status}): ${errData.error || 'Unknown error'}`);
+      }
       const { r2_key, url } = await uploadRes.json();
 
       // 2. Create media record
@@ -121,15 +124,18 @@ function MediaManagerInner() {
         })
       });
 
-      if (!mediaRes.ok) throw new Error('Failed to save media record');
+      if (!mediaRes.ok) {
+        const errData = await mediaRes.json().catch(() => ({}));
+        throw new Error(`Save failed (${mediaRes.status}): ${errData.error || 'Unknown error'}`);
+      }
       
       // Success -> Close and refresh
       setIsUploadModalOpen(false);
       resetUploadForm();
       fetchMedia();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to upload. See console for details.');
+    } catch (err: any) {
+      console.error('Upload error:', err);
+      alert(err.message || 'Failed to upload');
     } finally {
       setIsUploading(false);
     }
@@ -182,10 +188,12 @@ function MediaManagerInner() {
         setMediaItems(items => items.filter(item => item.id !== itemToDelete));
         setItemToDelete(null);
       } else {
-        alert('Failed to delete media');
+        const errorData = await res.json().catch(() => ({ error: 'Unknown server error' }));
+        alert(`Failed to delete media: ${errorData.error}`);
       }
     } catch (err) {
       console.error(err);
+      alert(`Network error: ${err}`);
     } finally {
       setIsDeleting(false);
     }
@@ -256,6 +264,70 @@ function MediaManagerInner() {
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <div className="w-8 h-8 border-4 border-[#DF3B4D] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : filterSection.toLowerCase() === 'philosophy' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {[
+            { id: 'slide_1', name: 'Chinese' },
+            { id: 'slide_2', name: 'Korean' },
+            { id: 'slide_3', name: 'Japanese' },
+            { id: 'slide_4', name: 'Tibetan' }
+          ].map(cuisine => {
+            const items = filteredMedia.filter(m => m.slot === cuisine.id);
+            return (
+              <div key={cuisine.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col h-full shadow-sm">
+                <div className="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                  <h3 className="font-bold text-gray-900 uppercase tracking-widest text-sm">{cuisine.name}</h3>
+                  <button 
+                    onClick={() => {
+                      setUploadSection('philosophy');
+                      setUploadSlot(cuisine.id);
+                      setIsUploadModalOpen(true);
+                    }}
+                    className="text-xs bg-[#C41E2A] text-white px-3 py-1 rounded hover:bg-[#a01822] transition-colors"
+                  >
+                    + Add
+                  </button>
+                </div>
+                <div className="p-4 flex-1 flex flex-col gap-4 bg-gray-50/50">
+                  {items.length === 0 ? (
+                    <div className="text-center py-12 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                      No images for {cuisine.name} yet.
+                    </div>
+                  ) : (
+                    items.map(item => {
+                      const isVideo = item.url.toLowerCase().endsWith('.mp4') || item.url.toLowerCase().endsWith('.webm');
+                      return (
+                        <div key={item.id} className="relative bg-white border border-gray-200 rounded-lg overflow-hidden group hover:border-[#DF3B4D] transition-colors">
+                          <div className="relative aspect-[4/3] bg-white">
+                            {isVideo ? (
+                              <video src={item.url} autoPlay loop muted playsInline className={`w-full h-full object-cover ${!item.is_active ? 'opacity-50 grayscale' : ''}`} />
+                            ) : (
+                              <img src={item.url} alt={item.alt_text || 'Media item'} className={`w-full h-full object-cover ${!item.is_active ? 'opacity-50 grayscale' : ''}`} />
+                            )}
+                            <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => openEditModal(item)} className="p-2 bg-black/60 hover:bg-[#DF3B4D] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                              </button>
+                              <button onClick={() => handleDeleteClick(item.id)} className="p-2 bg-black/60 hover:bg-[#C41E2A] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="p-3 border-t border-gray-100">
+                            <div className="flex justify-between items-center">
+                              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-medium">{item.device}</span>
+                              {!item.is_active && <span className="text-[#C41E2A] text-xs">Inactive</span>}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       ) : filteredMedia.length === 0 ? (
         <div className="text-center py-24 bg-white rounded-xl border border-gray-200 border-dashed">
