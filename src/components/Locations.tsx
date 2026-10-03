@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 const LOCATIONS_DATA = [
@@ -34,105 +34,94 @@ const LOCATIONS_DATA = [
 ];
 
 export default function Locations() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeLoc = LOCATIONS_DATA[activeIndex];
-
-  // Auto-slide every 6 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % LOCATIONS_DATA.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [activeIndex]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0); // Default to first open on mobile
 
   return (
-    <section className="w-full min-h-screen md:h-screen relative bg-[#0A0A0A] flex flex-col justify-center overflow-hidden border-t border-[#2A2520] py-20 md:py-0">
+    <section id="locations" className="w-full relative bg-[#110F0D]">
       
-      {/* ── CINEMATIC BACKGROUND IMAGES (Crossfade) ── */}
-      {LOCATIONS_DATA.map((loc, idx) => (
-        <div 
-          key={loc.id} 
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === activeIndex ? 'opacity-100 z-0' : 'opacity-0 z-0 pointer-events-none'}`}
-        >
-          <Image src={loc.image} alt={loc.name} fill className="object-cover" />
-          {/* Heavy gradients to ensure perfect text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/40" />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-      ))}
+      {/* ── HEADING OVERLAY ── */}
+      <div className="text-center py-12 md:py-16 absolute top-0 left-0 w-full z-20 pointer-events-none mix-blend-difference text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+        <h2 className="text-[7vw] md:text-[3vw] font-serif tracking-wider uppercase leading-tight">Find Your<br/><span className="text-[#D4A853] italic">KCB Experience.</span></h2>
+      </div>
+      
+      {/* ── INTERACTIVE PANELS ── */}
+      <div className="flex flex-col md:flex-row h-[130vh] md:h-screen w-full">
+        {LOCATIONS_DATA.map((loc, idx) => {
+          const isActiveOnMobile = activeIndex === idx;
 
-      {/* ── FOREGROUND CONTENT ── */}
-      <div className="relative z-10 w-full h-auto md:h-full flex flex-col md:flex-row max-w-[1600px] mx-auto px-[5vw] lg:px-[8vw] items-center">
-        
-        {/* LEFT SIDE: Information */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center h-auto md:h-full pt-10 md:pt-[10vh]">
-          
-          <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
-            <div className="w-8 md:w-12 h-[1px] bg-[#C41E2A]" />
-            <h3 className="text-[#D4A853] tracking-[0.2em] md:tracking-[0.4em] uppercase text-[12px] md:text-xs font-light">Find Your KCB</h3>
-          </div>
-
-          <div key={activeLoc.id} className="animate-in slide-in-from-bottom-4 fade-in duration-700">
-            <h2 className="text-[12vw] md:text-[6vw] font-serif text-[#F5F0EB] leading-none mb-8 md:mb-12 tracking-wide drop-shadow-2xl">
-              {activeLoc.name}
-            </h2>
-            
-            <div className="space-y-6 md:space-y-8 border-l border-[#C41E2A]/30 pl-6 md:pl-8 mb-10 md:mb-16">
-              <div>
-                <span className="block text-[#C4A882] text-[12px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-1 md:mb-2">Address</span>
-                <p className="text-[#F5F0EB] font-light tracking-wider text-[14px] md:text-lg leading-relaxed">{activeLoc.address}</p>
-              </div>
-              <div>
-                <span className="block text-[#C4A882] text-[12px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-1 md:mb-2">Hours</span>
-                <p className="text-[#F5F0EB] font-light tracking-wider text-[14px] md:text-lg leading-relaxed">{activeLoc.hours}</p>
-              </div>
-              <div>
-                <span className="block text-[#C4A882] text-[12px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-1 md:mb-2">Phone</span>
-                <p className="text-[#F5F0EB] font-light tracking-wider text-[14px] md:text-lg leading-relaxed">{activeLoc.phone}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-6 w-full sm:w-auto">
-              <a 
-                href={activeLoc.mapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block border border-[#D4A853]/50 text-[#D4A853] px-8 md:px-10 py-4 text-[12px] md:text-xs tracking-[0.2em] hover:bg-[#D4A853] hover:text-[#0A0A0A] transition-colors rounded-sm uppercase text-center"
-              >
-                Get Directions
-              </a>
-              <button className="inline-block bg-[#C41E2A] text-[#F5F0EB] px-8 md:px-10 py-4 text-[12px] md:text-xs tracking-[0.2em] hover:bg-[#8B1A1A] transition-colors rounded-sm uppercase text-center outline-none">
-                Order Online
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT SIDE: Interactive Selector */}
-        <div className="w-full md:w-1/2 h-auto md:h-full flex flex-col justify-center items-start md:items-end mt-12 md:mt-0 pb-10 md:pb-[10vh]">
-          <div className="text-[#C4A882]/50 text-[12px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase mb-8 md:mb-12 font-light">Select Location</div>
-          
-          <div className="flex flex-col items-start md:items-end gap-6 md:gap-10">
-            {LOCATIONS_DATA.map((loc, idx) => (
-              <button
-                key={loc.id}
-                onClick={() => setActiveIndex(idx)}
-                className="group flex flex-col items-start md:items-end text-left md:text-right outline-none focus:outline-none w-full md:w-auto"
-              >
-                <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto">
-                  <span className={`text-xs md:text-sm tracking-[0.3em] transition-colors duration-500 ${idx === activeIndex ? 'text-[#C41E2A]' : 'text-[#C4A882]/40 group-hover:text-[#C4A882]'}`}>
-                    0{idx + 1}
-                  </span>
+          return (
+            <div 
+              key={loc.id}
+              onClick={() => setActiveIndex(idx)}
+              className={`
+                group relative transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] 
+                border-b md:border-b-0 md:border-r border-[#2A2520] cursor-pointer overflow-hidden
+                ${isActiveOnMobile ? "flex-[2.5]" : "flex-1"} 
+                md:flex-1 md:hover:flex-[2.5]
+              `}
+            >
+              {/* Background Image */}
+              <Image 
+                src={loc.image} 
+                alt={loc.name} 
+                fill 
+                className="object-cover opacity-40 group-hover:opacity-100 transition-opacity duration-700 md:group-hover:scale-105 transform"
+                style={isActiveOnMobile ? { opacity: 1 } : {}}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20 opacity-90 group-hover:opacity-80 transition-opacity duration-700" />
+              
+              {/* Content Box */}
+              <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 flex flex-col items-start right-6 md:right-12">
+                
+                {/* Number & Title */}
+                <span className="text-[#C41E2A] text-xs md:text-sm tracking-[0.3em] font-light mb-2">0{idx + 1}</span>
+                <h3 className="text-2xl md:text-[3vw] font-serif text-[#F5F0EB] tracking-wide group-hover:text-[#D4A853] transition-colors duration-500 whitespace-nowrap">
+                  {loc.name}
+                </h3>
+                
+                {/* Expanding Details Block */}
+                <div 
+                  className={`
+                    w-full overflow-hidden transition-all duration-700 ease-in-out
+                    ${isActiveOnMobile ? "max-h-[300px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"}
+                    md:max-h-0 md:opacity-0 md:group-hover:max-h-[400px] md:group-hover:opacity-100 md:group-hover:mt-6
+                  `}
+                >
                   
-                  <h3 className={`text-[7vw] md:text-[2.5vw] font-serif tracking-widest transition-all duration-500 ${idx === activeIndex ? 'text-[#F5F0EB] scale-110 origin-left md:origin-right drop-shadow-xl' : 'text-[#C4A882]/40 hover:text-[#F5F0EB]'}`}>
-                    {loc.name}
-                  </h3>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+                  <div className="flex flex-col space-y-4 md:space-y-5 border-l border-[#C41E2A]/40 pl-4 md:pl-6">
+                    <div>
+                      <span className="block text-[#C4A882] text-[10px] tracking-[0.2em] uppercase mb-1">Address</span>
+                      <p className="text-[#F5F0EB] font-light text-[13px] md:text-sm">{loc.address}</p>
+                    </div>
+                    <div>
+                      <span className="block text-[#C4A882] text-[10px] tracking-[0.2em] uppercase mb-1">Hours</span>
+                      <p className="text-[#F5F0EB] font-light text-[13px] md:text-sm">{loc.hours}</p>
+                    </div>
+                    <div>
+                      <span className="block text-[#C4A882] text-[10px] tracking-[0.2em] uppercase mb-1">Phone</span>
+                      <p className="text-[#F5F0EB] font-light text-[13px] md:text-sm">{loc.phone}</p>
+                    </div>
+                  </div>
 
+                  <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                    <a 
+                      href={loc.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border border-[#D4A853]/50 text-[#D4A853] px-6 py-3 text-[10px] md:text-xs tracking-[0.2em] hover:bg-[#D4A853] hover:text-[#0A0A0A] transition-colors rounded-sm uppercase text-center"
+                    >
+                      Get Directions
+                    </a>
+                    <button className="bg-[#C41E2A] text-[#F5F0EB] px-6 py-3 text-[10px] md:text-xs tracking-[0.2em] hover:bg-[#8B1A1A] transition-colors rounded-sm uppercase text-center">
+                      Order Online
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

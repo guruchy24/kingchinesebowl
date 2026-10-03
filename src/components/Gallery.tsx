@@ -73,43 +73,7 @@ export default function Gallery({ media }: { media?: any }) {
         </div>
       </section>
 
-      {/* ── 03. THE THREE-BRANCH INTRODUCTION ── */}
-      <section className="w-full relative bg-[#110F0D]">
-        <div className="text-center py-12 md:py-16 absolute top-0 left-0 w-full z-20 pointer-events-none mix-blend-difference text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
-          <h2 className="text-[7vw] md:text-[3vw] font-serif tracking-wider uppercase leading-tight">Three Places.<br/><span className="text-[#D4A853] italic">One Experience.</span></h2>
-        </div>
-        
-        {/* Interactive Flex Panels */}
-        <div className="flex flex-col md:flex-row h-[120vh] md:h-[80vh] w-full">
-          {LOCATIONS.map((loc, idx) => (
-            <div 
-              key={loc.name}
-              className="group relative flex-1 hover:flex-[2.5] transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] border-b md:border-b-0 md:border-r border-[#2A2520] cursor-pointer overflow-hidden"
-            >
-              <Image 
-                src={loc.image} 
-                alt={loc.name} 
-                fill 
-                className="object-cover opacity-40 group-hover:opacity-100 transition-opacity duration-700 group-hover:scale-105 transform"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700" />
-              
-              <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 flex flex-col items-start">
-                <span className="text-[#C41E2A] text-xs md:text-sm tracking-[0.3em] font-light mb-2">0{idx + 1}</span>
-                <h3 className="text-2xl md:text-[2vw] font-serif text-[#F5F0EB] tracking-wide group-hover:text-[#D4A853] transition-colors duration-500">{loc.name}</h3>
-                
-                {/* Reveal on hover on Desktop, permanently visible on Mobile */}
-                <div className="overflow-hidden h-8 md:h-0 md:group-hover:h-8 transition-all duration-700 ease-out mt-2">
-                  <p className="text-[#C4A882] text-[11px] md:text-sm tracking-widest uppercase font-light translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-700 delay-100">
-                    <span className="md:hidden">Click to explore location →</span>
-                    <span className="hidden md:inline">Explore Location →</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* ── 04. EDITORIAL GALLERY (Curated Composition) ── */}
       <section className="py-[10vh] md:py-[15vh] px-[5vw] w-full bg-[#0A0A0A]">
