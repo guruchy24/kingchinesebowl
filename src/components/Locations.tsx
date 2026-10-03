@@ -41,7 +41,7 @@ export default function Locations() {
       
       {/* ── HEADING OVERLAY ── */}
       <div className="text-center py-12 md:py-16 absolute top-0 left-0 w-full z-20 pointer-events-none mix-blend-difference text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
-        <h2 className="text-[7vw] md:text-[3vw] font-serif tracking-wider uppercase leading-tight">Find Your<br/><span className="text-[#D4A853] italic">KCB Experience.</span></h2>
+        <h2 className="text-[7vw] md:text-[3vw] font-serif tracking-wider uppercase leading-tight">Three Places.<br/><span className="text-[#D4A853] italic">One Experience.</span></h2>
       </div>
       
       {/* ── INTERACTIVE PANELS ── */}
