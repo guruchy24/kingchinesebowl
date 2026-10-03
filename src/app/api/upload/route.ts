@@ -25,25 +25,27 @@ export async function POST(request: Request) {
 
     const arrayBuffer = await file.arrayBuffer();
     
-    // Check if Neon Storage environment variables are present
-    const endpoint = process.env.AWS_ENDPOINT_URL_S3;
-    const region = process.env.AWS_REGION;
-    const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+    // We will use Cloudflare R2 via S3 compatibility API
+    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+    const accessKeyId = process.env.R2_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+    const publicUrl = process.env.R2_PUBLIC_URL; // e.g. https://pub-xxxxxxxx.r2.dev
     
-    if (!endpoint || !region || !accessKeyId || !secretAccessKey) {
-      console.error("Missing AWS environment variables for Neon Object Storage!");
+    if (!accountId || !accessKeyId || !secretAccessKey || !publicUrl) {
+      console.error("Missing Cloudflare R2 environment variables! Please add CLOUDFLARE_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_PUBLIC_URL to your .env.local/.dev.vars");
       return NextResponse.json({ error: 'Storage not configured on server' }, { status: 500 });
     }
 
+    const endpoint = `https://${accountId}.r2.cloudflarestorage.com`;
+
     const s3Client = new S3Client({
       endpoint,
-      region,
+      region: 'auto',
       credentials: {
         accessKeyId,
         secretAccessKey,
       },
-      forcePathStyle: true, // Required for Neon Storage
+      forcePathStyle: true,
     });
 
     await s3Client.send(new PutObjectCommand({
@@ -54,8 +56,7 @@ export async function POST(request: Request) {
       CacheControl: 'max-age=31536000', // 1 year cache
     }));
 
-    // Neon public read bucket URLs follow this pattern:
-    const url = `${endpoint}/kcb-media/${r2Key}`;
+    const url = `${publicUrl}/${r2Key}`;
 
     return NextResponse.json({ r2_key: r2Key, url, filename: file.name });
   } catch (error) {
