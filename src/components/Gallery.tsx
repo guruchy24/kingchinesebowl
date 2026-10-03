@@ -78,10 +78,11 @@ export default function Gallery() {
                 <span className="text-[#C41E2A] text-xs md:text-sm tracking-[0.3em] font-light mb-2">0{idx + 1}</span>
                 <h3 className="text-2xl md:text-[2vw] font-serif text-[#F5F0EB] tracking-wide group-hover:text-[#D4A853] transition-colors duration-500">{loc.name}</h3>
                 
-                {/* Reveal on hover */}
-                <div className="overflow-hidden h-0 group-hover:h-8 transition-all duration-700 ease-out mt-2">
-                  <p className="text-[#C4A882] text-xs md:text-sm tracking-widest uppercase font-light translate-y-full group-hover:translate-y-0 transition-transform duration-700 delay-100">
-                    Explore Location →
+                {/* Reveal on hover on Desktop, permanently visible on Mobile */}
+                <div className="overflow-hidden h-8 md:h-0 md:group-hover:h-8 transition-all duration-700 ease-out mt-2">
+                  <p className="text-[#C4A882] text-[11px] md:text-sm tracking-widest uppercase font-light translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-700 delay-100">
+                    <span className="md:hidden">Click to explore location →</span>
+                    <span className="hidden md:inline">Explore Location →</span>
                   </p>
                 </div>
               </div>
