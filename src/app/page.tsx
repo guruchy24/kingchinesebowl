@@ -37,12 +37,17 @@ export default async function HomePage() {
 
   // Organize by section and slot for easy access in components
   // Format: { section: { slot: { desktop: url, mobile: url } } }
-  const mediaObj: Record<string, Record<string, Record<string, string>>> = {};
+  const mediaObj: Record<string, any> = {};
   
   for (const item of mediaConfig) {
-    if (!mediaObj[item.section]) mediaObj[item.section] = {};
-    if (!mediaObj[item.section][item.slot]) mediaObj[item.section][item.slot] = {};
+    if (!mediaObj[item.section]) {
+      mediaObj[item.section] = { _all: [] };
+    }
+    if (!mediaObj[item.section][item.slot]) {
+      mediaObj[item.section][item.slot] = {};
+    }
     mediaObj[item.section][item.slot][item.device] = item.url;
+    mediaObj[item.section]._all.push(item);
   }
 
   return (

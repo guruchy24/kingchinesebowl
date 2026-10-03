@@ -19,14 +19,14 @@ const GRID_IMAGES = [
   "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1200&auto=format&fit=crop"
 ];
 
-export default function Gallery({ media }: { media?: Record<string, Record<string, string>> }) {
+export default function Gallery({ media }: { media?: any }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const mediaSlots = Object.values(media || {});
+  const allMedia = media?._all || [];
   
   // Extract lists of all uploaded desktop and mobile images, ignoring slot names
-  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
-  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
+  const desktopUploads = allMedia.filter((s: any) => s.device === 'desktop').map((s: any) => s.url);
+  const mobileUploads = allMedia.filter((s: any) => s.device === 'mobile').map((s: any) => s.url);
   
   const numUploaded = Math.max(desktopUploads.length, mobileUploads.length);
   
