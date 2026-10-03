@@ -329,6 +329,110 @@ function MediaManagerInner() {
             );
           })}
         </div>
+      ) : filterSection.toLowerCase() === 'kitchen' ? (
+        <div className="space-y-8">
+          {/* Plate Image Section */}
+          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+            <div className="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+              <h3 className="font-bold text-gray-900 uppercase tracking-widest text-sm">Main Plate Image</h3>
+              <button 
+                onClick={() => {
+                  setUploadSection('kitchen');
+                  setUploadSlot('plate');
+                  setIsUploadModalOpen(true);
+                }}
+                className="text-xs bg-[#C41E2A] text-white px-3 py-1 rounded hover:bg-[#a01822] transition-colors"
+              >
+                + Add Plate
+              </button>
+            </div>
+            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50/50">
+              {filteredMedia.filter(m => m.slot === 'plate').map(item => (
+                <div key={item.id} className="relative bg-white border border-gray-200 rounded-lg overflow-hidden group hover:border-[#DF3B4D] transition-colors">
+                  <div className="relative aspect-square bg-white">
+                    <img src={item.url} alt="Plate" className={`w-full h-full object-cover ${!item.is_active ? 'opacity-50 grayscale' : ''}`} />
+                    <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => openEditModal(item)} className="p-2 bg-black/60 hover:bg-[#DF3B4D] text-white rounded-lg backdrop-blur-sm transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                      </button>
+                      <button onClick={() => handleDeleteClick(item.id)} className="p-2 bg-black/60 hover:bg-[#C41E2A] text-white rounded-lg backdrop-blur-sm transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="p-3 border-t border-gray-100 flex justify-between items-center">
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-medium">{item.device}</span>
+                    {!item.is_active && <span className="text-[#C41E2A] text-xs">Inactive</span>}
+                  </div>
+                </div>
+              ))}
+              {filteredMedia.filter(m => m.slot === 'plate').length === 0 && (
+                <div className="col-span-full text-center py-8 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                  No plate images uploaded yet.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Cuisine Categories Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            {[
+              { id: 'chinese', name: 'Chinese' },
+              { id: 'korean', name: 'Korean' },
+              { id: 'japanese', name: 'Japanese' },
+              { id: 'tibetan', name: 'Tibetan' }
+            ].map(cuisine => {
+              const items = filteredMedia.filter(m => m.slot.startsWith(cuisine.id));
+              return (
+                <div key={cuisine.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col h-full shadow-sm">
+                  <div className="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                    <h3 className="font-bold text-gray-900 uppercase tracking-widest text-sm">{cuisine.name}</h3>
+                    <button 
+                      onClick={() => {
+                        setUploadSection('kitchen');
+                        setUploadSlot(`${cuisine.id}_main`);
+                        setIsUploadModalOpen(true);
+                      }}
+                      className="text-xs bg-[#C41E2A] text-white px-3 py-1 rounded hover:bg-[#a01822] transition-colors"
+                    >
+                      + Add
+                    </button>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col gap-4 bg-gray-50/50">
+                    {items.length === 0 ? (
+                      <div className="text-center py-12 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                        No images for {cuisine.name} yet.
+                      </div>
+                    ) : (
+                      items.map(item => (
+                        <div key={item.id} className="relative bg-white border border-gray-200 rounded-lg overflow-hidden group hover:border-[#DF3B4D] transition-colors">
+                          <div className="relative aspect-[4/3] bg-white">
+                            <img src={item.url} alt={item.alt_text || 'Media item'} className={`w-full h-full object-cover ${!item.is_active ? 'opacity-50 grayscale' : ''}`} />
+                            <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={() => openEditModal(item)} className="p-2 bg-black/60 hover:bg-[#DF3B4D] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                              </button>
+                              <button onClick={() => handleDeleteClick(item.id)} className="p-2 bg-black/60 hover:bg-[#C41E2A] text-white rounded-lg backdrop-blur-sm transition-colors">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
+                            <span className="text-[11px] font-mono text-gray-800 bg-gray-100 px-2 py-0.5 rounded w-fit">{item.slot}</span>
+                            <div className="flex justify-between items-center mt-1">
+                              <span className="text-xs text-gray-500 capitalize">{item.device}</span>
+                              {!item.is_active && <span className="text-[#C41E2A] text-xs font-medium">Inactive</span>}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       ) : filteredMedia.length === 0 ? (
         <div className="text-center py-24 bg-white rounded-xl border border-gray-200 border-dashed">
           <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
