@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result[0]);
   } catch (error) {
+    console.error('Failed to create media in DB:', error);
     return NextResponse.json({ error: 'Failed to create media' }, { status: 500 });
   }
 }
