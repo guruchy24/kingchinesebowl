@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pg', 'pg-cloudflare'],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
