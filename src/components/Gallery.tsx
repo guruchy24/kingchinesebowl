@@ -58,18 +58,18 @@ export default function Gallery({ media }: { media?: any }) {
   };
 
   return (
-    <div className="bg-[#0A0A0A] w-full relative">
+    <div className="bg-[#0A0A0A] w-full relative border-t border-[#2A2520]">
       
       {/* ── 01. ASIAN TYPOGRAPHIC MOMENT (CHAPTER V) ── */}
-      <section className="py-[15vh] md:py-[25vh] relative flex justify-center items-center overflow-hidden">
+      <section className="py-[10vh] md:py-[15vh] relative flex justify-center items-center overflow-hidden">
         {/* Massive washed out character behind */}
-        <div className="absolute text-[80vw] md:text-[50vw] font-serif text-[#C41E2A]/5 leading-none select-none pointer-events-none">味</div>
+        <div className="absolute text-[80vw] md:text-[50vw] font-serif text-[#C41E2A]/10 leading-none select-none pointer-events-none">味</div>
         
         <div className="relative z-10 text-center flex flex-col items-center">
-          <div className="w-[1px] h-16 md:h-24 bg-[#D4A853]/30 mb-8" />
+          <div className="w-[1px] h-12 md:h-16 bg-[#D4A853]/30 mb-6" />
           <h3 className="text-xs md:text-[1vw] tracking-[0.6em] text-[#C41E2A] uppercase mb-4">Chapter V</h3>
           <h2 className="text-[12vw] md:text-[5vw] font-serif text-[#F5F0EB] tracking-wide uppercase drop-shadow-2xl">Flavour</h2>
-          <div className="w-[1px] h-16 md:h-24 bg-[#D4A853]/30 mt-8" />
+          <div className="w-[1px] h-12 md:h-16 bg-[#D4A853]/30 mt-6" />
         </div>
       </section>
 
