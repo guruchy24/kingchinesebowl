@@ -142,13 +142,11 @@ export default function Section02({ media }: { media?: Record<string, Record<str
         // Asian brush stroke sweeps across
         tl.fromTo(brushStrokeRef.current, { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.5, duration: 10, ease: "power3.inOut" }, 45);
 
-        // 50-85: THE PARALLAX CUISINE TRACKER
-        // SURGICAL FIX: Reduced horizontal travel distance so it moves much slower
-        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "20vw" }, { opacity: 1, x: "-40vw", duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -20, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 10, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -10, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 20, duration: 35, ease: "none" }, 50);
+        // 50-55: Fade in the tracker
+        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "10vw" }, { opacity: 1, x: "5vw", duration: 5, ease: "power2.out" }, 50);
+
+        // Remove the continuous individual parallax so it doesn't fight the stepped animation
+        // We will move the main container synchronously with the images instead
 
         // Cinematic Focus: Crossfades and Scale mapped precisely to cuisines
         tl.to(cuisineChinese.current, { color: "#C41E2A", opacity: 1, scale: 1.05, duration: 3 }, 55); 
@@ -158,18 +156,21 @@ export default function Section02({ media }: { media?: Record<string, Record<str
         tl.to(cuisineChinese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 60);
         tl.to(cuisineKorean.current, { color: "#8B1A1A", opacity: 1, scale: 1.05, duration: 3 }, 60);
         tl.to(orbRedRef.current, { backgroundColor: "#8B1A1A", duration: 3 }, 60);
+        tl.to(cuisinesContainerRef.current, { x: "-20vw", duration: 3, ease: "power2.inOut" }, 60); // Align KOREAN
 
         tl.to(img2Ref.current, { opacity: 0, duration: 3 }, 70);
         tl.to(img3Ref.current, { opacity: 1, duration: 3 }, 70);
         tl.to(cuisineKorean.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 70);
         tl.to(cuisineJapanese.current, { color: "#F5F0EB", opacity: 1, scale: 1.05, duration: 3 }, 70);
         tl.to(orbRedRef.current, { backgroundColor: "#F5F0EB", duration: 3 }, 70);
+        tl.to(cuisinesContainerRef.current, { x: "-50vw", duration: 3, ease: "power2.inOut" }, 70); // Align JAPANESE
 
         tl.to(img3Ref.current, { opacity: 0, duration: 3 }, 80);
         tl.to(img4Ref.current, { opacity: 1, duration: 3 }, 80);
         tl.to(cuisineJapanese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 80);
         tl.to(cuisineTibetan.current, { color: "#D4A853", opacity: 1, scale: 1.05, duration: 3 }, 80);
         tl.to(orbRedRef.current, { backgroundColor: "#D4A853", duration: 3 }, 80);
+        tl.to(cuisinesContainerRef.current, { x: "-80vw", duration: 3, ease: "power2.inOut" }, 80); // Align TIBETAN
 
         tl.fromTo(bodyCopyRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 5, ease: "power2.out" }, 65);
 
