@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pg', 'pg-cloudflare'],
   images: {
-    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './src/lib/cloudflare-image-loader.ts',
     remotePatterns: [
       {
         protocol: "https",

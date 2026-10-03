@@ -101,10 +101,10 @@ export default function Gallery({ media }: { media?: any }) {
                 onClick={() => setSelectedImage(src.desktop)} // Use desktop for fullscreen modal
               >
                 <div className="hidden md:block absolute inset-0">
-                  <Image src={src.desktop} fill className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
+                  <Image src={src.desktop} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
                 </div>
                 <div className="block md:hidden absolute inset-0">
-                  <Image src={src.mobile} fill className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
+                  <Image src={src.mobile} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
                 </div>
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
               </div>

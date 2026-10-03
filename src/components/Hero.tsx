@@ -105,9 +105,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen w-full flex flex-col items-center justify-center bg-kcb-base z-50"
-    >
-      {/* Background Media */}
+      className="relative min-h-screen w-full flex flex-col items-center justify-center bg-kcb-base z-50">
       <div className="absolute inset-0 z-0 overflow-hidden bg-black">
         {isVideo(desktopHero) ? (
           <>
@@ -116,10 +114,14 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
           </>
         ) : (
           <picture>
-            <source media="(max-width: 767px)" srcSet={getImageProps({ src: mobileHero, alt: "Hero Mobile", fill: true, priority: true, sizes: "100vw" }).props.srcSet} />
-            <source media="(min-width: 768px)" srcSet={getImageProps({ src: desktopHero, alt: "Hero Desktop", fill: true, priority: true, sizes: "100vw" }).props.srcSet} />
+            <source media="(max-width: 767px)" srcSet={mobileHero.includes('unsplash.com') ? `${mobileHero}&w=800` : mobileHero} />
+            <source media="(min-width: 768px)" srcSet={desktopHero.includes('unsplash.com') ? `${desktopHero}&w=1920` : desktopHero} />
             <img 
-              {...getImageProps({ src: desktopHero, alt: "Hero Background", fill: true, priority: true, sizes: "100vw" }).props} 
+              src={desktopHero.includes('unsplash.com') ? `${desktopHero}&w=1920` : desktopHero}
+              alt="Hero Background"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover opacity-85" 
             />
           </picture>

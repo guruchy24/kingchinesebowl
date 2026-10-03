@@ -212,8 +212,8 @@ export default function Section03({ media }: { media?: any }) {
         <div ref={handoffSceneRef} className="absolute inset-0 flex flex-col md:flex-row items-center justify-center md:justify-end px-[5vw] md:px-[8vw] opacity-0 bg-[#0A0A0A] overflow-hidden z-30">
           <div className="absolute left-[-50vw] md:left-[-15vw] top-1/4 md:top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[70vw] md:h-[70vw] rounded-full overflow-hidden shadow-[0_0_150px_rgba(196,30,42,0.15)] pointer-events-none">
             <div ref={plateRef} className="w-full h-full relative origin-center">
-              <div className="hidden md:block absolute inset-0"><Image src={plateDesktop} alt="Premium plated dish" fill className="object-cover" /></div>
-              <div className="block md:hidden absolute inset-0"><Image src={plateMobile} alt="Premium plated dish" fill className="object-cover" /></div>
+              <div className="hidden md:block absolute inset-0"><Image src={plateDesktop} alt="Premium plated dish" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" /></div>
+              <div className="block md:hidden absolute inset-0"><Image src={plateMobile} alt="Premium plated dish" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" /></div>
               <div className="absolute inset-0 rounded-full shadow-[inset_0_0_120px_rgba(10,10,10,1)] pointer-events-none" />
             </div>
           </div>
@@ -277,26 +277,26 @@ export default function Section03({ media }: { media?: any }) {
                 
                 {/* Main Image */}
                 <div className={`art-main-img absolute top-[10%] ${isEven ? 'right-0' : 'left-0'} w-[75vw] md:w-[35vw] h-[45vh] md:h-[50vh] rounded-sm overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-10`}>
-                  <Image src={cat.images.main.desktop} fill className="object-cover" alt="Main Art" />
+                  <Image src={cat.images.main.desktop} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Main Art" />
                   <div className="absolute inset-0 border border-white/10 pointer-events-none mix-blend-overlay" />
                   <div className={`absolute inset-0 bg-gradient-to-t from-black/80 to-transparent mix-blend-multiply`} />
                 </div>
 
                 {/* Sub Image 1: Floating high */}
                 <div className={`art-sub1 absolute -top-[5%] ${isEven ? 'left-[10%]' : 'right-[10%]'} w-[35vw] md:w-[18vw] h-[45vw] md:h-[25vw] rounded-sm overflow-hidden shadow-2xl z-20`}>
-                  <Image src={cat.images.sub1.desktop} fill className="object-cover opacity-90 hover:opacity-100 transition-opacity duration-700" alt="Detail 1" />
+                  <Image src={cat.images.sub1.desktop} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-90 hover:opacity-100 transition-opacity duration-700" alt="Detail 1" />
                   <div className="absolute inset-0 border-4 mix-blend-overlay" style={{ borderColor: cat.theme.accent }} />
                 </div>
 
                 {/* Sub Image 2: Deep overlap */}
                 <div className={`art-sub2 absolute bottom-[15%] ${isEven ? 'left-[20%]' : 'right-[20%]'} w-[45vw] md:w-[22vw] h-[60vw] md:h-[30vw] rounded-sm overflow-hidden shadow-2xl z-30`}>
-                  <Image src={cat.images.sub2.desktop} fill className="object-cover" alt="Detail 2" />
+                  <Image src={cat.images.sub2.desktop} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Detail 2" />
                   <div className="absolute inset-0 ring-1 ring-white/20 ring-inset pointer-events-none" />
                 </div>
 
                 {/* Sub Image 3: Small floating circle */}
                 <div className={`art-sub3 absolute -bottom-[5%] ${isEven ? 'right-[15%]' : 'left-[15%]'} w-[30vw] md:w-[12vw] aspect-square rounded-full overflow-hidden shadow-2xl border-2 z-40 hidden md:block`} style={{ borderColor: cat.theme.accent }}>
-                  <Image src={cat.images.sub3.desktop} fill className="object-cover" alt="Detail 3" />
+                  <Image src={cat.images.sub3.desktop} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Detail 3" />
                 </div>
 
               </div>

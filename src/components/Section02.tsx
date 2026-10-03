@@ -213,23 +213,23 @@ export default function Section02({ media }: { media?: Record<string, Record<str
           <div ref={cameraRef} className="relative w-full h-full scale-[0.86]">
             {/* Dynamic images from Admin panel */}
             <div ref={img1Ref} className="absolute inset-0">
-              <Image src={media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="hidden md:block object-cover" priority sizes="100vw" />
-              <Image src={media?.slide_1?.mobile || media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="block md:hidden object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="hidden md:block object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src={media?.slide_1?.mobile || media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="block md:hidden object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             
             <div ref={img2Ref} className="absolute inset-0 opacity-0">
-              <Image src={media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="hidden md:block object-cover" priority sizes="100vw" />
-              <Image src={media?.slide_2?.mobile || media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="block md:hidden object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="hidden md:block object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src={media?.slide_2?.mobile || media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="block md:hidden object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             
             <div ref={img3Ref} className="absolute inset-0 opacity-0">
-              <Image src={media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="hidden md:block object-cover" priority sizes="100vw" />
-              <Image src={media?.slide_3?.mobile || media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="block md:hidden object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="hidden md:block object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src={media?.slide_3?.mobile || media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="block md:hidden object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             
             <div ref={img4Ref} className="absolute inset-0 opacity-0">
-              <Image src={media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="hidden md:block object-cover" priority sizes="100vw" />
-              <Image src={media?.slide_4?.mobile || media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="block md:hidden object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="hidden md:block object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src={media?.slide_4?.mobile || media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="block md:hidden object-cover" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div ref={imageOverlayRef} className="absolute inset-0 bg-transparent" />
           </div>

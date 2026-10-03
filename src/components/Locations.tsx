@@ -65,6 +65,7 @@ export default function Locations() {
                 src={loc.image} 
                 alt={loc.name} 
                 fill 
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover opacity-40 group-hover:opacity-100 transition-opacity duration-700 md:group-hover:scale-105 transform"
                 style={isActiveOnMobile ? { opacity: 1 } : {}}
               />

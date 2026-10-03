@@ -213,7 +213,7 @@ export default function Story({ media }: { media?: any }) {
                 <Image
                   src={src.desktop}
                   alt={`Story visual ${i + 1}`}
-                  fill
+                  fill sizes="(max-width: 768px) 50vw, 30vw"
                   className="object-cover"
                   priority={i === 0}
                 />
@@ -222,7 +222,7 @@ export default function Story({ media }: { media?: any }) {
                 <Image
                   src={src.mobile}
                   alt={`Story visual ${i + 1}`}
-                  fill
+                  fill sizes="(max-width: 768px) 50vw, 30vw"
                   className="object-cover"
                   priority={i === 0}
                 />
