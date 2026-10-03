@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -27,7 +26,7 @@ export async function GET(request: Request) {
       cf: {
         image: imageOptions
       }
-    });
+    } as any);
 
     if (!response.ok) {
       return new Response(`Failed to fetch image: ${response.statusText}`, { status: response.status });
