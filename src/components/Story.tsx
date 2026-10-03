@@ -38,15 +38,28 @@ const storyImages = [
 
 const IMAGE_DURATION = 6; // Image changes every 6 seconds
 
-export default function Story() {
+export default function Story({ media }: { media?: Record<string, Record<string, string>> }) {
   const [tick, setTick] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   
   const progressRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
+  // Extract all user-uploaded slots dynamically
+  const uploadedImages = Object.values(media || {}).map((item) => ({
+    desktop: item.desktop || item.mobile || storyImages[0],
+    mobile: item.mobile || item.desktop || storyImages[0],
+  }));
+
+  // Combine uploaded images with default fallback images to ensure the slideshow has enough content
+  const dynamicStoryImages = [
+    ...uploadedImages,
+    // Add remaining default images to fill out the 6 slots if they uploaded fewer than 6
+    ...storyImages.slice(uploadedImages.length).map(url => ({ desktop: url, mobile: url }))
+  ];
+
   // Derive indices from the master tick to guarantee perfect sync
-  const currentImgIdx = tick % storyImages.length;
+  const currentImgIdx = tick % dynamicStoryImages.length;
   const currentTextIdx = Math.floor(tick / 2) % storyData.length;
 
   // Master Clock
@@ -185,20 +198,31 @@ export default function Story() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60 z-30 pointer-events-none md:hidden" />
 
         <div className="w-full h-full relative">
-          {storyImages.map((src, i) => (
+          {dynamicStoryImages.map((src, i) => (
             <div
-              key={src}
+              key={src.desktop} // Use desktop url as key since it's unique enough
               className={`absolute inset-0 transition-all duration-[4000ms] ease-in-out ${
                 i === currentImgIdx ? "opacity-100 scale-100 z-10" : "opacity-0 scale-105 z-0"
               }`}
             >
-              <Image
-                src={src}
-                alt={`Story visual ${i + 1}`}
-                fill
-                className="object-cover"
-                priority={i === 0}
-              />
+              <div className="hidden md:block absolute inset-0">
+                <Image
+                  src={src.desktop}
+                  alt={`Story visual ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              </div>
+              <div className="block md:hidden absolute inset-0">
+                <Image
+                  src={src.mobile}
+                  alt={`Story visual ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              </div>
               <div className="absolute inset-0 bg-[#050403]/30 mix-blend-multiply pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 pointer-events-none" />
             </div>
@@ -211,7 +235,7 @@ export default function Story() {
             <div ref={progressRef} className="absolute inset-y-0 left-0 bg-[#D4A853] origin-left" />
           </div>
           <div className="text-[#C4A882] font-serif text-sm md:text-[1vw] tracking-widest drop-shadow-md">
-            0{currentImgIdx + 1} <span className="opacity-50 md:opacity-30">/ 0{storyImages.length}</span>
+            0{currentImgIdx + 1} <span className="opacity-50 md:opacity-30">/ 0{dynamicStoryImages.length}</span>
           </div>
         </div>
 

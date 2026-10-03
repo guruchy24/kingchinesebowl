@@ -19,13 +19,26 @@ const GRID_IMAGES = [
   "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1200&auto=format&fit=crop"
 ];
 
-export default function Gallery() {
+export default function Gallery({ media }: { media?: Record<string, Record<string, string>> }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  // Extract all user-uploaded slots dynamically
+  const uploadedImages = Object.values(media || {}).map((item) => ({
+    desktop: item.desktop || item.mobile || GRID_IMAGES[0],
+    mobile: item.mobile || item.desktop || GRID_IMAGES[0],
+  }));
+
+  // Combine uploaded images with default fallback images to ensure the grid has enough content
+  const dynamicGridImages = [
+    ...uploadedImages,
+    // Add remaining default images to fill out the 7 slots if they uploaded fewer than 7
+    ...GRID_IMAGES.slice(uploadedImages.length).map(url => ({ desktop: url, mobile: url }))
+  ];
+
   // Full-Screen Viewer Logic
-  const currentIndex = GRID_IMAGES.indexOf(selectedImage || "");
+  const currentIndex = dynamicGridImages.findIndex(img => img.desktop === selectedImage || img.mobile === selectedImage);
   const hasPrev = currentIndex > 0;
-  const hasNext = currentIndex < GRID_IMAGES.length - 1;
+  const hasNext = currentIndex < dynamicGridImages.length - 1;
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -101,7 +114,7 @@ export default function Gallery() {
         {/* Editorial CSS Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 auto-rows-[150px] md:auto-rows-[250px]">
           
-          {GRID_IMAGES.map((src, idx) => {
+          {dynamicGridImages.map((src, idx) => {
             // Determine span based on index to create an editorial layout
             let colSpan = "col-span-1 md:col-span-1";
             let rowSpan = "row-span-1 md:row-span-1";
@@ -114,9 +127,14 @@ export default function Gallery() {
               <div 
                 key={idx}
                 className={`${colSpan} ${rowSpan} relative group overflow-hidden rounded-sm cursor-pointer`}
-                onClick={() => setSelectedImage(src)}
+                onClick={() => setSelectedImage(src.desktop)} // Use desktop for fullscreen modal
               >
-                <Image src={src} fill className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
+                <div className="hidden md:block absolute inset-0">
+                  <Image src={src.desktop} fill className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
+                </div>
+                <div className="block md:hidden absolute inset-0">
+                  <Image src={src.mobile} fill className="object-cover transition-transform duration-700 group-hover:scale-105" alt="Gallery Detail" />
+                </div>
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
               </div>
             );
@@ -162,7 +180,7 @@ export default function Gallery() {
             </button>
             
             <div className="text-[#F5F0EB] font-serif tracking-[0.2em]">
-              {String(currentIndex + 1).padStart(2, '0')} / {String(GRID_IMAGES.length).padStart(2, '0')}
+              {String(currentIndex + 1).padStart(2, '0')} / {String(dynamicGridImages.length).padStart(2, '0')}
             </div>
             
             <button 

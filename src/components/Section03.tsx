@@ -14,9 +14,27 @@ const CATEGORIES = [
   { name: "TIBETAN", subtitle: "Himalayan Soul Food", image: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1600&auto=format&fit=crop" }
 ];
 
-export default function Section03() {
+export default function Section03({ media }: { media?: Record<string, Record<string, string>> }) {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
+
+  // Extract all user-uploaded slots dynamically
+  const uploadedImages = Object.values(media || {}).map((item) => ({
+    desktop: item.desktop || item.mobile || CATEGORIES[0].image,
+    mobile: item.mobile || item.desktop || CATEGORIES[0].image,
+  }));
+
+  // Combine uploaded images with default fallback images
+  const fallbackImages = [
+    ...uploadedImages,
+    ...CATEGORIES.slice(uploadedImages.length).map(cat => ({ desktop: cat.image, mobile: cat.image }))
+  ];
+
+  const dynamicCategories = CATEGORIES.map((cat, i) => ({
+    ...cat,
+    desktop: fallbackImages[i]?.desktop || cat.image,
+    mobile: fallbackImages[i]?.mobile || cat.image
+  }));
 
   // Scene 1 & 2 refs
   const textRef = useRef<HTMLDivElement>(null);
@@ -150,9 +168,14 @@ export default function Section03() {
         className="absolute top-0 left-[100vw] flex h-screen shadow-[-30px_0_60px_rgba(0,0,0,0.9)] bg-[#0A0A0A]"
         style={{ width: `${CATEGORIES.length * 100}vw`, zIndex: 60 }}
       >
-        {CATEGORIES.map((cat, idx) => (
+        {dynamicCategories.map((cat, idx) => (
           <div key={cat.name} className="flex h-screen items-center justify-center shrink-0 w-screen relative bg-[#0A0A0A]">
-            <Image src={cat.image} alt={cat.name} fill className="object-cover opacity-50" sizes="100vw" quality={90} priority={idx === 0} />
+            <div className="hidden md:block absolute inset-0">
+              <Image src={cat.desktop} alt={cat.name} fill className="object-cover opacity-50" sizes="100vw" quality={90} priority={idx === 0} />
+            </div>
+            <div className="block md:hidden absolute inset-0">
+              <Image src={cat.mobile} alt={cat.name} fill className="object-cover opacity-50" sizes="100vw" quality={90} priority={idx === 0} />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/80 via-transparent to-[#0A0A0A]/80" />
             <div className="relative z-10 flex flex-col items-center text-center px-4">
