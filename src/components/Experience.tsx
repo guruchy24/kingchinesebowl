@@ -19,7 +19,7 @@ export default function Experience() {
           pin: true,
           scrub: 1,
           start: "top top",
-          end: "+=150%",
+          end: window.innerWidth < 768 ? "+=80%" : "+=150%", // Faster completion on mobile
         },
       });
 

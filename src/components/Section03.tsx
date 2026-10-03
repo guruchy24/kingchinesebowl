@@ -43,7 +43,7 @@ export default function Section03() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=300%", // Reduced from 500% so it requires much less scrolling
+          end: window.innerWidth < 768 ? "+=120%" : "+=300%", // Drastically faster on mobile
           scrub: true,
           pin: true,
           anticipatePin: 1,

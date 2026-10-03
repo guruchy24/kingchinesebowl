@@ -77,7 +77,7 @@ export default function Section02() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: "+=180%",
+            end: isMobile ? "+=80%" : "+=180%", // Drastically shorten the physical scroll distance on mobile
             scrub: 1,
             pin: true,
             anticipatePin: 1,
