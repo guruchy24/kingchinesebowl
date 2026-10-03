@@ -1,0 +1,23 @@
+--- src/app/api/image/route.ts
++++ src/app/api/image/route.ts
+@@ -29,10 +29,20 @@
+     }
+   }
+ 
++  // Manual content negotiation
++  const accept = request.headers.get('accept') || '';
++  let format = 'auto';
++  if (accept.includes('image/avif')) {
++    format = 'avif';
++  } else if (accept.includes('image/webp')) {
++    format = 'webp';
++  }
++
+   try {
+     const imageOptions = {
+       width: w ? parseInt(w, 10) : undefined,
+       quality: q ? parseInt(q, 10) : 75,
+-      format: 'auto',
++      format: format,
+       fit: 'crop'
+     };

@@ -109,8 +109,29 @@ export default function Section03({ media }: { media?: any }) {
   const plateRef = useRef<HTMLDivElement>(null);
   const rightTextRef = useRef<HTMLDivElement>(null);
 
+  // Intersection Observer to defer heavy GSAP init
+  const [isIntersecting, setIsIntersecting] = React.useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "1000px 0px" } // trigger when within 1000px of viewport
+    );
+    if (introRef.current) {
+      observer.observe(introRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
   // Parallax setup for the artistic sections
   useEffect(() => {
+    if (!isIntersecting) return;
+
     requestAnimationFrame(() => ScrollTrigger.refresh());
 
     const spinner = gsap.to(plateRef.current, { rotation: 360, duration: 120, repeat: -1, ease: "none" });
@@ -192,7 +213,7 @@ export default function Section03({ media }: { media?: any }) {
       <section ref={introRef} className="relative h-screen w-full overflow-hidden bg-[#0A0A0A]" style={{ zIndex: 10 }}>
         
         <div ref={videoRef} className="absolute inset-0 opacity-0 bg-[#0A0A0A] overflow-hidden pointer-events-none">
-          <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-80 pointer-events-none">
+          <video preload="none" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-80 pointer-events-none">
             <source src="/videos/kitchenfire.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-black/90 pointer-events-none" />

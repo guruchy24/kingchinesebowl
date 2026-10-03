@@ -7,7 +7,7 @@ import customLoader from "@/lib/cloudflare-image-loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Experience({ media }: { media?: Record<string, Record<string, string>> }) {
+export default function Experience({ media }: { media?: any }) {
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLSpanElement>(null);

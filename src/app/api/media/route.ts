@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminSession } from '@/lib/auth';
 import { getDb } from '@/db';
+import { revalidateTag } from "next/cache";
 import { siteMedia } from '@/db/schema';
 import { eq, and, asc } from 'drizzle-orm';
 
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
     // Close the client connection
     await client.end();
 
-    return NextResponse.json(result[0]);
+    revalidateTag("media"); return NextResponse.json(result[0]);
   } catch (error) {
     console.error('Failed to create media in DB:', error);
     return NextResponse.json({ error: 'Failed to create media' }, { status: 500 });

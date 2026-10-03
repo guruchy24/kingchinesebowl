@@ -13,15 +13,18 @@
 	},
 	"services": [
 		{
-			// Self-reference service binding, the service name must match the worker name
-			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "kingchinesebowl"
 		}
 	],
-	"hyperdrive": [ { "binding": "DB", "id": "96fa71f375ca4415b3ba77bb73c0d0e3" } ], "images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
+	"hyperdrive": [ { "binding": "DB", "id": "96fa71f375ca4415b3ba77bb73c0d0e3" } ],
+	"images": {
 		"binding": "IMAGES"
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "NEXT_CACHE_WORKERS_KV",
+			"id": "3d208b48acad4eb1a6bca84beba6115a"
+		}
+	]
 }
