@@ -11,10 +11,14 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Extract all media slots to act as slides
+  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
   const defaultHero = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2800&auto=format&fit=crop";
-  const slides = media && Object.keys(media).length > 0
-    ? Object.values(media)
+  const mediaSlots = Object.values(media || {});
+  const slides = mediaSlots.length > 0
+    ? mediaSlots.map(item => ({
+        desktop: item.desktop || defaultHero,
+        mobile: item.mobile || item.desktop || defaultHero,
+      }))
     : [{ desktop: defaultHero, mobile: defaultHero }];
 
   // Auto-slide every 6 seconds if there are multiple slides

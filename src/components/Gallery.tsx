@@ -22,17 +22,20 @@ const GRID_IMAGES = [
 export default function Gallery({ media }: { media?: Record<string, Record<string, string>> }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Extract all user-uploaded slots dynamically
-  const uploadedImages = Object.values(media || {}).map((item) => ({
-    desktop: item.desktop || item.mobile || GRID_IMAGES[0],
-    mobile: item.mobile || item.desktop || GRID_IMAGES[0],
+  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
+  const uploadedImages = Object.values(media || {}).filter(item => item.desktop).map((item) => ({
+    desktop: item.desktop,
+    mobile: item.mobile || item.desktop,
+  }));
+  const mobileOnlyImages = Object.values(media || {}).filter(item => item.mobile && !item.desktop).map((item) => ({
+    desktop: GRID_IMAGES[0],
+    mobile: item.mobile,
   }));
 
-  // Combine uploaded images with default fallback images to ensure the grid has enough content
+  const allUploaded = [...uploadedImages, ...mobileOnlyImages];
   const dynamicGridImages = [
-    ...uploadedImages,
-    // Add remaining default images to fill out the 7 slots if they uploaded fewer than 7
-    ...GRID_IMAGES.slice(uploadedImages.length).map(url => ({ desktop: url, mobile: url }))
+    ...allUploaded,
+    ...GRID_IMAGES.slice(allUploaded.length).map(url => ({ desktop: url, mobile: url }))
   ];
 
   // Full-Screen Viewer Logic

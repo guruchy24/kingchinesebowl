@@ -46,16 +46,25 @@ export default function Story({ media }: { media?: Record<string, Record<string,
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   // Extract all user-uploaded slots dynamically
-  const uploadedImages = Object.values(media || {}).map((item) => ({
-    desktop: item.desktop || item.mobile || storyImages[0],
-    mobile: item.mobile || item.desktop || storyImages[0],
+  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
+  const uploadedImages = Object.values(media || {}).filter(item => item.desktop).map((item) => ({
+    desktop: item.desktop,
+    mobile: item.mobile || item.desktop,
+  }));
+  // Also grab mobile-only uploads (no desktop counterpart) - these only appear on mobile
+  const mobileOnlyImages = Object.values(media || {}).filter(item => item.mobile && !item.desktop).map((item) => ({
+    desktop: null as string | null,
+    mobile: item.mobile,
   }));
 
-  // Combine uploaded images with default fallback images to ensure the slideshow has enough content
-  const dynamicStoryImages = [
+  // Combine: desktop uploads (show everywhere) + mobile-only (mobile only) + defaults for remaining
+  const allUploaded = [
     ...uploadedImages,
-    // Add remaining default images to fill out the 6 slots if they uploaded fewer than 6
-    ...storyImages.slice(uploadedImages.length).map(url => ({ desktop: url, mobile: url }))
+    ...mobileOnlyImages.map(img => ({ desktop: storyImages[0], mobile: img.mobile })),
+  ];
+  const dynamicStoryImages = [
+    ...allUploaded,
+    ...storyImages.slice(allUploaded.length).map(url => ({ desktop: url, mobile: url }))
   ];
 
   // Derive indices from the master tick to guarantee perfect sync
