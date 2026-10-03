@@ -130,25 +130,25 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
               {/* Desktop Media */}
               <div className="hidden md:block absolute inset-0">
                 {isVideo(desktop) ? (
-                  <video src={desktop} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
+                  <video src={desktop} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-85" />
                 ) : (
-                  <Image src={desktop} alt="Hero Background" fill priority={isActive} className="object-cover opacity-60" />
+                  <Image src={desktop} alt="Hero Background" fill priority={isActive} className="object-cover opacity-85" />
                 )}
               </div>
               {/* Mobile Media */}
               <div className="block md:hidden absolute inset-0">
                 {isVideo(mobile) ? (
-                  <video src={mobile} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
+                  <video src={mobile} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-85" />
                 ) : (
-                  <Image src={mobile} alt="Hero Background" fill priority={isActive} className="object-cover opacity-60" />
+                  <Image src={mobile} alt="Hero Background" fill priority={isActive} className="object-cover opacity-85" />
                 )}
               </div>
             </div>
           );
         })}
         
-        {/* Deep, heavy gradient to ensure buttons pop clearly and background blends into dark */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#110F0D] via-[#110F0D]/50 to-[#110F0D]/70 z-20 pointer-events-none" />
+        {/* Lighter gradient to ensure image pops while blending into dark next section */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-[#0A0A0A]/10 z-20 pointer-events-none" />
       </div>
 
       {/* Main Content */}
@@ -211,7 +211,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
       </div>
 
       {/* Bottom Scroll Indicator - Classic Round Paper Lantern */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pb-4 hero-fade pointer-events-auto">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pb-0 hero-fade pointer-events-auto">
         <span className="scroll-text text-[0.55rem] tracking-[0.4em] text-kcb-gold mb-3 uppercase drop-shadow-md">
           Scroll
         </span>
