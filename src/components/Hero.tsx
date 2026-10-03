@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -14,28 +14,9 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
   const defaultHero = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2800&auto=format&fit=crop";
   const mediaSlots = Object.values(media || {});
   
-  // Extract lists of all uploaded desktop and mobile images, completely ignoring slot names
-  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
-  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
-  
-  const numSlides = Math.max(desktopUploads.length, mobileUploads.length, 1);
-  
-  const slides = [];
-  for (let i = 0; i < numSlides; i++) {
-    slides.push({
-      desktop: desktopUploads[i] || desktopUploads[0] || defaultHero,
-      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || defaultHero,
-    });
-  }
-
-  // Auto-slide every 6 seconds if there are multiple slides
-  useEffect(() => {
-    if (slides.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+  // Grab the very first desktop and mobile uploads available.
+  const desktopHero = mediaSlots.find(s => s.desktop)?.desktop || defaultHero;
+  const mobileHero = mediaSlots.find(s => s.mobile)?.mobile || desktopHero;
 
   const isVideo = (url?: string) => {
     if (!url) return false;
@@ -126,37 +107,23 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
       ref={containerRef}
       className="relative min-h-screen w-full flex flex-col items-center justify-center bg-kcb-base z-50"
     >
-      {/* Background Slideshow */}
+      {/* Background Media */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-black">
-        {slides.map((slide, index) => {
-          const isActive = index === currentSlide;
-          const desktop = slide.desktop || defaultHero;
-          const mobile = slide.mobile || desktop;
-          
-          return (
-            <div 
-              key={index} 
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-            >
-              {/* Desktop Media */}
-              <div className="hidden md:block absolute inset-0">
-                {isVideo(desktop) ? (
-                  <video src={desktop} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-85" />
-                ) : (
-                  <Image src={desktop} alt="Hero Background" fill priority={isActive} className="object-cover opacity-85" />
-                )}
-              </div>
-              {/* Mobile Media */}
-              <div className="block md:hidden absolute inset-0">
-                {isVideo(mobile) ? (
-                  <video src={mobile} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-85" />
-                ) : (
-                  <Image src={mobile} alt="Hero Background" fill priority={isActive} className="object-cover opacity-85" />
-                )}
-              </div>
-            </div>
-          );
-        })}
+        {isVideo(desktopHero) ? (
+          <>
+            <video src={desktopHero} autoPlay loop muted playsInline className="hidden md:block w-full h-full object-cover opacity-85" />
+            <video src={mobileHero} autoPlay loop muted playsInline className="block md:hidden w-full h-full object-cover opacity-85" />
+          </>
+        ) : (
+          <picture>
+            <source media="(max-width: 767px)" srcSet={getImageProps({ src: mobileHero, alt: "Hero Mobile", fill: true, priority: true, sizes: "100vw" }).props.srcSet} />
+            <source media="(min-width: 768px)" srcSet={getImageProps({ src: desktopHero, alt: "Hero Desktop", fill: true, priority: true, sizes: "100vw" }).props.srcSet} />
+            <img 
+              {...getImageProps({ src: desktopHero, alt: "Hero Background", fill: true, priority: true, sizes: "100vw" }).props} 
+              className="absolute inset-0 w-full h-full object-cover opacity-85" 
+            />
+          </picture>
+        )}
         
         {/* Lighter gradient to ensure image pops while blending into dark next section */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-[#0A0A0A]/10 z-20 pointer-events-none" />

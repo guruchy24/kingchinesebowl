@@ -32,3 +32,17 @@ export const reservations = pgTable('reservations', {
   status: varchar('status', { length: 50 }).default('pending').notNull(), // pending, confirmed, cancelled
   created_at: timestamp('created_at').defaultNow().notNull(),
 });
+
+export const siteMedia = pgTable('site_media', {
+  id: serial('id').primaryKey(),
+  section: varchar('section', { length: 50 }).notNull(),  // 'hero', 'story', 'philosophy', 'kitchen', 'gallery', 'experience', 'locations'
+  slot: varchar('slot', { length: 50 }).notNull(),         // 'main', 'slide_1', etc.
+  device: varchar('device', { length: 10 }).notNull(),     // 'desktop', 'mobile'
+  r2_key: varchar('r2_key', { length: 500 }).notNull(),
+  url: varchar('url', { length: 1000 }).notNull(),
+  alt_text: varchar('alt_text', { length: 255 }),
+  sort_order: integer('sort_order').default(0),
+  is_active: boolean('is_active').default(true).notNull(),
+  created_at: timestamp('created_at').defaultNow().notNull(),
+  updated_at: timestamp('updated_at').defaultNow().notNull(),
+});

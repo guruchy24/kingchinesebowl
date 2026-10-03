@@ -1,3 +1,8 @@
+import { getDb } from "@/db";
+import { siteMedia } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Section02 from "@/components/Section02";
@@ -7,17 +12,48 @@ import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
 import Story from "@/components/Story";
 
-export default function HomePage() {
+// Force static rendering where possible, revalidating in the background every 60s
+export const revalidate = 60;
+
+const getCachedMediaConfig = unstable_cache(
+  async () => {
+    try {
+      const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+      return await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
+    } catch (error) {
+      console.error("Failed to load media config:", error);
+      return [];
+    }
+  },
+  ['site-media-config'],
+  { revalidate: 60, tags: ['media'] }
+);
+
+export default async function HomePage() {
+  // Fetch media configuration via static cache (No DB wait for visitors!)
+  const mediaConfig = await getCachedMediaConfig();
+
+  // Organize by section and slot for easy access in components
+  // Format: { section: { slot: { desktop: url, mobile: url } } }
+  const mediaObj: Record<string, Record<string, Record<string, string>>> = {};
+  
+  for (const item of mediaConfig) {
+    if (!mediaObj[item.section]) mediaObj[item.section] = {};
+    if (!mediaObj[item.section][item.slot]) mediaObj[item.section][item.slot] = {};
+    mediaObj[item.section][item.slot][item.device] = item.url;
+  }
+
   return (
     <main className="bg-[#0A0A0A] overflow-x-hidden">
       <Navbar />
-      <Hero />
-      <Section02 />
-      <Story />
-      <Section03 />
-      <Gallery />
+      <Hero media={mediaObj.hero} />
+      <Section02 media={mediaObj.philosophy} />
+      <Story media={mediaObj.story} />
+      <Section03 media={mediaObj.kitchen} />
+      <Gallery media={mediaObj.gallery} />
       <Locations />
       <Footer />
     </main>
   );
 }
+
