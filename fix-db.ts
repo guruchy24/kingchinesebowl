@@ -1,8 +1,9 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
+import { Client } from 'pg';
 import * as schema from './schema';
 
 let db: ReturnType<typeof drizzle>;
+let client: Client;
 
 export function getDb(connectionString?: string) {
   if (!db) {
@@ -10,17 +11,10 @@ export function getDb(connectionString?: string) {
       ? (process.env.DB as any).connectionString 
       : (process.env.DB || connectionString || process.env.DATABASE_URL_UNPOOLED!);
       
-    const pool = new Pool({ 
-      connectionString: connStr,
-      idleTimeoutMillis: 1, // Instantly close connections to prevent Cloudflare idle TCP drops
-      connectionTimeoutMillis: 5000,
-    });
+    client = new Client({ connectionString: connStr });
+    client.connect();
     
-    pool.on('error', (err) => {
-      console.error('Unexpected error on idle pg client', err);
-    });
-    
-    db = drizzle(pool, { schema });
+    db = drizzle(client, { schema });
   }
   return db;
 }
