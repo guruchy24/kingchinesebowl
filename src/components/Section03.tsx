@@ -107,16 +107,23 @@ export default function Section03({ media }: { media?: any }) {
   const horizontalContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Force recalculation of layouts after mounting
     requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    // Continuous ultra-slow rotation for the plate
+    const spinner = gsap.to(plateRef.current, { 
+      rotation: 360, 
+      duration: 120, 
+      repeat: -1, 
+      ease: "none" 
+    });
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: window.innerWidth < 768 ? "+=150%" : "+=300%", 
-          scrub: 1, // Add scrub smoothing
+          end: window.innerWidth < 768 ? "+=150%" : "+=400%", 
+          scrub: 1, 
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -141,16 +148,17 @@ export default function Section03({ media }: { media?: any }) {
       // SCENE 3: THE KING'S TABLE 
       // ══════════════════════════════════════════════════
       tl.fromTo(handoffSceneRef.current, { opacity: 0 }, { opacity: 1, duration: 5 }, 16);
-      tl.fromTo(plateRef.current, { scale: 1.3, rotation: -15, filter: "brightness(2) blur(10px)" }, { scale: 1, rotation: 0, filter: "brightness(1) blur(0px)", duration: 10, ease: "power3.out" }, 16);
+      tl.fromTo(plateRef.current, { scale: 1.3, filter: "brightness(2) blur(10px)" }, { scale: 1, filter: "brightness(1) blur(0px)", duration: 10, ease: "power3.out" }, 16);
 
       if (rightTextRef.current) {
         tl.fromTo(rightTextRef.current.children, { opacity: 0, x: 40, filter: "blur(4px)" }, { opacity: 1, x: 0, filter: "blur(0px)", stagger: 0.2, duration: 6, ease: "power2.out" }, 18);
       }
 
-      tl.to(plateRef.current, { scale: 1.05, rotation: 2, duration: 15, ease: "none" }, 16);
+      // Add a cinematic zoom-in to the plate as we transition to the horizontal scroll
+      tl.to(plateRef.current, { scale: 1.15, duration: 15, ease: "none" }, 16);
 
       // ══════════════════════════════════════════════════
-      // SCENE 4: HORIZONTAL EDITORIAL SHOWCASE
+      // SCENE 4: HORIZONTAL EDITORIAL LOOKBOOK
       // ══════════════════════════════════════════════════
       const containerWidth = CATEGORIES.length * 100; // 400vw
       tl.to(horizontalContainerRef.current, {
@@ -161,11 +169,20 @@ export default function Section03({ media }: { media?: any }) {
 
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      spinner.kill();
+      ctx.revert();
+    };
   }, []);
 
   return (
     <section ref={sectionRef} id="kitchen" className="relative h-screen w-full overflow-hidden bg-[#0A0A0A]" style={{ zIndex: 50 }}>
+
+      {/* Cinematic Film Grain Overlay */}
+      <div 
+        className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-overlay"
+        style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}
+      />
 
       {/* ── SCENE 1 & 2: FIRE VIDEO BACKGROUND ── */}
       <div ref={videoRef} className="absolute inset-0 opacity-0 bg-[#0A0A0A] overflow-hidden pointer-events-none" style={{ zIndex: 10 }}>
@@ -177,17 +194,25 @@ export default function Section03({ media }: { media?: any }) {
 
       {/* ── SCENE 1 & 2: TEXT OVERLAY ── */}
       <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ zIndex: 20 }}>
-        <div ref={glowRef} className="absolute w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] rounded-full opacity-0" style={{ background: "radial-gradient(circle, rgba(196,30,42,0.06) 0%, transparent 70%)" }} />
-        <div ref={charRef} className="text-[20vw] md:text-[9vw] font-serif leading-none text-[#F5F0EB] drop-shadow-[0_0_60px_rgba(196,30,42,0.15)]">从火开始</div>
+        <div ref={glowRef} className="absolute w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] rounded-full opacity-0" style={{ background: "radial-gradient(circle, rgba(196,30,42,0.08) 0%, transparent 60%)" }} />
+        
+        {/* Pulsing glow for the Chinese characters */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-[#C41E2A] blur-3xl opacity-20 animate-pulse" />
+          <div ref={charRef} className="relative text-[20vw] md:text-[9vw] font-serif leading-none text-[#F5F0EB] drop-shadow-[0_0_60px_rgba(196,30,42,0.3)]">从火开始</div>
+        </div>
+
         <div ref={lineRef} className="w-[16vw] md:w-[8vw] h-[2px] bg-[#C41E2A] my-[3vh] origin-center" />
-        <div ref={engRef} className="text-[5vw] md:text-[2vw] font-light text-[#C4A882] uppercase">It Begins With Fire</div>
+        <div ref={engRef} className="text-[5vw] md:text-[2vw] font-light text-[#C4A882] uppercase tracking-[0.4em]">It Begins With Fire</div>
         <div ref={subRef} className="text-[12px] md:text-[1vw] tracking-[0.2em] md:tracking-[1em] font-light text-[#F5F0EB]/0 mt-[2.5vh] uppercase text-center">Enter The Kitchen</div>
       </div>
 
       {/* ── SCENE 3: EDITORIAL OVERLAP HANDOFF ── */}
       <div ref={handoffSceneRef} className="absolute inset-0 flex flex-col md:flex-row items-center justify-center md:justify-end px-[5vw] md:px-[8vw] opacity-0 bg-[#0A0A0A] overflow-hidden" style={{ zIndex: 30 }}>
+        
+        {/* Spinning Plate */}
         <div className="absolute left-[-50vw] md:left-[-15vw] top-1/4 md:top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[70vw] md:h-[70vw] rounded-full overflow-hidden shadow-[0_0_150px_rgba(196,30,42,0.15)] pointer-events-none">
-          <div ref={plateRef} className="w-full h-full relative">
+          <div ref={plateRef} className="w-full h-full relative origin-center">
             <div className="hidden md:block absolute inset-0">
               <Image src={plateDesktop} alt="Premium plated dish" fill className="object-cover" />
             </div>
@@ -197,6 +222,7 @@ export default function Section03({ media }: { media?: any }) {
             <div className="absolute inset-0 rounded-full shadow-[inset_0_0_120px_rgba(10,10,10,1)] pointer-events-none" />
           </div>
         </div>
+
         <div ref={rightTextRef} className="flex flex-col items-start w-full md:w-[45vw] z-40 pointer-events-auto mt-[40vh] md:mt-0 px-[5vw] md:px-0">
           <div className="flex items-center gap-4 md:gap-6 mb-[3vh] md:mb-[4vh]">
             <div className="w-[8vw] md:w-[4vw] h-[1px] bg-[#C41E2A]" />
@@ -215,83 +241,99 @@ export default function Section03({ media }: { media?: any }) {
         </div>
       </div>
 
-      {/* ── SCENE 4: HORIZONTAL EDITORIAL SHOWCASE ── */}
+      {/* ── SCENE 4: HORIZONTAL EDITORIAL LOOKBOOK ── */}
       <div 
         ref={horizontalContainerRef}
         className="absolute top-0 left-[100vw] flex h-screen shadow-[-30px_0_60px_rgba(0,0,0,0.9)] bg-[#0A0A0A]"
-        style={{ width: `${CATEGORIES.length * 100}vw`, zIndex: 60 }}
+        style={{ width: `${CATEGORIES.length * 100}vw`, zIndex: 40 }}
       >
         {dynamicCategories.map((cat, idx) => (
-          <div key={cat.name} className="flex h-screen items-center justify-center shrink-0 w-screen relative bg-[#0A0A0A] px-[5vw] py-[12vh] md:py-[15vh]">
+          <div key={cat.name} className="flex h-screen items-center justify-center shrink-0 w-screen relative bg-gradient-to-r from-[#050505] to-[#0A0A0A]">
             
-            <div className="w-full h-full flex flex-col md:flex-row gap-4 md:gap-8 max-w-[1600px] mx-auto">
+            {/* ── DESKTOP: HIGH-END COLLAGE LAYOUT ── */}
+            <div className="hidden md:block w-full h-full relative max-w-[1600px] mx-auto px-4">
               
-              {/* Left Column: Hero Image & Storytelling */}
-              <div className="w-full md:w-1/2 h-[45%] md:h-full relative flex flex-col justify-end group rounded-xl overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 z-0">
-                  <div className="hidden md:block absolute inset-0">
-                    <Image src={cat.images.main.desktop} fill className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000 ease-out" alt={cat.name} priority={idx === 0} />
-                  </div>
-                  <div className="block md:hidden absolute inset-0">
-                    <Image src={cat.images.main.mobile} fill className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000 ease-out" alt={cat.name} priority={idx === 0} />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+              {/* Text Block */}
+              <div className="absolute left-[8vw] top-[25vh] z-30 max-w-[32vw] pointer-events-none">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-[1px] bg-[#D4A853]" />
+                  <span className="text-[#D4A853] tracking-[0.4em] text-xs uppercase font-light">Origin</span>
                 </div>
-                
-                <div className="relative z-10 p-6 md:p-12">
-                  <div className="flex items-center gap-3 mb-3 md:mb-5 opacity-80">
-                    <div className="w-6 md:w-10 h-[1px] bg-[#D4A853]" />
-                    <span className="text-[#D4A853] tracking-[0.3em] md:tracking-[0.4em] text-[10px] md:text-xs uppercase font-light">Origin</span>
-                  </div>
-                  <h2 className="font-serif text-[12vw] md:text-[6vw] tracking-tighter text-[#F5F0EB] leading-[0.85] mb-2 md:mb-4 uppercase drop-shadow-lg">{cat.name}</h2>
-                  <h3 className="text-[#C41E2A] tracking-[0.2em] md:tracking-[0.3em] text-[11px] md:text-sm uppercase mb-4 md:mb-8 font-medium">{cat.subtitle}</h3>
-                  
-                  {/* Storytelling Text (Visible on mobile, fades in on hover for desktop) */}
-                  <p className="text-[#E5E0D8] text-[11px] md:text-[15px] font-light leading-relaxed max-w-lg opacity-100 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-700 delay-100 drop-shadow-md">
+                <h2 className="font-serif text-[7vw] tracking-tighter text-[#F5F0EB] leading-[0.85] uppercase drop-shadow-2xl">
+                  {cat.name}
+                </h2>
+                <h3 className="text-[#C41E2A] tracking-[0.3em] text-sm uppercase mt-4 mb-8 font-medium">
+                  {cat.subtitle}
+                </h3>
+                <div className="bg-black/40 p-6 backdrop-blur-md rounded-lg border border-white/5 shadow-2xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-20" />
+                  <p className="text-[#E5E0D8] text-sm font-light leading-relaxed relative z-10">
                     {cat.history}
                   </p>
                 </div>
               </div>
 
-              {/* Right Column: Editorial Image Grid (3 images) */}
-              <div className="w-full md:w-1/2 h-[55%] md:h-full grid grid-cols-2 grid-rows-2 gap-3 md:gap-5">
-                
-                {/* Top Left: Sub1 */}
-                <div className="relative col-span-1 row-span-1 rounded-xl overflow-hidden group shadow-xl">
-                  <div className="hidden md:block absolute inset-0">
-                    <Image src={cat.images.sub1.desktop} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="block md:hidden absolute inset-0">
-                    <Image src={cat.images.sub1.mobile} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                </div>
-                
-                {/* Tall Right: Sub2 */}
-                <div className="relative col-span-1 row-span-2 rounded-xl overflow-hidden group shadow-xl">
-                  <div className="hidden md:block absolute inset-0">
-                    <Image src={cat.images.sub2.desktop} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="block md:hidden absolute inset-0">
-                    <Image src={cat.images.sub2.mobile} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                </div>
-                
-                {/* Bottom Left: Sub3 */}
-                <div className="relative col-span-1 row-span-1 rounded-xl overflow-hidden group shadow-xl">
-                  <div className="hidden md:block absolute inset-0">
-                    <Image src={cat.images.sub3.desktop} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="block md:hidden absolute inset-0">
-                    <Image src={cat.images.sub3.mobile} fill className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" alt={`${cat.name} detail`} />
-                  </div>
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                </div>
+              {/* Main Image (Center-Right) */}
+              <div className="absolute right-[8vw] top-[12vh] w-[45vw] h-[76vh] rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10 group">
+                <Image src={cat.images.main.desktop} fill className="object-cover transition-transform duration-[2s] group-hover:scale-105" alt={`${cat.name} main`} priority={idx === 0} />
+                <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-50" />
+              </div>
 
+              {/* Sub Image 1 (Top Left, tucked behind text) */}
+              <div className="absolute left-[5vw] top-[8vh] w-[20vw] h-[25vh] rounded-lg overflow-hidden shadow-2xl z-0 opacity-60 mix-blend-luminosity hover:mix-blend-normal hover:opacity-100 hover:z-40 transition-all duration-700">
+                <Image src={cat.images.sub1.desktop} fill className="object-cover" alt={`${cat.name} detail 1`} />
+              </div>
+
+              {/* Sub Image 2 (Bottom Right, overlapping main) */}
+              <div className="absolute right-[4vw] bottom-[8vh] w-[22vw] h-[35vh] rounded-lg overflow-hidden shadow-2xl z-40 border-8 border-[#0A0A0A] group hover:-translate-y-4 transition-transform duration-700">
+                <Image src={cat.images.sub2.desktop} fill className="object-cover transition-transform duration-1000 group-hover:scale-110" alt={`${cat.name} detail 2`} />
+              </div>
+
+              {/* Sub Image 3 (Bottom Left, near text) */}
+              <div className="absolute left-[28vw] bottom-[10vh] w-[18vw] h-[18vw] max-h-[30vh] rounded-full overflow-hidden shadow-[0_10px_40px_rgba(212,168,83,0.15)] z-20 border border-[#D4A853]/40 group hover:border-[#D4A853] transition-colors duration-500">
+                <Image src={cat.images.sub3.desktop} fill className="object-cover transition-transform duration-1000 group-hover:scale-110" alt={`${cat.name} detail 3`} />
               </div>
 
             </div>
+
+            {/* ── MOBILE: EDITORIAL STACK LAYOUT ── */}
+            <div className="flex md:hidden flex-col w-full h-full pt-[12vh] pb-[6vh] justify-between px-6 relative z-10">
+              
+              {/* Text Area */}
+              <div className="flex-shrink-0 z-30 relative mb-4">
+                <h2 className="font-serif text-[16vw] text-[#F5F0EB] leading-[0.8] uppercase drop-shadow-2xl">{cat.name}</h2>
+                <h3 className="text-[#C41E2A] tracking-[0.2em] text-[10px] uppercase mt-3 mb-4">{cat.subtitle}</h3>
+                <div className="bg-black/60 p-4 rounded-lg backdrop-blur-md border border-white/10 shadow-xl relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4A853]/50 to-transparent" />
+                  <p className="text-[#E5E0D8] text-[11px] leading-relaxed relative z-10">{cat.history}</p>
+                </div>
+              </div>
+              
+              {/* Images Area */}
+              <div className="relative w-full flex-grow flex items-end">
+                {/* Main image */}
+                <div className="absolute inset-x-0 bottom-0 top-0 rounded-xl overflow-hidden shadow-2xl">
+                  <Image src={cat.images.main.mobile} fill className="object-cover opacity-80" alt={`${cat.name} main`} priority={idx === 0} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30" />
+                </div>
+                
+                {/* Sub floating images */}
+                <div className="absolute -top-4 right-0 w-[25vw] h-[35vw] rounded-lg border-2 border-[#050505] overflow-hidden shadow-xl z-10">
+                  <Image src={cat.images.sub1.mobile} fill className="object-cover" alt={`${cat.name} detail 1`} />
+                </div>
+                
+                <div className="absolute bottom-6 right-4 w-[30vw] h-[45vw] rounded-lg border-[3px] border-[#050505] overflow-hidden shadow-2xl z-20">
+                  <Image src={cat.images.sub2.mobile} fill className="object-cover" alt={`${cat.name} detail 2`} />
+                </div>
+                
+                <div className="absolute bottom-12 left-4 w-[20vw] h-[20vw] rounded-full border-2 border-[#D4A853]/50 overflow-hidden shadow-xl z-10">
+                  <Image src={cat.images.sub3.mobile} fill className="object-cover" alt={`${cat.name} detail 3`} />
+                </div>
+              </div>
+
+            </div>
+
           </div>
         ))}
       </div>
