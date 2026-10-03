@@ -242,7 +242,7 @@ export default function Section03({ media }: { media?: any }) {
         const isEven = idx % 2 === 0;
 
         return (
-          <section key={cat.name} className={`cuisine-art-section relative min-h-screen w-full flex flex-col justify-center overflow-hidden py-[15vh] bg-gradient-to-b ${cat.theme.bg}`}>
+          <section key={cat.name} className={`cuisine-art-section relative w-full flex flex-col justify-center overflow-hidden py-[8vh] md:py-[10vh] bg-gradient-to-b ${cat.theme.bg}`}>
             
             {/* Background Massive Art Typography */}
             <div className="art-bg-text absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 select-none overflow-hidden">
@@ -251,11 +251,11 @@ export default function Section03({ media }: { media?: any }) {
               </h1>
             </div>
 
-            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-[5vw] h-full flex flex-col md:flex-row items-center">
+            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-[5vw] flex flex-col md:flex-row items-center">
               
               {/* Text Content */}
-              <div className={`w-full md:w-1/2 flex flex-col ${isEven ? 'md:pr-[10vw]' : 'md:pl-[10vw] md:order-2'} relative z-30 mt-[10vh] md:mt-0`}>
-                <div className="flex items-center gap-4 mb-6">
+              <div className={`w-full md:w-1/2 flex flex-col ${isEven ? 'md:pr-[10vw]' : 'md:pl-[10vw] md:order-2'} relative z-30 mt-[5vh] md:mt-0`}>
+                <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-[1px]" style={{ backgroundColor: cat.theme.accent }} />
                   <span className="tracking-[0.4em] text-xs uppercase font-light" style={{ color: cat.theme.accent }}>Art of {cat.name}</span>
                 </div>
@@ -263,25 +263,25 @@ export default function Section03({ media }: { media?: any }) {
                 <h2 className="font-serif text-[18vw] md:text-[8vw] tracking-tighter leading-[0.8] uppercase mb-2 drop-shadow-2xl" style={{ color: cat.theme.text }}>
                   {cat.name}
                 </h2>
-                <h3 className="tracking-[0.3em] text-[12px] md:text-sm uppercase mt-4 mb-10 font-medium" style={{ color: cat.theme.accent }}>
+                <h3 className="tracking-[0.3em] text-[12px] md:text-sm uppercase mt-2 mb-6 font-medium" style={{ color: cat.theme.accent }}>
                   {cat.subtitle}
                 </h3>
                 
-                <p className="text-[14px] md:text-[16px] font-light leading-loose opacity-90 drop-shadow-xl max-w-lg border-l-2 pl-6" style={{ color: '#D5D0C8', borderColor: cat.theme.accent }}>
+                <p className="text-[14px] md:text-[16px] font-light leading-relaxed opacity-90 drop-shadow-xl max-w-lg border-l-2 pl-6" style={{ color: '#D5D0C8', borderColor: cat.theme.accent }}>
                   {cat.history}
                 </p>
 
                 {/* Sub Image 3: Small floating accent near text */}
-                <div className={`art-sub3 absolute ${isEven ? '-right-10' : '-left-10'} -bottom-[10vh] w-[40vw] md:w-[15vw] aspect-square rounded-full overflow-hidden shadow-2xl border border-white/10 hidden md:block`}>
+                <div className={`art-sub3 absolute ${isEven ? '-right-5' : '-left-5'} -bottom-[5vh] w-[30vw] md:w-[12vw] aspect-square rounded-full overflow-hidden shadow-2xl border border-white/10 hidden md:block`}>
                   <Image src={cat.images.sub3.desktop} fill className="object-cover" alt="Detail 3" />
                 </div>
               </div>
 
               {/* Artistic Collage Area */}
-              <div className={`w-full md:w-1/2 h-[70vh] md:h-[90vh] relative ${isEven ? '' : 'md:order-1'} mt-[10vh] md:mt-0`}>
+              <div className={`w-full md:w-1/2 h-[55vh] md:h-[65vh] relative ${isEven ? '' : 'md:order-1'} mt-[6vh] md:mt-0`}>
                 
                 {/* Main Image */}
-                <div className={`art-main-img absolute top-[10%] ${isEven ? 'right-0' : 'left-0'} w-[80vw] md:w-[35vw] h-[50vh] md:h-[70vh] rounded-sm overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-10`}>
+                <div className={`art-main-img absolute top-[10%] ${isEven ? 'right-0' : 'left-0'} w-[75vw] md:w-[35vw] h-[45vh] md:h-[50vh] rounded-sm overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-10`}>
                   <Image src={cat.images.main.desktop} fill className="object-cover" alt="Main Art" />
                   <div className="absolute inset-0 border border-white/10 pointer-events-none mix-blend-overlay" />
                   <div className={`absolute inset-0 bg-gradient-to-t from-black/80 to-transparent mix-blend-multiply`} />
