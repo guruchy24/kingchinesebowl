@@ -65,97 +65,124 @@ export default function Section02() {
       const lettersABowl = textABowlRef.current ? gsap.utils.toArray(textABowlRef.current.children) : [];
       const allLetters = [...lettersMore, ...lettersThan, ...lettersABowl];
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=180%", // Reduced from 350% so the user doesn't have to scroll as much
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-        },
+      let mm = gsap.matchMedia();
+
+      mm.add({
+        isMobile: "(max-width: 767px)",
+        isDesktop: "(min-width: 768px)"
+      }, (context) => {
+        let { isMobile } = context.conditions as any;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=180%",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        // 0-100: CONTINUOUS ATMOSPHERE
+        tl.fromTo(orbRedRef.current, { x: "-5vw", y: "0vh" }, { x: "10vw", y: "10vh", duration: 100, ease: "none" }, 0);
+        tl.fromTo(orbGoldRef.current, { x: "5vw", y: "15vh" }, { x: "-10vw", y: "5vh", duration: 100, ease: "none" }, 0);
+        tl.fromTo(steamRef.current, { y: 20, scale: 0.95, opacity: 0.015 }, { y: -100, scale: 1.05, opacity: 0.04, duration: 100, ease: "none" }, 0);
+        tl.fromTo(vertTextRef.current, { y: 0 }, { y: -80, duration: 100, ease: "none" }, 0);
+        tl.fromTo(chapterMarkerRef.current, { y: 0 }, { y: -40, duration: 100, ease: "none" }, 0);
+
+        // 0-5: THE DISSOLVE
+        tl.fromTo(bgTextureRef.current, { opacity: 0 }, { opacity: 1, duration: 5, ease: "power1.inOut" }, 0);
+
+        // ── TEXT REVEAL LOGIC ──
+        if (isMobile) {
+          // On mobile, reveal the text BEFORE the pin to eliminate the empty black gap
+          const mobileTextTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%", // Start revealing when section enters the bottom of the screen
+              end: "top 20%",
+              scrub: 1,
+            }
+          });
+          lettersMore.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { y: 40, opacity: 0, rotation: -2 + i }, { y: 0, opacity: 1, rotation: 0, ease: "power3.out" }, i * 0.1);
+          });
+          lettersThan.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { x: -20, opacity: 0 }, { x: 0, opacity: 1, ease: "power3.out" }, 0.4 + (i * 0.1));
+          });
+          lettersABowl.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { y: -30, opacity: 0, rotation: 2 - (i * 0.5) }, { y: 0, opacity: 1, rotation: 0, ease: "power4.out" }, 0.7 + (i * 0.1));
+          });
+        } else {
+          // On desktop, keep the original delayed reveal inside the pinned timeline
+          lettersMore.forEach((letter: any, i) => {
+            tl.fromTo(letter, { y: 60 + (i * 15), opacity: 0, rotation: -2 + i }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power3.out" }, 5 + (i * 1.5));
+          });
+          lettersThan.forEach((letter: any, i) => {
+            tl.fromTo(letter, { x: -40 + (i * 10), opacity: 0 }, { x: 0, opacity: 1, duration: 10, ease: "power3.out" }, 9 + (i * 1.5));
+          });
+          lettersABowl.forEach((letter: any, i) => {
+            tl.fromTo(letter, { y: -50, opacity: 0, rotation: 2 - (i * 0.5) }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power4.out" }, 12 + (i * 1.5));
+          });
+        }
+
+        // 30-45: LAYERED EXPANSION (Image Emerges)
+        tl.fromTo(imageWrapperRef.current, { clipPath: "inset(35vh 30vw)", opacity: 0 }, { opacity: 1, duration: 5, ease: "power2.inOut" }, 30);
+        tl.to(imageWrapperRef.current, { clipPath: "inset(22vh 20vw)", duration: 15, ease: "power1.inOut" }, 35);
+
+        // Camera push
+        tl.fromTo(cameraRef.current, { scale: 0.85, x: "-2%", y: "2%", filter: "brightness(0.75)" }, { scale: 1.02, x: "1%", y: "-1%", filter: "brightness(1)", duration: 50, ease: "none" }, 30);
+
+        // 45-55: TYPOGRAPHY + IMAGE INTERACTION
+        tl.to(lettersMore, { x: (i) => (i - 1) * 8, duration: 15, ease: "power2.inOut" }, 45);
+        tl.to(lettersThan, { x: (i) => (i - 2) * 5, duration: 15, ease: "power2.inOut" }, 45);
+        tl.to(lettersABowl, { x: (i) => (i - 3) * 6, duration: 15, ease: "power2.inOut" }, 45);
+
+        // Asian brush stroke sweeps across
+        tl.fromTo(brushStrokeRef.current, { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.5, duration: 10, ease: "power3.inOut" }, 45);
+
+        // 50-85: THE PARALLAX CUISINE TRACKER
+        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "80vw" }, { opacity: 1, x: "-120vw", duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -80, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 30, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -40, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 50, duration: 35, ease: "none" }, 50);
+
+        // Cinematic Focus: Crossfades and Scale mapped precisely to cuisines
+        tl.to(cuisineChinese.current, { color: "#C41E2A", opacity: 1, scale: 1.05, duration: 3 }, 55); 
+        
+        tl.to(img1Ref.current, { opacity: 0, duration: 3 }, 60);
+        tl.to(img2Ref.current, { opacity: 1, duration: 3 }, 60);
+        tl.to(cuisineChinese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 60);
+        tl.to(cuisineKorean.current, { color: "#8B1A1A", opacity: 1, scale: 1.05, duration: 3 }, 60);
+        tl.to(orbRedRef.current, { backgroundColor: "#8B1A1A", duration: 3 }, 60);
+
+        tl.to(img2Ref.current, { opacity: 0, duration: 3 }, 70);
+        tl.to(img3Ref.current, { opacity: 1, duration: 3 }, 70);
+        tl.to(cuisineKorean.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 70);
+        tl.to(cuisineJapanese.current, { color: "#F5F0EB", opacity: 1, scale: 1.05, duration: 3 }, 70);
+        tl.to(orbRedRef.current, { backgroundColor: "#F5F0EB", duration: 3 }, 70);
+
+        tl.to(img3Ref.current, { opacity: 0, duration: 3 }, 80);
+        tl.to(img4Ref.current, { opacity: 1, duration: 3 }, 80);
+        tl.to(cuisineJapanese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 80);
+        tl.to(cuisineTibetan.current, { color: "#D4A853", opacity: 1, scale: 1.05, duration: 3 }, 80);
+        tl.to(orbRedRef.current, { backgroundColor: "#D4A853", duration: 3 }, 80);
+
+        tl.fromTo(bodyCopyRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 5, ease: "power2.out" }, 65);
+
+        // 85-100: THE PUSH-IN EXIT
+        tl.to(allLetters, { opacity: 0, duration: 5, ease: "power2.inOut" }, 85);
+        tl.to(cuisinesContainerRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+        tl.to(bodyCopyRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+        tl.to(brushStrokeRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+
+        tl.to(imageWrapperRef.current, { clipPath: "inset(0vh 0vw)", borderRadius: "0px", duration: 10, ease: "power2.inOut" }, 85);
+
+        tl.to(cameraRef.current, { scale: 1.15, filter: "brightness(0.5)", duration: 10, ease: "power2.in" }, 90);
+        tl.to(imageOverlayRef.current, { backgroundColor: "rgba(10,10,10,0.6)", duration: 10, ease: "none" }, 90);
       });
-
-      // 0-100: CONTINUOUS ATMOSPHERE
-      tl.fromTo(orbRedRef.current, { x: "-5vw", y: "0vh" }, { x: "10vw", y: "10vh", duration: 100, ease: "none" }, 0);
-      tl.fromTo(orbGoldRef.current, { x: "5vw", y: "15vh" }, { x: "-10vw", y: "5vh", duration: 100, ease: "none" }, 0);
-      tl.fromTo(steamRef.current, { y: 20, scale: 0.95, opacity: 0.015 }, { y: -100, scale: 1.05, opacity: 0.04, duration: 100, ease: "none" }, 0);
-      tl.fromTo(vertTextRef.current, { y: 0 }, { y: -80, duration: 100, ease: "none" }, 0);
-      tl.fromTo(chapterMarkerRef.current, { y: 0 }, { y: -40, duration: 100, ease: "none" }, 0);
-
-      // 0-5: THE DISSOLVE
-      tl.fromTo(bgTextureRef.current, { opacity: 0 }, { opacity: 1, duration: 5, ease: "power1.inOut" }, 0);
-
-      // 5-25: THE GIANT EDITORIAL REVEAL
-      lettersMore.forEach((letter: any, i) => {
-        tl.fromTo(letter, { y: 60 + (i * 15), opacity: 0, rotation: -2 + i }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power3.out" }, 5 + (i * 1.5));
-      });
-      lettersThan.forEach((letter: any, i) => {
-        tl.fromTo(letter, { x: -40 + (i * 10), opacity: 0 }, { x: 0, opacity: 1, duration: 10, ease: "power3.out" }, 9 + (i * 1.5));
-      });
-      lettersABowl.forEach((letter: any, i) => {
-        tl.fromTo(letter, { y: -50, opacity: 0, rotation: 2 - (i * 0.5) }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power4.out" }, 12 + (i * 1.5));
-      });
-
-      // 30-45: LAYERED EXPANSION (Image Emerges)
-      tl.fromTo(imageWrapperRef.current, { clipPath: "inset(35vh 30vw)", opacity: 0 }, { opacity: 1, duration: 5, ease: "power2.inOut" }, 30);
-      tl.to(imageWrapperRef.current, { clipPath: "inset(22vh 20vw)", duration: 15, ease: "power1.inOut" }, 35);
-
-      // Camera push
-      tl.fromTo(cameraRef.current, { scale: 0.85, x: "-2%", y: "2%", filter: "brightness(0.75)" }, { scale: 1.02, x: "1%", y: "-1%", filter: "brightness(1)", duration: 50, ease: "none" }, 30);
-
-      // 45-55: TYPOGRAPHY + IMAGE INTERACTION
-      tl.to(lettersMore, { x: (i) => (i - 1) * 8, duration: 15, ease: "power2.inOut" }, 45);
-      tl.to(lettersThan, { x: (i) => (i - 2) * 5, duration: 15, ease: "power2.inOut" }, 45);
-      tl.to(lettersABowl, { x: (i) => (i - 3) * 6, duration: 15, ease: "power2.inOut" }, 45);
-
-      // Asian brush stroke sweeps across
-      tl.fromTo(brushStrokeRef.current, { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.5, duration: 10, ease: "power3.inOut" }, 45);
-
-      // 50-85: THE PARALLAX CUISINE TRACKER
-      tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "80vw" }, { opacity: 1, x: "-120vw", duration: 35, ease: "none" }, 50);
-      tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -80, duration: 35, ease: "none" }, 50);
-      tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 30, duration: 35, ease: "none" }, 50);
-      tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -40, duration: 35, ease: "none" }, 50);
-      tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 50, duration: 35, ease: "none" }, 50);
-
-      // Cinematic Focus: Crossfades and Scale mapped precisely to cuisines
-      // Highlight Chinese
-      tl.to(cuisineChinese.current, { color: "#C41E2A", opacity: 1, scale: 1.05, duration: 3 }, 55); 
-      
-      // Swap to Korean
-      tl.to(img1Ref.current, { opacity: 0, duration: 3 }, 60);
-      tl.to(img2Ref.current, { opacity: 1, duration: 3 }, 60);
-      tl.to(cuisineChinese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 60); // Fade out Chinese
-      tl.to(cuisineKorean.current, { color: "#8B1A1A", opacity: 1, scale: 1.05, duration: 3 }, 60);
-      tl.to(orbRedRef.current, { backgroundColor: "#8B1A1A", duration: 3 }, 60);
-
-      // Swap to Japanese
-      tl.to(img2Ref.current, { opacity: 0, duration: 3 }, 70);
-      tl.to(img3Ref.current, { opacity: 1, duration: 3 }, 70);
-      tl.to(cuisineKorean.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 70); // Fade out Korean
-      tl.to(cuisineJapanese.current, { color: "#F5F0EB", opacity: 1, scale: 1.05, duration: 3 }, 70);
-      tl.to(orbRedRef.current, { backgroundColor: "#F5F0EB", duration: 3 }, 70);
-
-      // Swap to Tibetan
-      tl.to(img3Ref.current, { opacity: 0, duration: 3 }, 80);
-      tl.to(img4Ref.current, { opacity: 1, duration: 3 }, 80);
-      tl.to(cuisineJapanese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 80); // Fade out Japanese
-      tl.to(cuisineTibetan.current, { color: "#D4A853", opacity: 1, scale: 1.05, duration: 3 }, 80);
-      tl.to(orbRedRef.current, { backgroundColor: "#D4A853", duration: 3 }, 80);
-
-      tl.fromTo(bodyCopyRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 5, ease: "power2.out" }, 65);
-
-      // 85-100: THE PUSH-IN EXIT
-      tl.to(allLetters, { opacity: 0, duration: 5, ease: "power2.inOut" }, 85);
-      tl.to(cuisinesContainerRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
-      tl.to(bodyCopyRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
-      tl.to(brushStrokeRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
-
-      tl.to(imageWrapperRef.current, { clipPath: "inset(0vh 0vw)", borderRadius: "0px", duration: 10, ease: "power2.inOut" }, 85);
-
-      tl.to(cameraRef.current, { scale: 1.15, filter: "brightness(0.5)", duration: 10, ease: "power2.in" }, 90);
-      tl.to(imageOverlayRef.current, { backgroundColor: "rgba(10,10,10,0.6)", duration: 10, ease: "none" }, 90);
 
     }, sectionRef);
 
