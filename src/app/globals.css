@@ -28,7 +28,7 @@ body {
   background-color: var(--color-kcb-base);
   color: var(--color-kcb-gold);
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

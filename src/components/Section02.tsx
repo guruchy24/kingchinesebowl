@@ -215,32 +215,34 @@ export default function Section02() {
       </div>
 
       {/* LAYER 05: Cinematic Cuisine Tracker */}
-      <div ref={cuisinesContainerRef} className="absolute bottom-[10vh] z-30 flex items-center justify-start gap-[12vw] w-max text-[4.5vw] md:text-[3vw] tracking-[0.6em] font-medium opacity-0 whitespace-nowrap text-[#9E9589] drop-shadow-xl">
-        <span ref={cuisineChinese} className="inline-block opacity-40 transform origin-center">CHINESE</span>
-        <span ref={cuisineKorean} className="inline-block opacity-40 transform origin-center">KOREAN</span>
-        <span ref={cuisineJapanese} className="inline-block opacity-40 transform origin-center">JAPANESE</span>
-        <span ref={cuisineTibetan} className="inline-block opacity-40 transform origin-center">TIBETAN</span>
+      <div className="absolute bottom-[10vh] left-0 w-full overflow-hidden z-30 pointer-events-none h-16 md:h-24 flex items-center">
+        <div ref={cuisinesContainerRef} className="relative flex items-center justify-start gap-[12vw] w-max text-[4.5vw] md:text-[3vw] tracking-[0.6em] font-medium opacity-0 whitespace-nowrap text-[#9E9589] drop-shadow-xl pl-[5vw]">
+          <span ref={cuisineChinese} className="inline-block opacity-40 transform origin-center">CHINESE</span>
+          <span ref={cuisineKorean} className="inline-block opacity-40 transform origin-center">KOREAN</span>
+          <span ref={cuisineJapanese} className="inline-block opacity-40 transform origin-center">JAPANESE</span>
+          <span ref={cuisineTibetan} className="inline-block opacity-40 transform origin-center">TIBETAN</span>
+        </div>
       </div>
 
       {/* Micro-typography */}
       <div className="absolute inset-0 z-40 pointer-events-none p-[5vw] flex justify-between items-start">
         <div ref={chapterMarkerRef}>
-          <p className="text-[10px] md:text-[11px] text-[#C4A882] tracking-[0.4em] font-light uppercase">
+          <p className="text-[12px] md:text-[11px] text-[#C4A882] tracking-[0.3em] md:tracking-[0.4em] font-light uppercase">
             02 / THE PHILOSOPHY
           </p>
         </div>
-        <div ref={vertTextRef} className="text-[10px] md:text-[11px] text-[#C4A882] tracking-[1em] font-light uppercase opacity-50 h-[30vh]" style={{ writingMode: 'vertical-rl' }}>
+        <div ref={vertTextRef} className="text-[12px] md:text-[11px] text-[#C4A882] tracking-[0.5em] md:tracking-[1em] font-light uppercase opacity-50 h-[30vh]" style={{ writingMode: 'vertical-rl' }}>
           ASIAN CUISINE
         </div>
       </div>
 
       {/* Editorial Copy */}
       <div className="absolute bottom-[5vw] right-[5vw] z-40 pointer-events-none">
-        <div ref={bodyCopyRef} className="text-right max-w-[60vw] md:max-w-sm opacity-0">
-          <p className="text-[#F5F0EB] font-sans font-light text-xs md:text-sm leading-relaxed tracking-wide opacity-90 drop-shadow-md">
+        <div ref={bodyCopyRef} className="text-right max-w-[80vw] md:max-w-sm opacity-0">
+          <p className="text-[#F5F0EB] font-sans font-light text-[14px] md:text-sm leading-relaxed tracking-wide opacity-90 drop-shadow-md">
             A celebration of Asian flavours,<br />crafted for memorable moments.
           </p>
-          <p className="text-[#D4A853] text-[9px] md:text-[10px] tracking-widest mt-4 uppercase opacity-80">
+          <p className="text-[#D4A853] text-[12px] md:text-[10px] tracking-widest mt-4 uppercase opacity-80">
             — King Chinese Bowl
           </p>
         </div>

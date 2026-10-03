@@ -40,7 +40,7 @@ export default function Footer() {
           <p className="text-[#F5F0EB]/70 font-light text-sm tracking-wide leading-relaxed max-w-sm mb-6">
             Born from a passion for authentic Asian street food, King Chinese Bowl brings the heat, the flavor, and the soul of Pan-Asian cuisine to the heart of Tricity.
           </p>
-          <div className="flex items-center gap-3 text-[#F5F0EB]/50 text-[10px] tracking-[0.2em] uppercase">
+          <div className="flex items-center gap-3 text-[#F5F0EB]/50 text-[12px] md:text-[10px] tracking-[0.15em] md:tracking-[0.2em] uppercase">
             <span>Chandigarh</span>
             <span className="w-1 h-1 rounded-full bg-[#C41E2A]" />
             <span>Mohali</span>
@@ -52,7 +52,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row w-full md:w-1/2 justify-between gap-12">
           {/* LINKS */}
           <div className="flex flex-col">
-            <h4 className="text-[#F5F0EB]/40 text-[10px] tracking-[0.3em] uppercase mb-6 font-light">Explore</h4>
+            <h4 className="text-[#F5F0EB]/40 text-[12px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-6 font-light">Explore</h4>
             <div className="flex flex-col gap-4">
               {QUICK_LINKS.map((link) => (
                 <a
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* SOCIALS & CONTACT */}
           <div className="flex flex-col">
-            <h4 className="text-[#F5F0EB]/40 text-[10px] tracking-[0.3em] uppercase mb-6 font-light">Connect</h4>
+            <h4 className="text-[#F5F0EB]/40 text-[12px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-6 font-light">Connect</h4>
             <div className="flex flex-col gap-3 mb-8">
               {SOCIALS.map((link) => (
                 <a
@@ -81,7 +81,7 @@ export default function Footer() {
               ))}
             </div>
 
-            <div className="flex flex-col gap-2 text-[#F5F0EB]/60 font-light text-xs tracking-widest">
+            <div className="flex flex-col gap-2 text-[#F5F0EB]/60 font-light text-[14px] md:text-xs tracking-widest">
               <a href="tel:+917508450221" className="hover:text-[#F5F0EB] transition-colors">+91 7508 4502 21</a>
               <a href="tel:+917340998337" className="hover:text-[#F5F0EB] transition-colors">+91 73409 98337</a>
             </div>
@@ -90,7 +90,7 @@ export default function Footer() {
       </div>
 
       {/* ── BOTTOM COPYRIGHT BAR ── */}
-      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between items-center border-t border-[#2A2520]/50 pt-8 text-[#F5F0EB]/40 text-[10px] tracking-[0.2em] uppercase font-light">
+      <div className="relative z-10 w-full flex flex-col md:flex-row justify-between items-center border-t border-[#2A2520]/50 pt-8 text-[#F5F0EB]/40 text-[12px] md:text-[10px] tracking-[0.1em] md:tracking-[0.2em] uppercase font-light">
         <p>&copy; {new Date().getFullYear()} KCB Restaurants. All Rights Reserved.</p>
         <div className="flex gap-8 mt-4 md:mt-0">
           <a href="#" className="hover:text-[#F5F0EB] transition-colors">Privacy Policy</a>

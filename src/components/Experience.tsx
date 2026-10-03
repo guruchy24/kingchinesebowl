@@ -61,7 +61,7 @@ export default function Experience() {
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         <span
           ref={overlayRef}
-          className="pointer-events-none absolute inset-0 flex items-center justify-center text-[6vw] md:text-[3vw] font-light tracking-[0.5em] md:tracking-[1vw] text-[#F5F0EB] opacity-0 text-center px-4"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center text-[16px] md:text-[3vw] font-light tracking-[0.2em] md:tracking-[1vw] text-[#F5F0EB] opacity-0 text-center px-4 md:px-0"
         >
           STEP INTO THE EXPERIENCE
         </span>

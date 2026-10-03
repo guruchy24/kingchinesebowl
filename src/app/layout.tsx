@@ -52,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${playfair.variable} ${montserrat.variable} antialiased`}
     >
-      <body className="bg-obsidian text-ivory overflow-x-hidden font-sans">
+      <body className="bg-obsidian text-ivory overflow-x-clip font-sans">
         {children}
       </body>
     </html>

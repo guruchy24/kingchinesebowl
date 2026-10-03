@@ -98,7 +98,7 @@ export default function Story() {
         <div className="mb-[6vh] z-20">
           <div className="flex items-center gap-4 md:gap-5 mb-4 md:mb-5 mt-[10vh] md:mt-0">
             <div className="w-[8vw] md:w-[4vw] h-[1px] bg-[#C41E2A]" />
-            <span className="text-[10px] md:text-[1vw] tracking-[0.4em] md:tracking-[0.6em] text-[#C41E2A] uppercase font-light">The Heritage</span>
+            <span className="text-[12px] md:text-[1vw] tracking-[0.3em] md:tracking-[0.6em] text-[#C41E2A] uppercase font-light">The Heritage</span>
           </div>
           <h2 className="text-[16vw] md:text-[6.5vw] font-serif text-[#F5F0EB] leading-[0.9] tracking-tight drop-shadow-2xl">
             Our Story
@@ -171,7 +171,7 @@ export default function Story() {
             </div>
           ))}
           
-          <div className={`ml-4 text-[10px] md:text-[0.75vw] tracking-[0.2em] md:tracking-widest uppercase transition-opacity duration-500 ${isPaused ? "opacity-60 md:opacity-40 text-[#C4A882]" : "opacity-0"}`}>
+          <div className={`ml-4 text-[12px] md:text-[0.75vw] tracking-[0.1em] md:tracking-widest uppercase transition-opacity duration-500 ${isPaused ? "opacity-60 md:opacity-40 text-[#C4A882]" : "opacity-0"}`}>
             Paused to read
           </div>
         </div>

@@ -109,8 +109,8 @@ export default function Hero() {
       {/* Main Content */}
       <div className="relative z-20 text-center flex flex-col items-center justify-center w-full max-w-[95vw] md:max-w-[85vw] px-4 mt-24">
         
-        <div className="mb-10 md:mb-[5.5rem] px-4 md:px-0 text-center">
-          <h1 className="hero-title font-serif text-[16vw] sm:text-[14vw] md:text-[6vw] leading-none md:leading-normal text-kcb-gold whitespace-normal md:whitespace-nowrap drop-shadow-lg pb-2">
+        <div className="mb-10 md:mb-[5.5rem] px-4 md:px-0 text-center w-full max-w-full overflow-hidden">
+          <h1 className="hero-title font-serif text-[13vw] sm:text-[14vw] md:text-[6vw] leading-none md:leading-normal text-kcb-gold whitespace-normal md:whitespace-nowrap drop-shadow-lg pb-2">
             King Chinese Bowl
           </h1>
         </div>
