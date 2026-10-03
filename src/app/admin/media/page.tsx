@@ -95,8 +95,8 @@ function MediaManagerInner() {
         const img = new window.Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 2000;
-          const MAX_HEIGHT = 2000;
+          const MAX_WIDTH = 2800;
+          const MAX_HEIGHT = 2800;
           let width = img.width;
           let height = img.height;
 
@@ -124,7 +124,7 @@ function MediaManagerInner() {
             } else {
               resolve(file);
             }
-          }, 'image/webp', 0.85);
+          }, 'image/webp', 0.95);
         };
         img.src = event.target?.result as string;
       };
