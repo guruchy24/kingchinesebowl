@@ -146,6 +146,22 @@ export default function Section03({ media }: { media?: any }) {
           scrub: 1, 
           pin: true,
           anticipatePin: 1,
+          onEnter: () => {
+            const v = videoRef.current?.querySelector('video');
+            if (v) v.play().catch(() => {});
+          },
+          onLeave: () => {
+            const v = videoRef.current?.querySelector('video');
+            if (v) v.pause();
+          },
+          onEnterBack: () => {
+            const v = videoRef.current?.querySelector('video');
+            if (v) v.play().catch(() => {});
+          },
+          onLeaveBack: () => {
+            const v = videoRef.current?.querySelector('video');
+            if (v) v.pause();
+          }
         }
       });
 
@@ -194,6 +210,12 @@ export default function Section03({ media }: { media?: any }) {
 
     });
 
+    // Since GSAP is initializing, it means the user is near. Start preloading the video.
+    const videoEl = videoRef.current?.querySelector('video');
+    if (videoEl && videoEl.preload === 'none') {
+      videoEl.preload = 'auto';
+    }
+
     return () => {
       spinner.kill();
       ctx.revert();
@@ -213,7 +235,7 @@ export default function Section03({ media }: { media?: any }) {
       <section ref={introRef} className="relative h-screen w-full overflow-hidden bg-[#0A0A0A]" style={{ zIndex: 10 }}>
         
         <div ref={videoRef} className="absolute inset-0 opacity-0 bg-[#0A0A0A] overflow-hidden pointer-events-none">
-          <video preload="none" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-80 pointer-events-none">
+          <video preload="none" muted loop playsInline className="w-full h-full object-cover opacity-80 pointer-events-none">
             <source src="/videos/kitchenfire.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-black/90 pointer-events-none" />
