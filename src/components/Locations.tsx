@@ -112,9 +112,12 @@ export default function Locations() {
                     >
                       Get Directions
                     </a>
-                    <button className="bg-[#C41E2A] text-[#F5F0EB] px-6 py-3 text-[10px] md:text-xs tracking-[0.2em] hover:bg-[#8B1A1A] transition-colors rounded-sm uppercase text-center">
-                      Order Online
-                    </button>
+                    <a 
+                      href={`/locations/${loc.id}`}
+                      className="bg-[#C41E2A] text-[#F5F0EB] px-6 py-3 text-[10px] md:text-xs tracking-[0.2em] hover:bg-[#8B1A1A] transition-colors rounded-sm uppercase text-center"
+                    >
+                      View Place
+                    </a>
                   </div>
 
                 </div>
