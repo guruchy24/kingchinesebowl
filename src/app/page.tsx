@@ -18,7 +18,7 @@ export const revalidate = 60;
 const getCachedMediaConfig = unstable_cache(
   async () => {
     try {
-      const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+      const db = getDb();
       return await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
     } catch (error) {
       console.error("Failed to load media config:", error);

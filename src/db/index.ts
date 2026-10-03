@@ -4,9 +4,11 @@ import * as schema from './schema';
 
 let db: ReturnType<typeof drizzle>;
 
-export function getDb(connectionString: string) {
+export function getDb(connectionString?: string) {
   if (!db) {
-    const pool = new Pool({ connectionString });
+    // Prefer Hyperdrive binding (live Worker), then explicit arg, then env fallback
+    const connStr = process.env.DB || connectionString || process.env.DATABASE_URL_UNPOOLED!;
+    const pool = new Pool({ connectionString: connStr });
     db = drizzle(pool, { schema });
   }
   return db;

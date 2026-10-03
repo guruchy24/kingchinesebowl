@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const section = searchParams.get('section');
     const device = searchParams.get('device');
 
-    const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+    const db = getDb();
 
     let query = db.select().from(siteMedia);
     let conditions = [];
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { section, slot, device, r2_key, url, alt_text, sort_order } = body;
 
-    const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+    const db = getDb();
 
     const result = await db.insert(siteMedia).values({
       section,

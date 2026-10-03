@@ -17,7 +17,7 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
     
-    const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+    const db = getDb();
 
     const [updated] = await db.update(siteMedia)
       .set({
@@ -49,7 +49,7 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const db = getDb(process.env.DATABASE_URL_UNPOOLED!);
+    const db = getDb();
 
     await db.delete(siteMedia).where(eq(siteMedia.id, Number(id)));
 
