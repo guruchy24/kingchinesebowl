@@ -142,8 +142,8 @@ export default function Section03({ media }: { media?: any }) {
         scrollTrigger: {
           trigger: introRef.current,
           start: "top top",
-          end: "+=200%", 
-          scrub: 1, 
+          end: "+=120%", // Reduced from 200% so the user doesn't feel stuck
+          scrub: 1.5, // Smoother follow when scrolling faster
           pin: true,
           anticipatePin: 1,
           onEnter: () => {
