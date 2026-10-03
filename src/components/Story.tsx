@@ -30,7 +30,7 @@ const storyData = [
 const storyImages = [
   "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=1600&auto=format&fit=crop", // Noodles
   "https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?q=80&w=1600&auto=format&fit=crop", // Dumplings
-  "https://images.unsplash.com/photo-1582878826629-29b7ad1cb431?q=80&w=1600&auto=format&fit=crop", // Ingredients
+  "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1600&auto=format&fit=crop", // Ingredients
   "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=1600&auto=format&fit=crop", // Fire
   "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1600&auto=format&fit=crop", // Dark plating
   "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1600&auto=format&fit=crop", // Cinematic food
