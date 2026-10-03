@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import Image, { getImageProps } from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import customLoader from "@/lib/cloudflare-image-loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -114,10 +115,10 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
           </>
         ) : (
           <picture>
-            <source media="(max-width: 767px)" srcSet={mobileHero.includes('unsplash.com') ? `${mobileHero}&w=800` : mobileHero} />
-            <source media="(min-width: 768px)" srcSet={desktopHero.includes('unsplash.com') ? `${desktopHero}&w=1920` : desktopHero} />
+            <source media="(max-width: 767px)" srcSet={customLoader({ src: mobileHero, width: 800, quality: 80 })} />
+            <source media="(min-width: 768px)" srcSet={customLoader({ src: desktopHero, width: 1920, quality: 85 })} />
             <img 
-              src={desktopHero.includes('unsplash.com') ? `${desktopHero}&w=1920` : desktopHero}
+              src={customLoader({ src: desktopHero, width: 1920, quality: 85 })}
               alt="Hero Background"
               fetchPriority="high"
               loading="eager"

@@ -3,10 +3,11 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import customLoader from "@/lib/cloudflare-image-loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Experience() {
+export default function Experience({ media }: { media?: Record<string, Record<string, string>> }) {
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLSpanElement>(null);
@@ -54,7 +55,7 @@ export default function Experience() {
         className="relative w-[80vw] h-[60vw] md:w-[40vw] md:h-[15vw] overflow-hidden rounded-sm"
       >
         <img
-          src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=2000&auto=format&fit=crop"
+          src={customLoader({ src: media?.experience?.main?.desktop || "https://images.unsplash.com/photo-1585032226651-759b368d7246", width: 1920, quality: 80 })}
           alt="King Chinese Bowl experience"
           className="h-full w-full object-cover"
         />
