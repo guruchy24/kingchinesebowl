@@ -270,11 +270,6 @@ export default function Section03({ media }: { media?: any }) {
                 <p className="text-[14px] md:text-[16px] font-light leading-relaxed opacity-90 drop-shadow-xl max-w-lg border-l-2 pl-6" style={{ color: '#D5D0C8', borderColor: cat.theme.accent }}>
                   {cat.history}
                 </p>
-
-                {/* Sub Image 3: Small floating accent near text */}
-                <div className={`art-sub3 absolute ${isEven ? '-right-5' : '-left-5'} -bottom-[5vh] w-[30vw] md:w-[12vw] aspect-square rounded-full overflow-hidden shadow-2xl border border-white/10 hidden md:block`}>
-                  <Image src={cat.images.sub3.desktop} fill className="object-cover" alt="Detail 3" />
-                </div>
               </div>
 
               {/* Artistic Collage Area */}
@@ -297,6 +292,11 @@ export default function Section03({ media }: { media?: any }) {
                 <div className={`art-sub2 absolute bottom-[15%] ${isEven ? 'left-[20%]' : 'right-[20%]'} w-[45vw] md:w-[22vw] h-[60vw] md:h-[30vw] rounded-sm overflow-hidden shadow-2xl z-30`}>
                   <Image src={cat.images.sub2.desktop} fill className="object-cover" alt="Detail 2" />
                   <div className="absolute inset-0 ring-1 ring-white/20 ring-inset pointer-events-none" />
+                </div>
+
+                {/* Sub Image 3: Small floating circle */}
+                <div className={`art-sub3 absolute -bottom-[5%] ${isEven ? 'right-[15%]' : 'left-[15%]'} w-[30vw] md:w-[12vw] aspect-square rounded-full overflow-hidden shadow-2xl border-2 z-40 hidden md:block`} style={{ borderColor: cat.theme.accent }}>
+                  <Image src={cat.images.sub3.desktop} fill className="object-cover" alt="Detail 3" />
                 </div>
 
               </div>
