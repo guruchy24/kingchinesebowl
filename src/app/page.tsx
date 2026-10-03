@@ -15,21 +15,27 @@ import Story from "@/components/Story";
 // Force static rendering where possible, revalidating in the background every 60s
 export const revalidate = 60;
 
-const getCachedMediaConfig = unstable_cache(
-  async () => {
-    try {
-      const { db, client } = await getDb();
-      const results = await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
-      await client.end();
-      return results;
-    } catch (error) {
-      console.error("Failed to load media config:", error);
-      return [];
-    }
-  },
-  ['site-media-config'],
-  { revalidate: 60, tags: ['media'] }
-);
+let cachedMediaData: any = null;
+let lastCacheTime = 0;
+
+const getCachedMediaConfig = async () => {
+  const now = Date.now();
+  // 60-second TTL
+  if (cachedMediaData && (now - lastCacheTime < 60000)) {
+    return cachedMediaData;
+  }
+  try {
+    const { db, client } = await getDb();
+    const results = await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
+    await client.end();
+    cachedMediaData = results;
+    lastCacheTime = now;
+    return results;
+  } catch (error) {
+    console.error("Failed to load media config:", error);
+    return cachedMediaData || [];
+  }
+};
 
 export default async function HomePage() {
   // Fetch media configuration via static cache (No DB wait for visitors!)
