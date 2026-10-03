@@ -18,17 +18,21 @@ export default function Section03({ media }: { media?: Record<string, Record<str
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
 
-  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
-  const uploadedImages = Object.values(media || {}).filter(item => item.desktop).map((item) => ({
-    desktop: item.desktop,
-    mobile: item.mobile || item.desktop,
-  }));
-  const mobileOnlyImages = Object.values(media || {}).filter(item => item.mobile && !item.desktop).map((item) => ({
-    desktop: CATEGORIES[0].image,
-    mobile: item.mobile,
-  }));
-
-  const allUploaded = [...uploadedImages, ...mobileOnlyImages];
+  const mediaSlots = Object.values(media || {});
+  
+  // Extract lists of all uploaded desktop and mobile images, ignoring slot names
+  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
+  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
+  
+  const numUploaded = Math.max(desktopUploads.length, mobileUploads.length);
+  
+  const allUploaded = [];
+  for (let i = 0; i < numUploaded; i++) {
+    allUploaded.push({
+      desktop: desktopUploads[i] || desktopUploads[0] || CATEGORIES[0].image,
+      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || CATEGORIES[0].image,
+    });
+  }
   const fallbackImages = [
     ...allUploaded,
     ...CATEGORIES.slice(allUploaded.length).map(cat => ({ desktop: cat.image, mobile: cat.image }))

@@ -46,22 +46,22 @@ export default function Story({ media }: { media?: Record<string, Record<string,
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   // Extract all user-uploaded slots dynamically
-  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
-  const uploadedImages = Object.values(media || {}).filter(item => item.desktop).map((item) => ({
-    desktop: item.desktop,
-    mobile: item.mobile || item.desktop,
-  }));
-  // Also grab mobile-only uploads (no desktop counterpart) - these only appear on mobile
-  const mobileOnlyImages = Object.values(media || {}).filter(item => item.mobile && !item.desktop).map((item) => ({
-    desktop: null as string | null,
-    mobile: item.mobile,
-  }));
+  const mediaSlots = Object.values(media || {});
+  
+  // Extract lists of all uploaded desktop and mobile images, ignoring slot names
+  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
+  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
+  
+  const numUploaded = Math.max(desktopUploads.length, mobileUploads.length);
+  
+  const allUploaded = [];
+  for (let i = 0; i < numUploaded; i++) {
+    allUploaded.push({
+      desktop: desktopUploads[i] || desktopUploads[0] || storyImages[0],
+      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || storyImages[0],
+    });
+  }
 
-  // Combine: desktop uploads (show everywhere) + mobile-only (mobile only) + defaults for remaining
-  const allUploaded = [
-    ...uploadedImages,
-    ...mobileOnlyImages.map(img => ({ desktop: storyImages[0], mobile: img.mobile })),
-  ];
   const dynamicStoryImages = [
     ...allUploaded,
     ...storyImages.slice(allUploaded.length).map(url => ({ desktop: url, mobile: url }))

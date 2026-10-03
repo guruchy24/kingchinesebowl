@@ -11,15 +11,22 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
   const defaultHero = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2800&auto=format&fit=crop";
   const mediaSlots = Object.values(media || {});
-  const slides = mediaSlots.length > 0
-    ? mediaSlots.map(item => ({
-        desktop: item.desktop || defaultHero,
-        mobile: item.mobile || item.desktop || defaultHero,
-      }))
-    : [{ desktop: defaultHero, mobile: defaultHero }];
+  
+  // Extract lists of all uploaded desktop and mobile images, completely ignoring slot names
+  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
+  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
+  
+  const numSlides = Math.max(desktopUploads.length, mobileUploads.length, 1);
+  
+  const slides = [];
+  for (let i = 0; i < numSlides; i++) {
+    slides.push({
+      desktop: desktopUploads[i] || desktopUploads[0] || defaultHero,
+      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || defaultHero,
+    });
+  }
 
   // Auto-slide every 6 seconds if there are multiple slides
   useEffect(() => {

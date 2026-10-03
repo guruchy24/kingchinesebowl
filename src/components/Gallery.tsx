@@ -22,17 +22,21 @@ const GRID_IMAGES = [
 export default function Gallery({ media }: { media?: Record<string, Record<string, string>> }) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Desktop-only upload = shows on both. Mobile-only upload = only shows on mobile.
-  const uploadedImages = Object.values(media || {}).filter(item => item.desktop).map((item) => ({
-    desktop: item.desktop,
-    mobile: item.mobile || item.desktop,
-  }));
-  const mobileOnlyImages = Object.values(media || {}).filter(item => item.mobile && !item.desktop).map((item) => ({
-    desktop: GRID_IMAGES[0],
-    mobile: item.mobile,
-  }));
-
-  const allUploaded = [...uploadedImages, ...mobileOnlyImages];
+  const mediaSlots = Object.values(media || {});
+  
+  // Extract lists of all uploaded desktop and mobile images, ignoring slot names
+  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
+  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
+  
+  const numUploaded = Math.max(desktopUploads.length, mobileUploads.length);
+  
+  const allUploaded = [];
+  for (let i = 0; i < numUploaded; i++) {
+    allUploaded.push({
+      desktop: desktopUploads[i] || desktopUploads[0] || GRID_IMAGES[0],
+      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || GRID_IMAGES[0],
+    });
+  }
   const dynamicGridImages = [
     ...allUploaded,
     ...GRID_IMAGES.slice(allUploaded.length).map(url => ({ desktop: url, mobile: url }))
