@@ -8,66 +8,67 @@
   --color-kcb-muted: #9E9589; /* Muted text */
   --color-kcb-red: #8B1A1A; /* Deep premium Chinese red */
   --color-kcb-border: #332D27; /* Subtle borders */
-
-  --font-serif: var(--font-playfair), serif;
-  --font-sans: var(--font-inter), sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-kcb-base);
+  }
+
+  body {
+    background-color: var(--color-kcb-base);
+    color: var(--color-kcb-gold);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  /* Scrollbar — hidden for a clean premium feel */
+  ::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: var(--color-kcb-base);
-}
+@layer components {
+  /* GSAP Animated Text Utility */
+  .word-line {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+  }
 
-body {
-  background-color: var(--color-kcb-base);
-  color: var(--color-kcb-gold);
-  font-family: var(--font-sans);
-  overflow-x: clip;
-  width: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  .word-inner {
+    display: inline-block;
+    transform: translateY(100%);
+    opacity: 0;
+  }
 
-h1, h2, h3, h4, h5, h6, .font-serif {
-  font-family: var(--font-serif);
-  font-weight: 400;
-}
-
-/* GSAP Animated Text Utility */
-.word-line {
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: top;
-}
-
-.word-inner {
-  display: inline-block;
-  transform: translateY(100%);
-  opacity: 0;
-}
-
-/* Scrollbar — hidden for a clean premium feel */
-::-webkit-scrollbar {
-  width: 0px;
-  display: none;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: transparent;
-}
-
-/* Custom Grid lines for background (like Screenshot 3) */
-.grid-bg {
-  background-image: 
-    linear-gradient(to right, rgba(217, 196, 158, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(217, 196, 158, 0.05) 1px, transparent 1px);
-  background-size: 25vw 25vw;
+  /* Custom Grid lines for background (like Screenshot 3) */
+  .grid-bg {
+    background-image: 
+      linear-gradient(to right, rgba(217, 196, 158, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(217, 196, 158, 0.05) 1px, transparent 1px);
+    background-size: 25vw 25vw;
+  }
 }
