@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-[100] flex items-center justify-between px-[4vw] transition-all duration-700 ${
-        scrolled ? "bg-[#110F0D]/95 backdrop-blur-md border-b border-kcb-border py-3" : "bg-transparent py-6"
+        scrolled ? "bg-[#110F0D]/95 backdrop-blur-md border-b border-kcb-border py-2" : "bg-transparent py-4"
       } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
     >
       {/* Left: Hamburger Menu (Inari style) */}
@@ -51,7 +51,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="King Chinese Bowl"
-            className="h-12 md:h-24 w-auto object-contain"
+            className="h-10 md:h-16 w-auto object-contain"
           />
         </Link>
       </div>
