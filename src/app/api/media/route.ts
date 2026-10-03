@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const section = searchParams.get('section');
     const device = searchParams.get('device');
 
-    const db = getDb();
+    const { db, client } = await getDb();
 
     let query = db.select().from(siteMedia);
     let conditions = [];
@@ -27,9 +27,13 @@ export async function GET(request: NextRequest) {
     }
 
     const results = await query.orderBy(asc(siteMedia.sort_order));
+    
+    // Crucial for Cloudflare Workers Hyperdrive: close the client connection
+    await client.end();
 
     return NextResponse.json(results);
   } catch (error) {
+    console.error('GET /api/media failed:', error);
     return NextResponse.json({ error: 'Failed to fetch media' }, { status: 500 });
   }
 }
@@ -44,7 +48,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { section, slot, device, r2_key, url, alt_text, sort_order } = body;
 
-    const db = getDb();
+    const { db, client } = await getDb();
 
     const result = await db.insert(siteMedia).values({
       section,
@@ -55,6 +59,9 @@ export async function POST(request: NextRequest) {
       alt_text,
       sort_order: sort_order || 0,
     }).returning();
+    
+    // Close the client connection
+    await client.end();
 
     return NextResponse.json(result[0]);
   } catch (error) {

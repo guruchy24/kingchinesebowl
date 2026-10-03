@@ -17,7 +17,7 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
     
-    const db = getDb();
+    const { db, client } = await getDb();
 
     const [updated] = await db.update(siteMedia)
       .set({
@@ -26,6 +26,8 @@ export async function PATCH(
       })
       .where(eq(siteMedia.id, Number(id)))
       .returning();
+
+    await client.end();
 
     if (!updated) {
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
@@ -49,9 +51,11 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const db = getDb();
+    const { db, client } = await getDb();
 
     await db.delete(siteMedia).where(eq(siteMedia.id, Number(id)));
+
+    await client.end();
 
     return NextResponse.json({ success: true });
   } catch (error) {

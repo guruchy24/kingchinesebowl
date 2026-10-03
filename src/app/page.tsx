@@ -18,8 +18,10 @@ export const revalidate = 60;
 const getCachedMediaConfig = unstable_cache(
   async () => {
     try {
-      const db = getDb();
-      return await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
+      const { db, client } = await getDb();
+      const results = await db.select().from(siteMedia).where(eq(siteMedia.is_active, true));
+      await client.end();
+      return results;
     } catch (error) {
       console.error("Failed to load media config:", error);
       return [];

@@ -1,0 +1,118 @@
+
+> kingchinesebowl@0.1.0 deploy
+> opennextjs-cloudflare build && opennextjs-cloudflare deploy
+
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /Users/aamirakwarali/Downloads/kingchinesebowl
+Next.js version : 16.3.8
+@opennextjs/cloudflare version: 1.20.8
+@opennextjs/aws version: 4.1.7
+workerd compatibility_date: 2026-10-02
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> kingchinesebowl@0.1.0 build
+> next build
+
+▲ Next.js 16.3.8 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 465ms
+Found a non-empty CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_DB variable for binding. Hyperdrive will connect to this database during local development.
+Using secrets defined in .dev.vars
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 927ms
+  Running TypeScript ...
+  Finished TypeScript in 1564ms ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/12) ...
+  Generating static pages using 7 workers (3/12) 
+  Generating static pages using 7 workers (6/12) 
+  Generating static pages using 7 workers (9/12) 
+(node:26583) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+
+To prepare for this change:
+- If you want the current behavior, explicitly use 'sslmode=verify-full'
+- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+
+See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✓ Generating static pages using 7 workers (12/12) in 3.7s
+  Finalizing page optimization ...
+
+Route (app)           Revalidate  Expire
+┌ ○ /                         1m      1y
+├ ○ /_not-found
+├ ○ /admin
+├ ○ /admin/login
+├ ○ /admin/media
+├ ƒ /api/auth/check
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/media
+├ ƒ /api/media/[id]
+└ ƒ /api/upload
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 1.512s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+[35mWorker saved in `.open-next/worker.js` 🚀
+[0m
+OpenNext build complete.
+
+┌──────────────────────────────┐
+│ OpenNext — Cloudflare deploy │
+└──────────────────────────────┘
+
+Found a non-empty CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_DB variable for binding. Hyperdrive will connect to this database during local development.
+Using secrets defined in .dev.vars
+Incremental cache does not need populating
+Tag cache does not need populating
+
+ ⛅️ wrangler 4.147.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 47 files from the assets directory /Users/aamirakwarali/Downloads/kingchinesebowl/.open-next/assets
+🌀 Starting asset upload...
+🌀 Found 1 new or modified static asset to upload. Proceeding with upload...
++ /BUILD_ID
+Uploaded 1 of 1 asset
+✨ Success! Uploaded 1 file (36 already uploaded) (1.43 sec)
+
+Total Upload: 7460.09 KiB / gzip: 1525.02 KiB
+Worker Startup Time: 17 ms
+Your Worker has access to the following bindings:
+Binding                                                           Resource               
+env.DB (96fa71f375ca4415b3ba77bb73c0d0e3)                         Hyperdrive Config      
+env.WORKER_SELF_REFERENCE (kingchinesebowl)                       Worker                 
+env.IMAGES                                                        Images                 
+env.ASSETS                                                        Assets                 
+
+Uploaded kingchinesebowl (13.04 sec)
+Deployed kingchinesebowl triggers (2.27 sec)
+  https://kingchinesebowl.kingchinesebowl.workers.dev
+Current Version ID: adc51d6d-d4c6-4102-a914-156e8612079f
+(node:26599) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
