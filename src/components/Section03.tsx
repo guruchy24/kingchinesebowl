@@ -18,31 +18,17 @@ export default function Section03({ media }: { media?: Record<string, Record<str
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
 
-  const mediaSlots = Object.values(media || {});
+  const dynamicCategories = CATEGORIES.map((cat) => {
+    const slotName = cat.name.toLowerCase();
+    return {
+      ...cat,
+      desktop: media?.[slotName]?.desktop || cat.image,
+      mobile: media?.[slotName]?.mobile || media?.[slotName]?.desktop || cat.image
+    };
+  });
   
-  // Extract lists of all uploaded desktop and mobile images, ignoring slot names
-  const desktopUploads = mediaSlots.map(s => s.desktop).filter(Boolean) as string[];
-  const mobileUploads = mediaSlots.map(s => s.mobile).filter(Boolean) as string[];
-  
-  const numUploaded = Math.max(desktopUploads.length, mobileUploads.length);
-  
-  const allUploaded = [];
-  for (let i = 0; i < numUploaded; i++) {
-    allUploaded.push({
-      desktop: desktopUploads[i] || desktopUploads[0] || CATEGORIES[0].image,
-      mobile: mobileUploads[i] || desktopUploads[i] || desktopUploads[0] || CATEGORIES[0].image,
-    });
-  }
-  const fallbackImages = [
-    ...allUploaded,
-    ...CATEGORIES.slice(allUploaded.length).map(cat => ({ desktop: cat.image, mobile: cat.image }))
-  ];
-
-  const dynamicCategories = CATEGORIES.map((cat, i) => ({
-    ...cat,
-    desktop: fallbackImages[i]?.desktop || cat.image,
-    mobile: fallbackImages[i]?.mobile || cat.image
-  }));
+  const plateDesktop = media?.plate?.desktop || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2000&auto=format&fit=crop";
+  const plateMobile = media?.plate?.mobile || plateDesktop;
 
   // Scene 1 & 2 refs
   const textRef = useRef<HTMLDivElement>(null);
@@ -147,7 +133,12 @@ export default function Section03({ media }: { media?: Record<string, Record<str
         {/* Plate Image */}
         <div className="absolute left-[-50vw] md:left-[-15vw] top-1/4 md:top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[70vw] md:h-[70vw] rounded-full overflow-hidden shadow-[0_0_150px_rgba(196,30,42,0.15)] pointer-events-none">
           <div ref={plateRef} className="w-full h-full relative">
-            <Image src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2000&auto=format&fit=crop" alt="Premium plated dish" fill className="object-cover" />
+            <div className="hidden md:block absolute inset-0">
+              <Image src={plateDesktop} alt="Premium plated dish" fill className="object-cover" />
+            </div>
+            <div className="block md:hidden absolute inset-0">
+              <Image src={plateMobile} alt="Premium plated dish" fill className="object-cover" />
+            </div>
             <div className="absolute inset-0 rounded-full shadow-[inset_0_0_120px_rgba(10,10,10,1)] pointer-events-none" />
           </div>
         </div>
