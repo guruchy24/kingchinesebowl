@@ -142,8 +142,8 @@ export default function Section03({ media }: { media?: any }) {
         scrollTrigger: {
           trigger: introRef.current,
           start: "top top",
-          end: "+=120%", // Reduced from 200% so the user doesn't feel stuck
-          scrub: 1.5, // Smoother follow when scrolling faster
+          end: "+=100%", // Exactly one screen height of pinning
+          scrub: 2, // Maximum smoothing for premium feel
           pin: true,
           anticipatePin: 1,
           onEnter: () => {
@@ -192,19 +192,19 @@ export default function Section03({ media }: { media?: any }) {
         const artText = sec.querySelector(".art-bg-text");
 
         if(mainImg) {
-          gsap.fromTo(mainImg, { y: -50 }, { y: 50, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.fromTo(mainImg, { y: -50 }, { y: 50, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 1.5 } });
         }
         if(sub1) {
-          gsap.fromTo(sub1, { y: 100 }, { y: -100, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.fromTo(sub1, { y: 100 }, { y: -100, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 1.5 } });
         }
         if(sub2) {
-          gsap.fromTo(sub2, { y: 150 }, { y: -150, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.fromTo(sub2, { y: 150 }, { y: -150, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 1.5 } });
         }
         if(sub3) {
-          gsap.fromTo(sub3, { y: -80 }, { y: 80, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.fromTo(sub3, { y: -80 }, { y: 80, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 1.5 } });
         }
         if(artText) {
-          gsap.fromTo(artText, { y: -100, opacity: 0 }, { y: 100, opacity: 0.03, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true } });
+          gsap.fromTo(artText, { y: -100, opacity: 0 }, { y: 100, opacity: 0.03, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: 1.5 } });
         }
       });
 

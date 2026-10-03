@@ -18,9 +18,9 @@ export default function Experience({ media }: { media?: any }) {
         scrollTrigger: {
           trigger: sectionRef.current,
           pin: true,
-          scrub: 1,
+          scrub: 2, // Smooth follow
           start: "top top",
-          end: window.innerWidth < 768 ? "+=80%" : "+=150%", // Faster completion on mobile
+          end: "+=100%", // Exactly one screen height
         },
       });
 

@@ -38,7 +38,7 @@ export default function SplitLeft() {
           trigger: containerRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: true,
+          scrub: 1.5,
         },
       });
     }, containerRef);

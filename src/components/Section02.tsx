@@ -77,8 +77,8 @@ export default function Section02({ media }: { media?: Record<string, Record<str
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=120%" : "+=140%", // Reduced desktop distance so it doesn't feel stuck
-            scrub: 1.5, // Smoother scrub
+            end: "+=100%", // Exactly one screen height of pinning - perfect balance
+            scrub: 2, // Maximum smoothing for premium feel
             pin: true,
             anticipatePin: 1,
           },

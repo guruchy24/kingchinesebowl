@@ -76,7 +76,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
             trigger: containerRef.current,
             start: "top top",
             end: "bottom center",
-            scrub: true,
+            scrub: 1.5,
           }
         }
       );
@@ -92,7 +92,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
             trigger: containerRef.current,
             start: "top top",
             end: "bottom center",
-            scrub: true,
+            scrub: 1.5,
           }
         }
       );
