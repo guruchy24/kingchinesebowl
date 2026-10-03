@@ -77,7 +77,7 @@ export default function Section02({ media }: { media?: Record<string, Record<str
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: isMobile ? "+=80%" : "+=180%", // Drastically shorten the physical scroll distance on mobile
+            end: isMobile ? "+=120%" : "+=180%", // Increased mobile scroll distance so it doesn't rush
             scrub: 1,
             pin: true,
             anticipatePin: 1,
@@ -143,11 +143,12 @@ export default function Section02({ media }: { media?: Record<string, Record<str
         tl.fromTo(brushStrokeRef.current, { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.5, duration: 10, ease: "power3.inOut" }, 45);
 
         // 50-85: THE PARALLAX CUISINE TRACKER
-        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "80vw" }, { opacity: 1, x: "-120vw", duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -80, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 30, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -40, duration: 35, ease: "none" }, 50);
-        tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 50, duration: 35, ease: "none" }, 50);
+        // SURGICAL FIX: Reduced horizontal travel distance so it moves much slower
+        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "20vw" }, { opacity: 1, x: "-40vw", duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -20, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 10, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -10, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 20, duration: 35, ease: "none" }, 50);
 
         // Cinematic Focus: Crossfades and Scale mapped precisely to cuisines
         tl.to(cuisineChinese.current, { color: "#C41E2A", opacity: 1, scale: 1.05, duration: 3 }, 55); 
