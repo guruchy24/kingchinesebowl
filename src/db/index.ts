@@ -9,6 +9,12 @@ export function getDb(connectionString?: string) {
     // Prefer Hyperdrive binding (live Worker), then explicit arg, then env fallback
     const connStr = process.env.DB || connectionString || process.env.DATABASE_URL_UNPOOLED!;
     const pool = new Pool({ connectionString: connStr });
+    
+    // Crucial for Cloudflare Workers: prevent idle connection errors from crashing the worker (Error 1101)
+    pool.on('error', (err) => {
+      console.error('Unexpected error on idle pg client', err);
+    });
+    
     db = drizzle(pool, { schema });
   }
   return db;
