@@ -164,7 +164,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
         <div className="flex flex-wrap justify-center items-center gap-4 md:gap-5 lg:gap-6 mb-12 w-full max-w-[1200px] px-4">
           
           {/* CALL */}
-          <a href="tel:+917508450221" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="tel:+917508450221" className="hero-fade group flex items-center justify-center gap-2 md:gap-2.5 px-6 md:px-8 py-[14px] md:py-[16px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
@@ -174,7 +174,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
           </a>
 
           {/* RESERVATION */}
-          <a href="#reservation" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#reservation" className="hero-fade group flex items-center justify-center gap-2 md:gap-2.5 px-6 md:px-8 py-[14px] md:py-[16px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <line x1="4" y1="7" x2="20" y2="7" />
               <line x1="7" y1="11" x2="17" y2="11" />
@@ -187,7 +187,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
           </a>
 
           {/* MENU */}
-          <a href="#menu" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#menu" className="hero-fade group flex items-center justify-center gap-2 md:gap-2.5 px-6 md:px-8 py-[14px] md:py-[16px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <polygon points="12 20 4 10 7 4 12 9 17 4 20 10 12 20" />
             </svg>
@@ -197,7 +197,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
           </a>
 
           {/* VIEW ON MAPS */}
-          <a href="#locations" className="hero-fade group flex items-center justify-center gap-2.5 md:gap-3 px-10 md:px-[3.25rem] py-[18px] md:py-[22px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
+          <a href="#locations" className="hero-fade group flex items-center justify-center gap-2 md:gap-2.5 px-6 md:px-8 py-[14px] md:py-[16px] rounded-full border-[1.5px] border-kcb-gold/70 bg-[#0A0A0A]/40 text-kcb-gold hover:bg-kcb-gold hover:border-kcb-gold hover:text-[#110F0D] transition-all duration-300">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] md:w-[20px] md:h-[20px] shrink-0">
               <line x1="6" y1="5" x2="18" y2="5" />
               <circle cx="12" cy="14" r="6" />
@@ -211,7 +211,7 @@ export default function Hero({ media }: { media?: Record<string, Record<string, 
       </div>
 
       {/* Bottom Scroll Indicator - Classic Round Paper Lantern */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pb-[10vh] hero-fade pointer-events-auto">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pb-4 hero-fade pointer-events-auto">
         <span className="scroll-text text-[0.55rem] tracking-[0.4em] text-kcb-gold mb-3 uppercase drop-shadow-md">
           Scroll
         </span>
