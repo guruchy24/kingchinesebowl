@@ -1,135 +1,294 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
-const cuisines = [
-  { 
-    id: 'slide_1', 
-    name: 'CHINESE', 
-    desc: 'The heat of the wok. Fiery, bold, and tossed to perfection with authentic street-style mastery.',
-    fallback: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop'
-  },
-  { 
-    id: 'slide_2', 
-    name: 'KOREAN', 
-    desc: 'Sweet, spicy, and fermented. From crispy glazes to deeply savory broths, the soul of Seoul.',
-    fallback: 'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop'
-  },
-  { 
-    id: 'slide_3', 
-    name: 'JAPANESE', 
-    desc: 'Umami and precision. Delicate, refined, and deeply comforting mastery of broth and noodle.',
-    fallback: 'https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop'
-  },
-  { 
-    id: 'slide_4', 
-    name: 'TIBETAN', 
-    desc: 'Mountain comfort. Steaming momos and rich thukpa, bringing warmth crafted for the highest peaks.',
-    fallback: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop'
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
+
+// Helper for React-safe text splitting
+const SplitText = ({ text }: { text: string }) => {
+  return (
+    <>
+      {text.split("").map((char, i) => (
+        <span key={i} style={{ display: "inline-block", opacity: 0 }}>
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </>
+  );
+};
 
 export default function Section02({ media }: { media?: Record<string, Record<string, string>> }) {
-  // Default to the first one being active on mobile
-  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  // Layer 01 & 02: Atmosphere & Orbs
+  const bgTextureRef = useRef<HTMLDivElement>(null);
+  const orbRedRef = useRef<HTMLDivElement>(null);
+  const orbGoldRef = useRef<HTMLDivElement>(null);
+  const steamRef = useRef<HTMLDivElement>(null);
+  
+  // Layer 03: Food Image Sequence & Container
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<HTMLDivElement>(null);
+  const img1Ref = useRef<HTMLDivElement>(null);
+  const img2Ref = useRef<HTMLDivElement>(null);
+  const img3Ref = useRef<HTMLDivElement>(null);
+  const img4Ref = useRef<HTMLDivElement>(null);
+  const imageOverlayRef = useRef<HTMLDivElement>(null);
+  const brushStrokeRef = useRef<HTMLDivElement>(null);
+  
+  // Layer 04: Typography
+  const textWrapperRef = useRef<HTMLDivElement>(null);
+  const textMoreRef = useRef<HTMLDivElement>(null);
+  const textThanRef = useRef<HTMLDivElement>(null);
+  const textABowlRef = useRef<HTMLDivElement>(null);
+  
+  // Layer 05: Cuisines Parallax
+  const cuisinesContainerRef = useRef<HTMLDivElement>(null);
+  const cuisineChinese = useRef<HTMLSpanElement>(null);
+  const cuisineKorean = useRef<HTMLSpanElement>(null);
+  const cuisineJapanese = useRef<HTMLSpanElement>(null);
+  const cuisineTibetan = useRef<HTMLSpanElement>(null);
+  
+  // Micro Typography
+  const chapterMarkerRef = useRef<HTMLDivElement>(null);
+  const vertTextRef = useRef<HTMLDivElement>(null);
+  const bodyCopyRef = useRef<HTMLDivElement>(null);
 
-  const getMediaUrl = (slot: string, device: 'desktop' | 'mobile', fallback: string) => {
-    return media?.[slot]?.[device] || media?.[slot]?.['desktop'] || media?.[slot]?.['mobile'] || fallback;
-  };
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Safely grab the span children created by React
+      const lettersMore = textMoreRef.current ? gsap.utils.toArray(textMoreRef.current.children) : [];
+      const lettersThan = textThanRef.current ? gsap.utils.toArray(textThanRef.current.children) : [];
+      const lettersABowl = textABowlRef.current ? gsap.utils.toArray(textABowlRef.current.children) : [];
+      const allLetters = [...lettersMore, ...lettersThan, ...lettersABowl];
+
+      let mm = gsap.matchMedia();
+
+      mm.add({
+        isMobile: "(max-width: 767px)",
+        isDesktop: "(min-width: 768px)"
+      }, (context) => {
+        let { isMobile } = context.conditions as any;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: isMobile ? "+=80%" : "+=180%", // Drastically shorten the physical scroll distance on mobile
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        // 0-100: CONTINUOUS ATMOSPHERE
+        tl.fromTo(orbRedRef.current, { x: "-5vw", y: "0vh" }, { x: "10vw", y: "10vh", duration: 100, ease: "none" }, 0);
+        tl.fromTo(orbGoldRef.current, { x: "5vw", y: "15vh" }, { x: "-10vw", y: "5vh", duration: 100, ease: "none" }, 0);
+        tl.fromTo(steamRef.current, { y: 20, scale: 0.95, opacity: 0.015 }, { y: -100, scale: 1.05, opacity: 0.04, duration: 100, ease: "none" }, 0);
+        tl.fromTo(vertTextRef.current, { y: 0 }, { y: -80, duration: 100, ease: "none" }, 0);
+        tl.fromTo(chapterMarkerRef.current, { y: 0 }, { y: -40, duration: 100, ease: "none" }, 0);
+
+        // 0-5: THE DISSOLVE
+        tl.fromTo(bgTextureRef.current, { opacity: 0 }, { opacity: 1, duration: 5, ease: "power1.inOut" }, 0);
+
+        // ── TEXT REVEAL LOGIC ──
+        if (isMobile) {
+          // On mobile, reveal the text BEFORE the pin to eliminate the empty black gap
+          const mobileTextTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%", // Start revealing when section enters the bottom of the screen
+              end: "top 20%",
+              scrub: 1,
+            }
+          });
+          lettersMore.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { y: 40, opacity: 0, rotation: -2 + i }, { y: 0, opacity: 1, rotation: 0, ease: "power3.out" }, i * 0.1);
+          });
+          lettersThan.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { x: -20, opacity: 0 }, { x: 0, opacity: 1, ease: "power3.out" }, 0.4 + (i * 0.1));
+          });
+          lettersABowl.forEach((letter: any, i) => {
+            mobileTextTl.fromTo(letter, { y: -30, opacity: 0, rotation: 2 - (i * 0.5) }, { y: 0, opacity: 1, rotation: 0, ease: "power4.out" }, 0.7 + (i * 0.1));
+          });
+        } else {
+          // On desktop, keep the original delayed reveal inside the pinned timeline
+          lettersMore.forEach((letter: any, i) => {
+            tl.fromTo(letter, { y: 60 + (i * 15), opacity: 0, rotation: -2 + i }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power3.out" }, 5 + (i * 1.5));
+          });
+          lettersThan.forEach((letter: any, i) => {
+            tl.fromTo(letter, { x: -40 + (i * 10), opacity: 0 }, { x: 0, opacity: 1, duration: 10, ease: "power3.out" }, 9 + (i * 1.5));
+          });
+          lettersABowl.forEach((letter: any, i) => {
+            tl.fromTo(letter, { y: -50, opacity: 0, rotation: 2 - (i * 0.5) }, { y: 0, opacity: 1, rotation: 0, duration: 10, ease: "power4.out" }, 12 + (i * 1.5));
+          });
+        }
+
+        // 30-45: LAYERED EXPANSION (Image Emerges)
+        tl.fromTo(imageWrapperRef.current, { clipPath: "inset(35vh 30vw)", opacity: 0 }, { opacity: 1, duration: 5, ease: "power2.inOut" }, 30);
+        tl.to(imageWrapperRef.current, { clipPath: "inset(22vh 20vw)", duration: 15, ease: "power1.inOut" }, 35);
+
+        // Camera push
+        tl.fromTo(cameraRef.current, { scale: 0.85, x: "-2%", y: "2%", filter: "brightness(0.75)" }, { scale: 1.02, x: "1%", y: "-1%", filter: "brightness(1)", duration: 50, ease: "none" }, 30);
+
+        // 45-55: TYPOGRAPHY + IMAGE INTERACTION
+        tl.to(lettersMore, { x: (i) => (i - 1) * 8, duration: 15, ease: "power2.inOut" }, 45);
+        tl.to(lettersThan, { x: (i) => (i - 2) * 5, duration: 15, ease: "power2.inOut" }, 45);
+        tl.to(lettersABowl, { x: (i) => (i - 3) * 6, duration: 15, ease: "power2.inOut" }, 45);
+
+        // Asian brush stroke sweeps across
+        tl.fromTo(brushStrokeRef.current, { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.5, duration: 10, ease: "power3.inOut" }, 45);
+
+        // 50-85: THE PARALLAX CUISINE TRACKER
+        tl.fromTo(cuisinesContainerRef.current, { opacity: 0, x: "80vw" }, { opacity: 1, x: "-120vw", duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineChinese.current, { x: 0 }, { x: -80, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineKorean.current, { x: 0 }, { x: 30, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineJapanese.current, { x: 0 }, { x: -40, duration: 35, ease: "none" }, 50);
+        tl.fromTo(cuisineTibetan.current, { x: 0 }, { x: 50, duration: 35, ease: "none" }, 50);
+
+        // Cinematic Focus: Crossfades and Scale mapped precisely to cuisines
+        tl.to(cuisineChinese.current, { color: "#C41E2A", opacity: 1, scale: 1.05, duration: 3 }, 55); 
+        
+        tl.to(img1Ref.current, { opacity: 0, duration: 3 }, 60);
+        tl.to(img2Ref.current, { opacity: 1, duration: 3 }, 60);
+        tl.to(cuisineChinese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 60);
+        tl.to(cuisineKorean.current, { color: "#8B1A1A", opacity: 1, scale: 1.05, duration: 3 }, 60);
+        tl.to(orbRedRef.current, { backgroundColor: "#8B1A1A", duration: 3 }, 60);
+
+        tl.to(img2Ref.current, { opacity: 0, duration: 3 }, 70);
+        tl.to(img3Ref.current, { opacity: 1, duration: 3 }, 70);
+        tl.to(cuisineKorean.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 70);
+        tl.to(cuisineJapanese.current, { color: "#F5F0EB", opacity: 1, scale: 1.05, duration: 3 }, 70);
+        tl.to(orbRedRef.current, { backgroundColor: "#F5F0EB", duration: 3 }, 70);
+
+        tl.to(img3Ref.current, { opacity: 0, duration: 3 }, 80);
+        tl.to(img4Ref.current, { opacity: 1, duration: 3 }, 80);
+        tl.to(cuisineJapanese.current, { color: "#9E9589", opacity: 0.4, scale: 1, duration: 3 }, 80);
+        tl.to(cuisineTibetan.current, { color: "#D4A853", opacity: 1, scale: 1.05, duration: 3 }, 80);
+        tl.to(orbRedRef.current, { backgroundColor: "#D4A853", duration: 3 }, 80);
+
+        tl.fromTo(bodyCopyRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 5, ease: "power2.out" }, 65);
+
+        // 85-100: THE PUSH-IN EXIT
+        tl.to(allLetters, { opacity: 0, duration: 5, ease: "power2.inOut" }, 85);
+        tl.to(cuisinesContainerRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+        tl.to(bodyCopyRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+        tl.to(brushStrokeRef.current, { opacity: 0, duration: 5, ease: "power2.out" }, 85);
+
+        tl.to(imageWrapperRef.current, { clipPath: "inset(0vh 0vw)", borderRadius: "0px", duration: 10, ease: "power2.inOut" }, 85);
+
+        tl.to(cameraRef.current, { scale: 1.15, filter: "brightness(0.5)", duration: 10, ease: "power2.in" }, 90);
+        tl.to(imageOverlayRef.current, { backgroundColor: "rgba(10,10,10,0.6)", duration: 10, ease: "none" }, 90);
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="philosophy" className="relative h-[120vh] md:h-screen w-full bg-[#0A0A0A] flex flex-col md:flex-row overflow-hidden">
+    <section ref={sectionRef} id="philosophy" className="relative h-screen w-full bg-[#0A0A0A] overflow-hidden">
       
-      {/* Absolute Title overlay that stays in place on desktop */}
-      <div className="absolute top-6 left-6 md:top-12 md:left-12 z-30 pointer-events-none drop-shadow-md">
-        <p className="text-[10px] md:text-xs text-[#F5F0EB] tracking-[0.4em] font-light uppercase mix-blend-overlay opacity-80">
-          02 / The Philosophy
-        </p>
+      {/* LAYER 01 & 02 */}
+      <div ref={bgTextureRef} className="absolute inset-0 z-0 opacity-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#141414] to-[#0A0A0A]" />
+        <div 
+          className="absolute inset-0 opacity-[0.035] mix-blend-overlay" 
+          style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }} 
+        />
+        <div ref={orbRedRef} className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] rounded-full bg-[radial-gradient(circle,#C41E2A,transparent_60%)] opacity-[0.05] blur-3xl mix-blend-screen" />
+        <div ref={orbGoldRef} className="absolute top-1/3 right-1/4 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] rounded-full bg-[radial-gradient(circle,#D4A853,transparent_60%)] opacity-[0.04] blur-3xl mix-blend-screen" />
+        <div ref={steamRef} className="absolute inset-0 flex justify-center items-center opacity-[0.02] blur-2xl mix-blend-screen">
+          <div className="w-[40vw] h-[50vw] rounded-full bg-[#F5F0EB] absolute bottom-[-10%] left-[20%]" />
+          <div className="w-[50vw] h-[40vw] rounded-full bg-[#C4A882] absolute top-[20%] right-[10%]" />
+        </div>
       </div>
 
-      {cuisines.map((cuisine, index) => {
-        const desktopImg = getMediaUrl(cuisine.id, 'desktop', cuisine.fallback);
-        const mobileImg = getMediaUrl(cuisine.id, 'mobile', cuisine.fallback);
-        const isActive = activeIndex === index;
-
-        return (
-          <div 
-            key={cuisine.id}
-            onMouseEnter={() => setActiveIndex(index)}
-            onClick={() => setActiveIndex(index)}
-            className={`
-              relative flex flex-col justify-end overflow-hidden cursor-pointer
-              transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] border-b md:border-b-0 md:border-r border-[#2A2520]
-              ${isActive ? 'flex-[3] md:flex-[4]' : 'flex-1'}
-            `}
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-              <Image 
-                src={desktopImg} 
-                alt={cuisine.name} 
-                fill 
-                className={`hidden md:block object-cover transition-transform duration-1000 ease-out ${isActive ? 'scale-105 opacity-80' : 'scale-100 opacity-40 grayscale-[30%]'}`} 
-              />
-              <Image 
-                src={mobileImg} 
-                alt={cuisine.name} 
-                fill 
-                className={`block md:hidden object-cover transition-transform duration-1000 ease-out ${isActive ? 'scale-105 opacity-80' : 'scale-100 opacity-40 grayscale-[30%]'}`} 
-              />
-              {/* Gradient overlays to ensure text is always readable */}
-              <div className={`absolute inset-0 transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'} bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent`} />
-              <div className={`absolute inset-0 transition-opacity duration-700 ${!isActive ? 'opacity-100' : 'opacity-0'} bg-[#0A0A0A]/60`} />
+      {/* LAYER 03 */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+        <div ref={imageWrapperRef} className="relative w-full h-full overflow-hidden opacity-0 rounded-[8px]" style={{ clipPath: "inset(35vh 30vw)" }}>
+          <div ref={cameraRef} className="relative w-full h-full scale-[0.86]">
+            {/* Dynamic images from Admin panel */}
+            <div ref={img1Ref} className="absolute inset-0">
+              <Image src={media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="hidden md:block object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_1?.mobile || media?.slide_1?.desktop || "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=2000&auto=format&fit=crop"} alt="Chinese Wok" fill className="block md:hidden object-cover" priority sizes="100vw" />
             </div>
-
-            {/* Content Area */}
-            <div className="relative z-10 w-full h-full flex flex-col justify-end p-6 md:p-12">
-              
-              <div className={`
-                flex flex-col justify-end h-full
-                transition-all duration-700 ease-out
-                ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 md:translate-y-0 opacity-100 md:opacity-60'}
-              `}>
-                
-                {/* Horizontal Title (Visible when active or on mobile) */}
-                <h2 className={`
-                  font-serif text-[#F5F0EB] transition-all duration-500
-                  ${isActive ? 'text-4xl md:text-6xl mb-2 md:mb-4 drop-shadow-lg' : 'text-xl md:text-2xl mb-0 md:rotate-[-90deg] md:-translate-y-12 md:origin-bottom-left md:whitespace-nowrap'}
-                `}>
-                  {cuisine.name}
-                </h2>
-
-                {/* Divider Line */}
-                <div className={`
-                  bg-kcb-red transition-all duration-500
-                  ${isActive ? 'w-12 md:w-16 h-[2px] mb-4 opacity-100' : 'w-0 h-[2px] mb-0 opacity-0'}
-                `} />
-
-                {/* Description Text */}
-                <div className={`
-                  overflow-hidden transition-all duration-700
-                  ${isActive ? 'max-h-[200px] opacity-100 delay-100' : 'max-h-0 opacity-0'}
-                `}>
-                  <p className="text-kcb-gold text-xs md:text-sm tracking-wide leading-relaxed md:max-w-xs">
-                    {cuisine.desc}
-                  </p>
-                </div>
-
-              </div>
+            
+            <div ref={img2Ref} className="absolute inset-0 opacity-0">
+              <Image src={media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="hidden md:block object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_2?.mobile || media?.slide_2?.desktop || "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=2000&auto=format&fit=crop"} alt="Korean BBQ" fill className="block md:hidden object-cover" priority sizes="100vw" />
             </div>
-
-            {/* Large background number for design flair */}
-            <div className={`
-              absolute top-8 right-8 z-10 font-serif text-[#F5F0EB] transition-all duration-700 pointer-events-none
-              ${isActive ? 'text-6xl opacity-10' : 'text-3xl opacity-5'}
-            `}>
-              0{index + 1}
+            
+            <div ref={img3Ref} className="absolute inset-0 opacity-0">
+              <Image src={media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="hidden md:block object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_3?.mobile || media?.slide_3?.desktop || "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=2000&auto=format&fit=crop"} alt="Japanese Ramen" fill className="block md:hidden object-cover" priority sizes="100vw" />
             </div>
-
+            
+            <div ref={img4Ref} className="absolute inset-0 opacity-0">
+              <Image src={media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="hidden md:block object-cover" priority sizes="100vw" />
+              <Image src={media?.slide_4?.mobile || media?.slide_4?.desktop || "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=2000&auto=format&fit=crop"} alt="Tibetan Momos" fill className="block md:hidden object-cover" priority sizes="100vw" />
+            </div>
+            <div ref={imageOverlayRef} className="absolute inset-0 bg-transparent" />
           </div>
-        );
-      })}
+        </div>
+      </div>
+
+      {/* LAYER 04 */}
+      <div ref={textWrapperRef} className="absolute inset-0 z-20 flex flex-col items-center justify-center text-[#F5F0EB] font-serif uppercase select-none mix-blend-overlay">
+        <div className="w-full px-[5vw] flex flex-col leading-[0.80] tracking-tight opacity-90">
+          <div ref={textMoreRef} className="text-[16vw] md:text-[14vw] self-start ml-[5vw]">
+            <SplitText text="MORE" />
+          </div>
+          <div ref={textThanRef} className="text-[16vw] md:text-[14vw] self-center">
+            <SplitText text="THAN" />
+          </div>
+          <div ref={textABowlRef} className="text-[16vw] md:text-[14vw] self-end mr-[5vw]">
+            <SplitText text="A BOWL." />
+          </div>
+        </div>
+      </div>
+
+      {/* Brush Stroke */}
+      <div className="absolute inset-0 z-15 flex items-center justify-center pointer-events-none opacity-60">
+        <div ref={brushStrokeRef} className="w-[60vw] h-[3px] bg-gradient-to-r from-transparent via-[#D4A853] to-transparent opacity-0 transform -rotate-3" />
+      </div>
+
+      {/* LAYER 05: Cinematic Cuisine Tracker */}
+      <div className="absolute bottom-[10vh] left-0 w-full overflow-hidden z-30 pointer-events-none h-16 md:h-24 flex items-center">
+        <div ref={cuisinesContainerRef} className="relative flex items-center justify-start gap-[12vw] w-max text-[4.5vw] md:text-[3vw] tracking-[0.6em] font-medium opacity-0 whitespace-nowrap text-[#9E9589] drop-shadow-xl pl-[5vw]">
+          <span ref={cuisineChinese} className="inline-block opacity-40 transform origin-center">CHINESE</span>
+          <span ref={cuisineKorean} className="inline-block opacity-40 transform origin-center">KOREAN</span>
+          <span ref={cuisineJapanese} className="inline-block opacity-40 transform origin-center">JAPANESE</span>
+          <span ref={cuisineTibetan} className="inline-block opacity-40 transform origin-center">TIBETAN</span>
+        </div>
+      </div>
+
+      {/* Micro-typography */}
+      <div className="absolute inset-0 z-40 pointer-events-none p-[5vw] flex justify-between items-start">
+        <div ref={chapterMarkerRef}>
+          <p className="text-[12px] md:text-[11px] text-[#C4A882] tracking-[0.3em] md:tracking-[0.4em] font-light uppercase">
+            02 / THE PHILOSOPHY
+          </p>
+        </div>
+        <div ref={vertTextRef} className="text-[12px] md:text-[11px] text-[#C4A882] tracking-[0.5em] md:tracking-[1em] font-light uppercase opacity-50 h-[30vh]" style={{ writingMode: 'vertical-rl' }}>
+          ASIAN CUISINE
+        </div>
+      </div>
+
+      {/* Editorial Copy */}
+      <div className="absolute bottom-[5vw] right-[5vw] z-40 pointer-events-none">
+        <div ref={bodyCopyRef} className="text-right max-w-[80vw] md:max-w-sm opacity-0">
+          <p className="text-[#F5F0EB] font-sans font-light text-[14px] md:text-sm leading-relaxed tracking-wide opacity-90 drop-shadow-md">
+            A celebration of Asian flavours,<br />crafted for memorable moments.
+          </p>
+          <p className="text-[#D4A853] text-[12px] md:text-[10px] tracking-widest mt-4 uppercase opacity-80">
+            — King Chinese Bowl
+          </p>
+        </div>
+      </div>
     </section>
   );
 }
