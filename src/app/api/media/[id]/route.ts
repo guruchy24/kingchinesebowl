@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/db';
 import { siteMedia } from '@/db/schema';
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { eq } from 'drizzle-orm';
 import { getAdminSession } from '@/lib/auth';
 
@@ -34,7 +34,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
     }
 
-    revalidateTag("media"); return NextResponse.json(updated);
+    revalidatePath("/"); return NextResponse.json(updated);
   } catch (error) {
     console.error('Error updating media:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
@@ -58,7 +58,7 @@ export async function DELETE(
 
     await client.end();
 
-    revalidateTag("media"); return NextResponse.json({ success: true });
+    revalidatePath("/"); return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting media:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
