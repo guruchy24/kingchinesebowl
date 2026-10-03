@@ -220,7 +220,7 @@ export default function Section03({ media }: { media?: any }) {
       spinner.kill();
       ctx.revert();
     };
-  }, []);
+  }, [isIntersecting]);
 
   return (
     <div id="kitchen" className="relative w-full bg-[#0A0A0A]">
