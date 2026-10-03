@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const LOCATIONS_DATA = [
@@ -36,6 +36,14 @@ const LOCATIONS_DATA = [
 export default function Locations() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeLoc = LOCATIONS_DATA[activeIndex];
+
+  // Auto-slide every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((current) => (current + 1) % LOCATIONS_DATA.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [activeIndex]);
 
   return (
     <section className="w-full min-h-screen md:h-screen relative bg-[#0A0A0A] flex flex-col justify-center overflow-hidden border-t border-[#2A2520] py-20 md:py-0">
