@@ -79,7 +79,7 @@ export default function Gallery({ media }: { media?: any }) {
       <section className="py-[10vh] md:py-[15vh] px-[5vw] w-full bg-[#0A0A0A]">
         <div className="flex items-center gap-4 md:gap-6 mb-10 md:mb-16">
           <div className="w-12 md:w-16 h-[1px] bg-[#C41E2A]" />
-          <h3 className="text-[#D4A853] tracking-[0.3em] md:tracking-[0.4em] uppercase text-xs md:text-sm font-light">The Details</h3>
+          <h3 className="text-[#D4A853] tracking-[0.3em] md:tracking-[0.4em] uppercase text-xs md:text-sm font-light">Find Your Experience</h3>
         </div>
 
         {/* Editorial CSS Grid */}
