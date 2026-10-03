@@ -51,7 +51,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="King Chinese Bowl"
-            className="h-16 md:h-24 w-auto object-contain"
+            className="h-12 md:h-24 w-auto object-contain"
           />
         </Link>
       </div>
@@ -63,7 +63,7 @@ export default function Navbar() {
         </span>
         <Link
           href="#order"
-          className="group relative px-8 py-3 overflow-hidden rounded-full border border-kcb-gold/50 flex items-center gap-3 transition-all duration-500 hover:border-kcb-gold"
+          className="hidden md:flex group relative px-8 py-3 overflow-hidden rounded-full border border-kcb-gold/50 items-center gap-3 transition-all duration-500 hover:border-kcb-gold"
         >
           <div className="absolute inset-0 bg-kcb-gold translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
           <span className="relative z-10 text-xs tracking-[0.2em] text-kcb-gold group-hover:text-[#110F0D] transition-colors duration-500">

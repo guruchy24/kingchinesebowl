@@ -51,16 +51,17 @@ export default function Experience() {
     >
       <div
         ref={mediaRef}
-        className="relative w-[40vw] h-[15vw] overflow-hidden rounded-sm"
+        className="relative w-[80vw] h-[60vw] md:w-[40vw] md:h-[15vw] overflow-hidden rounded-sm"
       >
         <img
           src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=2000&auto=format&fit=crop"
           alt="King Chinese Bowl experience"
           className="h-full w-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none" />
         <span
           ref={overlayRef}
-          className="pointer-events-none absolute inset-0 flex items-center justify-center text-[3vw] font-light tracking-[1vw] text-[#F5F0EB] opacity-0"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center text-[6vw] md:text-[3vw] font-light tracking-[0.5em] md:tracking-[1vw] text-[#F5F0EB] opacity-0 text-center px-4"
         >
           STEP INTO THE EXPERIENCE
         </span>

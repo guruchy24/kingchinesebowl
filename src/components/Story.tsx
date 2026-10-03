@@ -88,7 +88,7 @@ export default function Story() {
     >
       {/* ── LEFT COLUMN: STATIC HEADING + DYNAMIC CHAPTERS ── */}
       <div 
-        className="w-full md:w-[48%] h-full flex flex-col justify-center pl-[8vw] pr-[4vw] z-10 relative"
+        className="w-full md:w-[48%] h-full flex flex-col justify-center pl-[5vw] md:pl-[8vw] pr-[5vw] md:pr-[4vw] z-10 relative"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -96,28 +96,28 @@ export default function Story() {
         {/* ── STATIC HEADING: OUR STORY ── */}
         {/* Sits beautifully at the top left, never moves */}
         <div className="mb-[6vh] z-20">
-          <div className="flex items-center gap-5 mb-5">
-            <div className="w-[4vw] h-[1px] bg-[#C41E2A]" />
-            <span className="text-[1vw] tracking-[0.6em] text-[#C41E2A] uppercase font-light">The Heritage</span>
+          <div className="flex items-center gap-4 md:gap-5 mb-4 md:mb-5 mt-[10vh] md:mt-0">
+            <div className="w-[8vw] md:w-[4vw] h-[1px] bg-[#C41E2A]" />
+            <span className="text-[10px] md:text-[1vw] tracking-[0.4em] md:tracking-[0.6em] text-[#C41E2A] uppercase font-light">The Heritage</span>
           </div>
-          <h2 className="text-[10vw] md:text-[6.5vw] font-serif text-[#F5F0EB] leading-[0.9] tracking-tight drop-shadow-2xl">
+          <h2 className="text-[16vw] md:text-[6.5vw] font-serif text-[#F5F0EB] leading-[0.9] tracking-tight drop-shadow-2xl">
             Our Story
           </h2>
         </div>
 
         {/* ── MASSIVE ANIMATED BACKGROUND CHAPTER NUMBER ── */}
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-0 flex items-center justify-center md:justify-start overflow-hidden pointer-events-none z-0">
           {storyData.map((data, i) => (
             <div
               key={`bg-${data.chapter}`}
-              className={`absolute font-serif text-[40vw] leading-none select-none transition-all duration-[2000ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+              className={`absolute font-serif text-[60vw] md:text-[40vw] leading-none select-none transition-all duration-[2000ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
                 i === currentTextIdx 
-                  ? "opacity-[0.05] translate-y-0 scale-100" 
+                  ? "opacity-[0.08] md:opacity-[0.05] translate-y-0 scale-100" 
                   : i < currentTextIdx 
                     ? "opacity-0 -translate-y-20 scale-95" 
                     : "opacity-0 translate-y-20 scale-105"
               }`}
-              style={{ color: "#E5E0D8", left: "-2vw", top: "30vh" }}
+              style={{ color: "#E5E0D8", left: "5vw", top: "25vh" }}
             >
               {data.chapter}
             </div>
@@ -125,7 +125,7 @@ export default function Story() {
         </div>
 
         {/* ── FOREGROUND TEXT CONTAINER (Changes every 12s) ── */}
-        <div className="relative z-10 min-h-[30vh]">
+        <div className="relative z-10 min-h-[40vh] md:min-h-[30vh]">
           {storyData.map((data, i) => (
             <div
               key={`text-${data.chapter}`}
@@ -133,17 +133,17 @@ export default function Story() {
                 i === currentTextIdx ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"
               }`}
             >
-              <div className="flex items-center gap-6 mb-[4vh]">
-                <div className="text-[1.2vw] font-serif text-[#C41E2A] italic">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-6 mb-[3vh] md:mb-[4vh]">
+                <div className="text-[14px] md:text-[1.2vw] font-serif text-[#C41E2A] italic">
                   Chapter {data.chapter}
                 </div>
-                <div className="w-[3vw] h-[1px] bg-[#C41E2A]/50" />
-                <h3 className="text-[1.2vw] tracking-[0.4em] text-[#C4A882] uppercase font-light">
+                <div className="hidden md:block w-[3vw] h-[1px] bg-[#C41E2A]/50" />
+                <h3 className="text-[12px] md:text-[1.2vw] tracking-[0.3em] md:tracking-[0.4em] text-[#C4A882] uppercase font-light">
                   {data.title}
                 </h3>
               </div>
               
-              <p className="text-[4vw] md:text-[1.5vw] leading-[2] text-[#E5E0D8] font-light text-justify drop-shadow-2xl pr-[2vw]">
+              <p className="text-sm md:text-[1.5vw] leading-[1.8] md:leading-[2] text-[#E5E0D8] font-light text-left md:text-justify drop-shadow-2xl pr-0 md:pr-[2vw]">
                 {data.text}
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function Story() {
         </div>
 
         {/* ── CHAPTER DOTS (Clickable) ── */}
-        <div className="absolute bottom-[8vh] left-[8vw] flex items-center gap-5 z-20">
+        <div className="absolute bottom-[8vh] left-[5vw] md:left-[8vw] flex items-center gap-3 md:gap-5 z-20">
           {storyData.map((_, i) => (
             <div
               key={i}
@@ -164,24 +164,25 @@ export default function Story() {
               <div
                 className={`h-[1.5px] transition-all duration-700 ${
                   i === currentTextIdx 
-                    ? "w-[4vw] bg-[#C41E2A]" 
-                    : "w-[1.5vw] bg-white/20 group-hover:bg-white/50"
+                    ? "w-[8vw] md:w-[4vw] bg-[#C41E2A]" 
+                    : "w-[4vw] md:w-[1.5vw] bg-white/40 md:bg-white/20 group-hover:bg-white/50"
                 }`}
               />
             </div>
           ))}
           
-          <div className={`ml-4 text-[0.75vw] tracking-widest uppercase transition-opacity duration-500 ${isPaused ? "opacity-40 text-[#C4A882]" : "opacity-0"}`}>
+          <div className={`ml-4 text-[10px] md:text-[0.75vw] tracking-[0.2em] md:tracking-widest uppercase transition-opacity duration-500 ${isPaused ? "opacity-60 md:opacity-40 text-[#C4A882]" : "opacity-0"}`}>
             Paused to read
           </div>
         </div>
       </div>
 
       {/* ── RIGHT COLUMN: FULL-BLEED GALLERY ── */}
-      <div className="absolute right-0 top-0 h-full w-[52%] z-0 overflow-hidden">
+      <div className="absolute right-0 top-0 h-full w-full md:w-[52%] z-0 overflow-hidden">
         
-        {/* Soft elegant blend into the left side */}
-        <div className="absolute inset-y-0 left-0 w-[20vw] z-30 bg-gradient-to-r from-[#050403] via-[#050403]/90 to-transparent pointer-events-none" />
+        {/* Soft elegant blend into the left side - heavier on mobile to ensure text readability */}
+        <div className="absolute inset-0 md:inset-y-0 md:left-0 md:w-[20vw] z-30 bg-black/60 md:bg-gradient-to-r from-[#050403] via-[#050403]/90 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60 z-30 pointer-events-none md:hidden" />
 
         <div className="w-full h-full relative">
           {storyImages.map((src, i) => (
@@ -205,12 +206,12 @@ export default function Story() {
         </div>
 
         {/* ── ART GALLERY PROGRESS BAR ── */}
-        <div className="absolute bottom-[8vh] right-[5vw] z-40 flex items-center gap-6">
-          <div className="w-[12vw] h-[1px] bg-white/10 relative overflow-hidden">
+        <div className="absolute bottom-[8vh] right-[5vw] z-40 flex items-center gap-4 md:gap-6">
+          <div className="hidden md:block w-[12vw] h-[1px] bg-white/10 relative overflow-hidden">
             <div ref={progressRef} className="absolute inset-y-0 left-0 bg-[#D4A853] origin-left" />
           </div>
-          <div className="text-[#C4A882] font-serif text-[1vw] tracking-widest">
-            0{currentImgIdx + 1} <span className="opacity-30">/ 0{storyImages.length}</span>
+          <div className="text-[#C4A882] font-serif text-sm md:text-[1vw] tracking-widest drop-shadow-md">
+            0{currentImgIdx + 1} <span className="opacity-50 md:opacity-30">/ 0{storyImages.length}</span>
           </div>
         </div>
 

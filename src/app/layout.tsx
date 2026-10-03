@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 
@@ -15,6 +15,13 @@ const montserrat = Montserrat({
   display: "swap",
   weight: ["300", "400", "500", "600"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "King Chinese Bowl | The Tricity's Favorite Pan-Asian Destination",
